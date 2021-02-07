@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="z-Hiracrical Pathfinding">
+      <UniqueIdentifier>{ff214bd1-d13e-4a88-8a90-449c5f3d9656}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pathfinding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="node.cpp">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="Edge.cpp">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="Cluster.cpp">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="Astar.cpp">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="distance.cpp">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="pathfinders.cpp">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="node_Graph.cpp">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="generatiors.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="searchers.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="distances.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="node.h">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Edge.h">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Cluster.h">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hpA_builders.h">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Astar.h">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="distance.h">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="pathfinders.h">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="node_Graph.h">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
