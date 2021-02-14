@@ -6,6 +6,7 @@
 #include <vector>
 #include <queue>
 #include "Astar.h"
+#include "hpA_builders.h"
 
 
 
@@ -18,11 +19,11 @@ node_Graph::node_Graph(std::vector<std::vector<std::vector<int>>> const& arr, in
 
 void node_Graph::std_init(std::vector<std::vector<std::vector<int>>> const& arr, int sizes, int movementKey, std::vector<int> ofset) {
 	this->superCluster = new Cluster();
+	
 	// a matrix used to figure what clusterse are connected
 	std::vector<std::tuple<int, int, int>> directionalMatrix = { {0,0,sizes},{0,0,-sizes},{0,sizes,0},{0,-sizes,0},{sizes,0,0},{-sizes,0,0} };
 	size_t size = sizes;
 	this->size = (int)size;
-	this->superCluster->clusterShape = { (int)(arr[0][0].size()/size), (int)(arr[0].size()/size), (int)(arr.size()/size) };
 	// iterate over arr and split it into cub
 	for (size_t x_pos = 0; x_pos < arr.size(); x_pos = x_pos + size) {
 		for (size_t y_pos = 0; y_pos < arr[0].size(); y_pos = y_pos + size) {
@@ -60,6 +61,7 @@ void node_Graph::std_init(std::vector<std::vector<std::vector<int>>> const& arr,
 	}
 	this->buildSuperNodes();
 	this->buildClusterConnections();
+	this->superCluster->clusterShape = { (int)(arr[0][0].size() / size), (int)(arr[0].size() / size), (int)(arr.size() / size) };
 }
 
 void node_Graph::buildSuperNodes() {
@@ -67,6 +69,7 @@ void node_Graph::buildSuperNodes() {
 	for (auto clus = this->clusters.begin(); clus != this->clusters.end(); clus++) {
 		int a = 1;
 		for (auto conNode = clus->second->intraClusterNodes.begin(); conNode != clus->second->intraClusterNodes.end(); conNode++) {
+			(*conNode)->id = (int)this->superCluster->nodes.size();
 			this->superCluster->nodes.insert({ this->superCluster->nodes.size(), *conNode });
 		}
 	}
@@ -105,7 +108,7 @@ void node_Graph::buildMulit(std::vector<std::vector<std::vector<int>>> const& ve
 				lower->buildMulit(subGraph, poses, movementKey, { (int)(x_pos + ofset[0]),
 																  (int)(y_pos + ofset[1]),
 																  (int)(z_pos + ofset[2]) });
-				//lower->buildClusterConnections(lower->superCluster)
+				lower->buildClusterConnections(lower->superCluster);
 
 				this->clusters.insert({ buildClusterPos(x_pos, y_pos, z_pos, vec, size), lower->superCluster });
 				lower->superCluster->postion = { (int)x_pos, (int)y_pos, (int)z_pos };
@@ -133,9 +136,10 @@ void node_Graph::buildMulit(std::vector<std::vector<std::vector<int>>> const& ve
 			}
 		}
 	}
-	this->superCluster->clusterShape = { (int)(vec[0][0].size()/size), (int)(vec[0].size()/size), (int)(vec.size()/size) };
+	this->superCluster->clusterShape = { (int)(vec[0][0].size() /size), (int)(vec[0].size()/size), (int)(vec.size()/size) };
 	//this->buildClusterConnections();
 	this->buildClusterBridges(singler);
+	//this->superCluster->clusterShape = { (int)vec.size(), (int)vec[0].size(), (int)vec[0][0].size() };
 }
 
 bool isConnected(Cluster* a, Cluster* b, int dis) {
@@ -444,9 +448,12 @@ void node_Graph::buildNode(std::vector<int> const & a, Cluster* b, PathNode* Nod
 	// build node connectivity
 	PathNode* n;
 	if (Node->lowerEquvilant == nullptr) {
-		int cluster_id = utils::buildNewPos(a, b->clusterShape);
+		int cluster_id = a[2] +
+			             a[1] * b->clusterShape[0] +
+			             a[0] * b->clusterShape[0] * b->clusterShape[1] + 1;  // redo this
 		n = b->nodes.at(cluster_id);
 		Node->lowerEquvilant = n;
+		Node->pos = Node->lowerEquvilant->pos;
 	}
 	else {
 		n = Node->lowerEquvilant;
@@ -473,6 +480,22 @@ void node_Graph::cleanUp() {
 		delete ((*nodeIter));
 	}
 	this->tempNodes.clear();
+}
+
+std::vector<node_Graph*>node_Graph::getLowerKeys() {
+	std::vector<node_Graph*>keys = {};
+	for (auto itr = this->lowerNodeGraphs.begin(); itr != this->lowerNodeGraphs.end(); itr++) {
+		keys.push_back(((*itr).second));
+	}
+	return keys;
+}
+
+std::vector<Cluster*>node_Graph::getLowerClusterKeys() {
+	std::vector<Cluster*> keys = {};
+	for (auto itr = this->clusters.begin(); itr != this->clusters.end(); itr++) {
+		keys.push_back((*itr).second);
+	}
+	return keys;
 }
 
 

@@ -23,7 +23,7 @@ public: std::vector<int> pos;
 	  //internal distance for all algorythems
 public: float distance = 0;
 	  // the id of the node cumputed by pos
-public: size_t id;
+public: size_t id=-1;
 	// internal pointer to the node that initated this one
 public: PathNode* movedFrom;
 public: Cluster* cluster;
@@ -34,5 +34,13 @@ public:
 	PathNode() {};
 	PathNode(PathNode*);
 	~PathNode();
+
+	std::vector<int>connectedNodes();
 };
+
+class GoalNode{
+public: PathNode* Nodeptr;
+public: GoalNode* goalThisWay;
+};
+
 #endif

@@ -23,16 +23,29 @@ inline bool PathNode::operator<(const PathNode& rhs) const noexcept{
 	// logic here
 	return true; // for example
 }*/
-
  PathNode::PathNode(PathNode* n) {
 	 this->pos = n->pos;
 	 this->lowerEquvilant = n;
  }
-
  PathNode::~PathNode() {
 	 while (this->edges.size()) {
 		 delete(*this->edges.begin());
 	 }
  }
+ std::vector<int>PathNode::connectedNodes() {
+	 std::vector<int> res = {};
+	 for (auto edge = this->edges.begin(); edge != this->edges.end(); edge++) {
+		 if ((*edge)->nodes.first != this) {
+			 res.push_back((*edge)->nodes.first->id);
+		 }
+		 else {
+			 res.push_back((*edge)->nodes.second->id);
+		 }
+	 }
+	 return res;
+ }
+
+
+
 
 

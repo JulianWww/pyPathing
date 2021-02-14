@@ -42,6 +42,12 @@
     <ClCompile Include="node_Graph.cpp">
       <Filter>z-Hiracrical Pathfinding</Filter>
     </ClCompile>
+    <ClCompile Include="hpA_builders.cpp">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="GoalPathing.cpp">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generatiors.h">
@@ -78,6 +84,9 @@
       <Filter>z-Hiracrical Pathfinding</Filter>
     </ClInclude>
     <ClInclude Include="node_Graph.h">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="GoalPathing.h">
       <Filter>z-Hiracrical Pathfinding</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,13 +12,12 @@ class PathNode;
 class node_Graph {
 	/* an abstrackted node graph
 	*/
-public: std::unordered_map < size_t, Cluster*> clusters;
-private: std::vector<int> clusterSchape;
+public: std::unordered_map < int, Cluster*> clusters = {};
 
 	  // the abstracted cluster;
 public: Cluster* superCluster;
 public: int size;
-public: std::unordered_map<size_t, node_Graph*> lowerNodeGraphs;
+public: std::unordered_map<int, node_Graph*> lowerNodeGraphs = {};
 public: node_Graph() {};
 	  
 	  // the nodes temporarily created and that will be deletet
@@ -48,6 +47,8 @@ private: void buildPath(std::vector<PathNode*>&, std::vector<PathNode*>::iterato
 
 // remove temporary memory data
 public: void cleanUp();
+public: std::vector<node_Graph*>getLowerKeys();
+public: std::vector<Cluster*>getLowerClusterKeys();
 };
 
 	// subrooten to build connections bewean clusters

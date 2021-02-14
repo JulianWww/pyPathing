@@ -1,0 +1,13 @@
+﻿  pathfinding.cpp
+D:\myCode\AGreatYear2021\Pathfinding\pathlib\scr\pathfinding\generatiors.h(16,1): error C2664: 'void std::list<unsigned short,std::allocator<unsigned short>>::push_back(const _Ty &)': cannot convert argument 1 from 'std::list<unsigned short,std::allocator<unsigned short>>' to '_Ty &&'
+          with
+          [
+              _Ty=unsigned short
+          ]
+D:\myCode\AGreatYear2021\Pathfinding\pathlib\scr\pathfinding\generatiors.h(16,1): message : Reason: cannot convert from 'std::list<unsigned short,std::allocator<unsigned short>>' to '_Ty'
+          with
+          [
+              _Ty=unsigned short
+          ]
+D:\myCode\AGreatYear2021\Pathfinding\pathlib\scr\pathfinding\generatiors.h(16,26): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\list(952,10): message : see declaration of 'std::list<unsigned short,std::allocator<unsigned short>>::push_back'

@@ -27,6 +27,36 @@ class edge(cy_node_graph.PY_edge):
         """
     pass
 
+class nodeGraph(cy_node_graph.Py_nodeGraph):
+    """py node Graph implementation
+
+        an absract node Graph """
+    pass
+
+class goalCluster(cy_node_graph.Py_GoalCluster):
+    """a cluster extension that uses goal based pathfinding
+        """
+
+def debugRenderDirections(goals, arr, clus):
+    "debug function to debug the path finding sys it will draw arrows"
+    import tkinter
+    width=500
+    height=500
+
+    master = tkinter.Tk()
+    cv = tkinter.Canvas(master, width=width, height=height)
+    cv.pack()
+    dims = arr.shape[1:]
+    for y_id, row in enumerate(arr[0]):
+        for x_id, val in enumerate(row):
+            cv.create_rectangle(x_id*    width/dims[0], y_id*    height/dims[1],
+                                (x_id+1)*width/dims[0], (y_id+1)*height/dims[1],
+                                fill="white" if val==1 else "black")
+    
+
+    master.mainloop()
+
+
 def debugRender(arr3d: ndarray, poses: typing.List[node]=[], layers=None):
     import matplotlib.pyplot as plt
     layers = layers if layers!=None else range(0, arr3d.shape[0])
@@ -44,4 +74,60 @@ def debugRender(arr3d: ndarray, poses: typing.List[node]=[], layers=None):
         axarr[idx].set_title(f"dim {layer}")
 
     plt.show()
+
+def debugRenderCluser(graph: nodeGraph, arr:ndarray, layer=0, width=500, height=500, x=0, y=0, colors=["red", "green"], path=[], pathColor="gold", renderNodes=True):
+    "draw all nodes of a cluster" 
+    #splitter = "[:2]"  
+    layerer = "[2]"
+    import tkinter
+    master = tkinter.Tk()
+    cv = tkinter.Canvas(master, width=width, height=height)
+    cv.pack()
+
+    dims = arr.shape[1:]
+    for y_id, row in enumerate(arr[0]):
+        for x_id, val in enumerate(row):
+            cv.create_rectangle(x+x_id*    width/dims[0], y+y_id*    height/dims[1],
+                                x+(x_id+1)*width/dims[0], y+(y_id+1)*height/dims[1],
+                                fill="white" if val==1 else "black")
+
+    def render(graph, colors, w):
+        if len(colors) == 0:
+            return
+
+        clus = graph.abstractCluster
+        nodes = clus.nodes
+        for element in graph.lowerNodeGraphs:
+            render(element, colors[1:], w+1)
+
+        for node in clus.nodes.values():
+            for otherNodeid in node.connectedNodes:
+                if otherNodeid == -1:
+                    continue
+                otherNode = nodes[otherNodeid]
+                apos = node.position[:2]
+                bpos = otherNode.position[:2]
+                cv.create_line(x+width*(apos[0]+0.5)/dims[0], y+height*(apos[1]+0.5)/dims[1],
+                               x+width*(bpos[0]+0.5)/dims[0], y+height*(bpos[1]+0.5)/dims[1],
+                               fill=colors[0], width=w)
+
+        for node in clus.nodes.values():
+            pos = node.position[:2]
+            l = node.position[2]
+            if layer == l:
+                cv.create_oval(x+width*pos[0]    /dims[0], y+height*pos[1]    /dims[1], 
+                               x+width*(1+pos[0])/dims[0], y+height*(1+pos[1])/dims[1], fill=colors[0])
     
+    if renderNodes: render(graph, colors, 1)
+
+    if len(path)>0:
+        lastPos = path[0].position[:2]
+        for node in path:
+            pos = node.position[:2]
+            cv.create_line(x+width*(lastPos[0]+.5)/dims[0], y+height*(lastPos[1]+.5)/dims[1],
+                        x+width*(pos[0]+.5)    /dims[0], y+height*(pos[1]+.5)    /dims[1],
+                        fill=pathColor, width=10)
+            lastPos = pos
+    
+
+    master.mainloop()

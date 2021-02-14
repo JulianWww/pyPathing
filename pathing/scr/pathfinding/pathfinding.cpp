@@ -3,10 +3,12 @@
 
 #include <iostream>
 #include "node_Graph.h"
+#include "Cluster.h"
+#include "GoalPathing.h"
 
 int main()
 {
-    node_Graph* g = new node_Graph({ { { 1,1,1,1,1,1,1,1 },
+    /*node_Graph* g = new node_Graph({ { { 1,1,1,1,1,1,1,1 },
                                        { 1,1,1,1,1,1,1,1 },
                                        { 1,1,1,1,1,1,1,1 },
                                        { 1,1,1,1,1,1,1,1 },
@@ -22,12 +24,27 @@ int main()
                                     { 1,1,1,1,1,1,1,1 },
                                     { 1,1,1,1,1,1,1,1 },
                                     { 1,1,1,1,1,1,1,1 },
-                                    { 1,1,1,1,1,1,1,1 }} }, { 4, 2}, 2);
+                                    { 1,1,1,1,1,1,1,1 }} }, { 4,2 }, 2);*/
+
+    Cluster* clus = new Cluster({ { { 1,1,1,1,1,1,1,1 },
+                                       { 1,1,1,1,1,1,1,1 },
+                                       { 1,1,1,1,1,1,1,1 },
+                                       { 1,1,1,1,1,1,1,1 },
+                                       { 1,1,1,1,1,1,1,1 },
+                                       { 1,1,1,1,1,1,1,1 },
+                                       { 1,1,1,1,1,1,1,1 },
+                                       { 1,1,1,1,1,1,1,1 } } });
+
+    auto goal = new GoalCluster();
+    goal->clus = clus;
+    goal->make();
+    goal->buildGraph(1);
+
 
     //g->build_hpA(3)
-    auto r = g->Astar({ 0,0,0 }, { 0,6,6 }, 5);
-    g->cleanUp();
-
+    //auto r = g->Astar({ 0,0,0 }, { 0,6,6 }, 15);
+    //g->cleanUp();
+    //auto a = g->getLowerClusterKeys();
     
     // auto c = g->Astar(1, 9);
 

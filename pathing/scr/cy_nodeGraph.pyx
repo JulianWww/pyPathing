@@ -1,6 +1,7 @@
 # distutils: language = c++
 
 cimport cy_node_graph_cppInterface as cppInter
+from cython.operator cimport dereference as deref, preincrement as inc
 cimport numpy as cnp
 import  numpy as np
 
@@ -33,7 +34,7 @@ cdef class PY_node:
 
     ## conversions
     def __str__(self):
-        return f"node<edges: {self.c_node.edges.size()}, name: {self.position}, id: {self.id}>"
+        return f"node<edges: {deref(self.c_node).edges.size()}, name: {self.position}, id: {self.id}>"
     def __repr__(self):
         return self.__str__()
 
@@ -41,13 +42,13 @@ cdef class PY_node:
     @property
     def position(self):
         "the name of the node"
-        return np.array(self.c_node.pos)
+        return np.array(deref(self.c_node).pos)
 
     @position.setter
     def position(self, cnp.ndarray pos):
         if len(pos) != self.c_node.pos.size():
-            raise DimentionMismatched(f"postion must be lenth {self.c_node.pos.size()} not {len(pos)}")
-        self.c_node.pos = pos
+            raise DimentionMismatched(f"postion must be lenth {deref(self.c_node).pos.size()} not {len(pos)}")
+        deref(self.c_node).pos = pos
     # get the edges set
     
     @property
@@ -57,11 +58,17 @@ cdef class PY_node:
     #property
     @property
     def id(self):
-        return self.c_node.id
+        return deref(self.c_node).id
+    
+    @property
+    def connectedNodes(self):
+        cdef cppInter.cvector[int] connecteds = self.c_node.connectedNodes()
+        return np.array(connecteds)
+
 
 #py wrapper class for Cluster
 cdef class PY_Cluster:
-    cdef cppInter.Cluster c_Cluster
+    cdef cppInter.Cluster* c_Cluster
     cdef list sizes
 
     def __cinit__(self):
@@ -72,11 +79,12 @@ cdef class PY_Cluster:
                     self.sizes = list(args[0].shape)
                     return"""
                 
-        self.c_Cluster = cppInter.Cluster()
+        #self.c_Cluster = *cppInter.Cluster()
 
     def build(self, arr, int dir=0):
         "build node graph from 3d np array"
-        self.c_Cluster = cppInter.Cluster(arr,  dir)
+        cdef cppInter.Cluster* clus = new cppInter.Cluster(arr,  dir)
+        self.c_Cluster = (clus)
         self.sizes = list(arr.shape)
 
     @property
@@ -97,7 +105,8 @@ cdef class PY_Cluster:
             if postition >= dimentionSize: raise ValueError(f"pos{postition} out of grid for dimention {dimentionidx} of size {dimentionSize}")
             dimentionidx+=1
             identity += postition*sizeMultiplyer
-            sizeMultiplyer *= dimentionSize
+        if self.c_Cluster.nodes.count(identity) == 0:
+            raise ValueError(f"pathNode not found: the postion you where loking at is unwalkable")
         cdef PY_node n = PY_node()
         n.c_node = self.c_Cluster.nodes[identity]
         return n
@@ -157,4 +166,140 @@ cdef class PY_Cluster:
             n.c_node = self.c_Cluster.nodes[idx]
             nodes.append(n)
         return nodes
+    
+    def __str__(self):
+        return f"Cluster<nodes: {len(self.nodes)}, size = {self.size}>"
+    __repr__=__str__
+
+    @property
+    def nodes(self):
+        res = {}
+        cdef cppInter.cvector[int] keys = self.c_Cluster.getNodeKeys()
+        cdef int itr
+        cdef PY_node n
+        for itr in keys:
+            n = PY_node()
+            n.c_node = self.c_Cluster.nodes[itr]
+            res[itr] = n
+        return res
+    
+    @property
+    def pos(self):
+        return np.array(self.c_node.postion)
+
+#python wrapper for the c++ node Graph class
+cdef class Py_nodeGraph():
+    """
+    an abstaction handler for Clusters
+    """
+    cdef cppInter.node_Graph* cppHandler
+    
+    def buildFromArr(self, cnp.ndarray[int, ndim=3] arr, cnp.ndarray[int, ndim=1] sizes, int movement=0, int singler=0):
+        cdef cppInter.node_Graph* graph = new cppInter.node_Graph(arr, sizes, movement, singler)
+        self.cppHandler = graph
+    
+
+    def serch(self, cnp.ndarray[int, ndim=1] start, cnp.ndarray[int, ndim=1] end, int lenght):
+        cdef cppInter.cvector[cppInter.PathNode*] nodes = self.cppHandler.Astar(start, end, lenght)
+        cdef list Pynodes=[]
+        cdef cppInter.PathNode* currentNode
+        for currentNode in nodes:
+            n = PY_node()
+            n.c_node = currentNode
+            Pynodes.append(n)
+        return Pynodes
+    
+    def __str__(self):
+        return f"abstract node Graph"
+    __repr__=__str__
+
+    @property
+    def size(self)->list[int]:
+        return self.cppHandler.size
+    
+    @property
+    def abstractCluster(self):
+        clus = PY_Cluster()
+        clus.c_Cluster = self.cppHandler.superCluster
+        clus.sizes = list(np.array(clus.c_Cluster.clusterShape) * self.size)
+        return clus
+    
+    @property
+    def lowerNodeGraphs(self):
+        lowerGrphs = []
+        cdef cppInter.cvector[cppInter.node_Graph*] graphs = deref(self.cppHandler).getLowerKeys()
+        cdef cppInter.node_Graph* graph
+        for graph in graphs:
+            g = Py_nodeGraph()
+            g.cppHandler = graph
+            lowerGrphs.append(g)
+        return lowerGrphs
+    
+    @property
+    def clusters(self):
+        res = []
+        cdef cppInter.cvector[cppInter.Cluster*] clusters = self.cppHandler.getLowerClusterKeys()
+        cdef cppInter.Cluster* clus
+        for clus in clusters:
+            c = PY_Cluster()
+            c.c_Cluster = clus
+            res.append(c)
+        return res
+
+    def Astar(self, cnp.ndarray[int, ndim=1] start, cnp.ndarray[int, ndim=1] end, int length, bint cleanup=True):
+        cdef cppInter.cvector[cppInter.PathNode*] path = self.cppHandler.Astar(start, end, length)
+        cdef cppInter.cvector[cppInter.PathNode*].iterator itr = path.begin()
+        res = []
+
+        while itr != path.end():
+            if deref(itr) == NULL:
+                return res;
+            n = PY_node()
+            n.c_node = deref(itr)
+            res.append(n)
+            inc(itr)
+
+        if cleanup: self.cleanUp()
+        return res
+    
+    def cleanUp(self):
+        print("clean up")
+        deref(self.cppHandler).cleanUp()
+        return
+
+#py wrapper class for the c++ goal Cluster Class
+cdef class Py_GoalCluster():
+    cdef cppInter.GoalCluster* c_goal
+    cdef PY_node goal
+
+    def __cinit__(self, PY_Cluster clus):
+        self.c_goal = new cppInter.GoalCluster();
+        self.c_goal.clus = clus.c_Cluster
+        deref(self.c_goal).buildNodes()
+        self._hasInitiated = False
+    
+    @property
+    def goal(self):
+        if not self._hasInitiated:
+            return None
+        return self.goal
+    
+    @goal.setter
+    def goal(self, PY_node node):
+        self.c_goal.buildGraph(node.id)
+        self.goal = node
+        self._hasInitiated = True
+    
+    def getNext(self, PY_node node):
+        cdef cppInter.PathNode* nextNode = self.c_goal.getNextPos(node.id)
+        n = PY_node()
+        n.c_node = nextNode
+        return n
+
+
+
+
+
+    
+
 

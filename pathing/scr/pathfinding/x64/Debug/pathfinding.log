@@ -1,17 +1,2 @@
-﻿  Astar.cpp
-  Cluster.cpp
-  distance.cpp
-D:\myCode\AGreatYear2021\Pathfinding\pathing\scr\pathfinding\distance.cpp(34,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Edge.cpp
-  node.cpp
-  node_Graph.cpp
-D:\myCode\AGreatYear2021\Pathfinding\pathing\scr\pathfinding\hpA_builders.h(14,115): warning C4018: '<': signed/unsigned mismatch
-D:\myCode\AGreatYear2021\Pathfinding\pathing\scr\pathfinding\hpA_builders.h(14,158): warning C4018: '<': signed/unsigned mismatch
-D:\myCode\AGreatYear2021\Pathfinding\pathing\scr\pathfinding\hpA_builders.h(14,198): warning C4018: '<': signed/unsigned mismatch
-D:\myCode\AGreatYear2021\Pathfinding\pathing\scr\pathfinding\node_Graph.cpp(160,124): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\myCode\AGreatYear2021\Pathfinding\pathing\scr\pathfinding\node_Graph.cpp(187,122): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\myCode\AGreatYear2021\Pathfinding\pathing\scr\pathfinding\node_Graph.cpp(447,58): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  pathfinders.cpp
-  pathfinding.cpp
-  Generating Code...
-  pathfinding.vcxproj -> D:\myCode\AGreatYear2021\Pathfinding\pathing\scr\pathfinding\x64\Debug\pathfinding.exe
+﻿  GoalPathing.cpp
+  pathfinding.vcxproj -> D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\x64\Debug\pathfinding.exe

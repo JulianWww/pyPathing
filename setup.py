@@ -13,12 +13,16 @@ extensions = [Extension( "pathing.scr.cy_generators",
 
               Extension( "pathing.scr.cy_nodeGraph",
                         [   "pathing/scr/cy_nodeGraph.pyx",
+                            "pathing/scr/pathfinding/node_Graph.cpp",
                             "pathing/scr/pathfinding/node.cpp",
                             "pathing/scr/pathfinding/Edge.cpp",
                             "pathing/scr/pathfinding/Cluster.cpp",
                             "pathing/scr/pathfinding/Astar.cpp",
                             "pathing/scr/pathfinding/distance.cpp",
-                            "pathing/scr/pathfinding/pathfinders.cpp"
+                            "pathing/scr/pathfinding/pathfinders.cpp",
+                            "pathing/scr/pathfinding/hpA_builders.cpp",
+                            "pathing/scr/pathfinding/GoalPathing.cpp"
+                            #"pathing/scr/pathfinding/node_Graph.cpp",
                         ],
                         include_dirs=[get_include()])]
 
@@ -28,3 +32,5 @@ setup(
 )
 
 # python36 setup.py build_ext --inplace
+
+# D:\myCode\AGreatYear2021\reposetories\pyPathing

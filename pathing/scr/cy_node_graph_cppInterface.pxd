@@ -5,6 +5,7 @@ from libcpp.string cimport string as cstring
 from libcpp.vector cimport vector as cvector
 from libcpp.pair cimport pair as cpair
 from libcpp.unordered_map cimport unordered_map as cunordered_map
+from libcpp.unordered_set cimport unordered_set as cunordered_set
 cimport numpy as cnp
 import numpy as np
 
@@ -21,6 +22,7 @@ cdef extern from "pathfinding/node.h":
         cset[edge*] edges
         PathNode()
         int id
+        cvector[int]connectedNodes()
 
 cdef extern from "pathfinding/Cluster.h":
     cppclass Cluster:
@@ -30,6 +32,35 @@ cdef extern from "pathfinding/Cluster.h":
 
         cvector[int]Astar(int,int,int, bint)  
         cvector[int]bfs(int,int, bint)  
-        cvector[int]dfs(int,int, bint)       
+        cvector[int]dfs(int,int, bint)
+
+        cvector[int]getNodeKeys()
+        cvector[PathNode*]getNodes() 
+        cvector[int]postion  
+        cvector[int]clusterShape 
+
+cdef extern from "pathfinding/node_Graph.h":
+    cppclass node_Graph:
+        node_Graph()
+        node_Graph(cvector[cvector[cvector[int]]], cvector[int], int, int)
+        cvector[PathNode*]Astar(cvector[int], cvector[int], int)
+
+        cvector[node_Graph*]getLowerKeys()
+        cvector[Cluster*]getLowerClusterKeys()
+
+        cunordered_map[int, Cluster*]clusters
+        cunordered_map[int, node_Graph*]lowerNodeGraphs
+        Cluster* superCluster
+        cunordered_set[PathNode*] tempNodes
+        int size
+        void cleanUp()
+
+cdef extern from "pathfinding/GoalPathing.h":
+    cppclass GoalCluster:
+        Cluster* clus
+        GoalCluster()
+        void buildNodes()
+        void buildGraph(int)
+        PathNode* getNextPos(int)
 
 
