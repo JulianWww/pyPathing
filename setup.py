@@ -21,14 +21,15 @@ extensions = [Extension( "pathing.scr.cy_generators",
                             "pathing/scr/pathfinding/distance.cpp",
                             "pathing/scr/pathfinding/pathfinders.cpp",
                             "pathing/scr/pathfinding/hpA_builders.cpp",
-                            "pathing/scr/pathfinding/GoalPathing.cpp"
+                            "pathing/scr/pathfinding/GoalPathing.cpp",
+                            #"pathing/scr/pathfindig/config.h"
                             #"pathing/scr/pathfinding/node_Graph.cpp",
                         ],
                         include_dirs=[get_include()])]
 
 
 setup(
-    ext_modules=cythonize(extensions, annotate=True)
+    ext_modules=cythonize(extensions, annotate=True, force =True)
 )
 
 # python36 setup.py build_ext --inplace

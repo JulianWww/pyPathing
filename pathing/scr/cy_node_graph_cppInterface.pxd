@@ -63,4 +63,7 @@ cdef extern from "pathfinding/GoalPathing.h":
         void buildGraph(int)
         PathNode* getNextPos(int)
 
+        void setGoal(int)
+        PathNode* liveGetNextNode(int, int)
+
 

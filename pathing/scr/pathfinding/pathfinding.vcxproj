@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="Astar.h" />
     <ClInclude Include="GoalPathing.h" />
+    <ClInclude Include="config.h" />
     <ClInclude Include="node_Graph.h" />
     <ClInclude Include="pathfinders.h" />
     <ClInclude Include="Cluster.h" />

@@ -4,8 +4,8 @@ import cv2, time
 import numpy as np
 
 
-size = 100
-idx = 0
+size = 10
+idx = -1
 
 t = time.time()
 a = pathing.generators.prim(size+1,size+1, seed=3)

@@ -117,13 +117,13 @@ bool movements::oneMovementDiagonal(std::vector<std::vector<std::vector<int>>> a
 		y = std::get<1>(pos);
 		z = std::get<2>(pos);
 		if (iter == 0) {
-			x = x + std::get<0>(direction);
+			x = x + std::get<2>(direction);
 		}
 		if (iter == 1) {
 			y = y + std::get<1>(direction);
 		}
 		if (iter == 2) {
-			z = z + std::get<2>(direction);
+			z = z + std::get<0>(direction);
 		}
 		if (x >= 0 && y >= 0 && z >= 0 && x < arr.size() && y < arr[0].size() && z < arr[0][0].size()) {
 			if (arr[x][y][z] == 0) {

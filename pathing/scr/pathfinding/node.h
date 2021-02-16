@@ -41,6 +41,7 @@ public:
 class GoalNode{
 public: PathNode* Nodeptr;
 public: GoalNode* goalThisWay;
+public: PathNode* goal;
 };
 
 #endif

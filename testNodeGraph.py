@@ -2,20 +2,30 @@ import pathing, time
 import numpy as np
 import matplotlib.pyplot as plt
 
-arr = np.ones((2,16,16), dtype=np.int)
-arr = np.array([pathing.generators.rand_terain(16,16, 0.2)], dtype=np.int)
+
+arr = np.array([pathing.generators.rand_terain(32,32,0)], dtype=np.int)
 arr[0,0,0] = 1
-arr[0,15,15] = 1
+arr[0,30,30] = 1
 plt.imshow(arr[0])
 plt.show()
 
+
+clus = pathing.nodeGraph.Cluster()
+clus.build(arr, pathing.directions.oneObstacleBlock)
+
+path = clus.runAstar(clus.getnode((0,0,0)), clus.getnode((0,30,30)))
+
+pathing.nodeGraph.debugRender(arr, path)
+
 n = pathing.nodeGraph.nodeGraph()
-n.buildFromArr(arr, np.array([8,4]), movement=pathing.directions.towObstacleBlock)
+n.buildFromArr(arr, np.array([8,4]), movement=pathing.directions.oneObstacleBlock)
 #print(n)
 
-pathing.nodeGraph.debugRenderCluser(n, arr, colors=["red", "green"])
+pathing.nodeGraph.debugRenderCluster(n, arr, colors=["red", "green"])
 
 
-path = n.Astar(np.array([0,0,0]), np.array([0,15,15]), 100)
-pathing.nodeGraph.debugRenderCluser(n, arr, path=path, renderNodes=False)
-pathing.nodeGraph.debugRenderCluser(n, arr, path=path, renderNodes=True)
+path = n.Astar(np.array([0,0,0]), np.array([0,30,30]),1000)
+for node in path:
+    print(node)
+pathing.nodeGraph.debugRenderCluster(n, arr, path=path, renderNodes=False)
+pathing.nodeGraph.debugRenderCluster(n, arr, path=path, renderNodes=True)

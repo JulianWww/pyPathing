@@ -355,7 +355,11 @@ void node_Graph::buildClusterConnections(Cluster* c) {
 			if ((*a_node) != *b_node) {
 				auto path = serchers::Astar_c_node((*a_node)->lowerEquvilant, (*b_node)->lowerEquvilant);
 				if (path.size() > 0 && areNotConnected(*a_node, *b_node)) {
-					new edge(*a_node, *b_node, path.back()->distance);
+					auto e = new edge(*a_node, *b_node, path.back()->distance);
+					#if HIGHMEMORY
+					std::vector<PathNode*> vec(path.begin(), path.end());
+					e->path = vec;
+					#endif		
 				}
 			}
 		}
@@ -374,12 +378,19 @@ std::vector<PathNode*>node_Graph::Astar(std::vector<int> start, std::vector<int>
 	std::vector<PathNode*> res(lenth);
 	auto res_iter = res.begin();
 	for (auto currentToNode = path.begin(); currentToNode != path.end(); currentToNode++) {
-		buildPath(res, res_iter, lastPos->lowerEquvilant, (*currentToNode)->lowerEquvilant, lenth);
+		#if HIGHMEMORY
+		buildPath(res, res_iter, lastPos, (*currentToNode));
+		#else
+		buildPath(res, res_iter, lastPos->lowerEquvilant, (*currentToNode)->lowerEquvilant);
+		#endif	
 		if (res_iter == res.end()) {
 			return res;
 		}
 		lastPos = *currentToNode;
 	}
+	#if HIGHMEMORY
+	*res_iter = lowerst(endNode);
+	#endif
 	
 	return res;
 }
@@ -394,7 +405,54 @@ PathNode* lowerst(PathNode* a) {
 	}
 }
 
-void node_Graph::buildPath(std::vector<PathNode*>& res, std::vector<PathNode*>::iterator& res_iter, PathNode* start, PathNode* end, int lenth) {
+#if HIGHMEMORY
+void node_Graph::buildPath(std::vector<PathNode*>& res, std::vector<PathNode*>::iterator& res_iter, PathNode* start, PathNode* end) {
+	if (start == end) { return; }
+	if ((res.begin() == res_iter || lowerst(start) != *(res_iter-1))) {
+		*res_iter = lowerst(start);
+		res_iter++;
+		if (res_iter == res.end()) {
+			return;
+		}
+	}
+
+	std::vector<PathNode*> path;
+	for (auto edge = start->edges.begin(); edge != start->edges.end(); edge++) {
+		if (end->edges.count(*edge) == 1) {
+			if ((*edge)->nodes.second == start) {
+				std::vector<PathNode*> vec((*edge)->path.rbegin(), (*edge)->path.rend());
+				path = vec;
+				path.push_back(end->lowerEquvilant);
+			}
+			else {
+				path = (*edge)->path;
+			}
+			break;
+		}
+	}
+	if (path.size() == 0) {
+		path = {};
+	}
+	start = start->lowerEquvilant;
+	for (auto Node = path.begin(); Node != path.end(); Node++) {
+		if ((*Node)->lowerEquvilant == NULL) {
+			if (*(res_iter-1) != lowerst(*Node)) {
+				*res_iter = lowerst(*Node);
+				res_iter++;
+				if (res_iter == res.end()) {
+					return;
+				}
+			}
+		}
+		else {
+			buildPath(res, res_iter, start, (*Node));
+		}
+		start = *Node;
+	}
+	return;
+}
+#else
+void node_Graph::buildPath(std::vector<PathNode*>& res, std::vector<PathNode*>::iterator& res_iter, PathNode* start, PathNode* end) {
 	auto path = serchers::Astar_c_node(start, end);
 	if ((res.begin() == res_iter || lowerst(start) != *(res_iter-1))) {
 		*res_iter = lowerst(start);
@@ -412,13 +470,13 @@ void node_Graph::buildPath(std::vector<PathNode*>& res, std::vector<PathNode*>::
 			}
 		}
 		else {
-			buildPath(res, res_iter, start->lowerEquvilant, (*current)->lowerEquvilant, lenth);
+			buildPath(res, res_iter, start->lowerEquvilant, (*current)->lowerEquvilant);
 		}
 		start = *current;
 	}
 	return;
 }
-
+#endif
 PathNode* node_Graph::buildNode(std::vector<int> pos, std::unordered_set<PathNode*>& temps) {
 	// build node for hpa* pathfinding
 
@@ -469,6 +527,10 @@ void node_Graph::buildNode(std::vector<int> const & a, Cluster* b, PathNode* Nod
 		auto path = serchers::Astar_c_node(n, o);
 		if (path.size()!=0) {
 			edge* e = new edge(Node, (*toNode), o->distance);
+			#if HIGHMEMORY
+				std::vector<PathNode*> vec(path.begin(), path.end());
+				e->path = vec;
+			#endif
 		}
 	}
 

@@ -11,7 +11,7 @@
 		PathNode* otherNode = *node_iter;
 		// create new edge and save the pointer
 		edge* currentEdge = new edge(this, otherNode);
-
+		currentEdge->length = distance::diagonal(this, *node_iter);
 		// add the pointer to the edges to the node
 		this->edges.insert(currentEdge);
 		otherNode->edges.insert(currentEdge);

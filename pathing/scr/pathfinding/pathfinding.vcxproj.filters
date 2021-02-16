@@ -89,5 +89,8 @@
     <ClInclude Include="GoalPathing.h">
       <Filter>z-Hiracrical Pathfinding</Filter>
     </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>z-Hiracrical Pathfinding</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

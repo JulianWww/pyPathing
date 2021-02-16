@@ -105,6 +105,8 @@ cdef class PY_Cluster:
             if postition >= dimentionSize: raise ValueError(f"pos{postition} out of grid for dimention {dimentionidx} of size {dimentionSize}")
             dimentionidx+=1
             identity += postition*sizeMultiplyer
+            sizeMultiplyer*= dimentionSize
+            
         if self.c_Cluster.nodes.count(identity) == 0:
             raise ValueError(f"pathNode not found: the postion you where loking at is unwalkable")
         cdef PY_node n = PY_node()
@@ -118,10 +120,9 @@ cdef class PY_Cluster:
         cdef a = start.id
         cdef b = end.id
         cdef cnp.ndarray nodeIds
-        try:
-            nodeIds = np.array(self.c_Cluster.Astar(a, b, distanceKey, getVisited))
-        except:
-            raise PathingError("no path was found")
+
+        nodeIds = np.array(self.c_Cluster.Astar(a, b, distanceKey, getVisited))
+        if nodeIds.size == 0: raise PathingError(f"no valid path was found")
         cdef list nodes = []
         cdef PY_node n
         for idx in nodeIds:
@@ -140,6 +141,7 @@ cdef class PY_Cluster:
             nodeIds = np.array(self.c_Cluster.bfs(a, b, getVisited))
         except:
             raise PathingError("no path was found")
+        if nodeIds.size == 0: raise PathingError(f"no valid path was found")
         cdef list nodes = []
         cdef PY_node n
         for idx in nodeIds:
@@ -159,6 +161,8 @@ cdef class PY_Cluster:
             nodeIds = np.array(self.c_Cluster.dfs(a, b, getVisited))
         except:
             raise PathingError("no path was found")
+        
+        if nodeIds.size == 0: raise PathingError(f"no valid path was found")
         cdef list nodes = []
         cdef PY_node n
         for idx in nodeIds:
@@ -250,6 +254,7 @@ cdef class Py_nodeGraph():
         cdef cppInter.cvector[cppInter.PathNode*] path = self.cppHandler.Astar(start, end, length)
         cdef cppInter.cvector[cppInter.PathNode*].iterator itr = path.begin()
         res = []
+        if path.size() == 0: raise PathingError(f"no valid path was found")
 
         while itr != path.end():
             if deref(itr) == NULL:
@@ -263,7 +268,6 @@ cdef class Py_nodeGraph():
         return res
     
     def cleanUp(self):
-        print("clean up")
         deref(self.cppHandler).cleanUp()
         return
 
@@ -271,27 +275,57 @@ cdef class Py_nodeGraph():
 cdef class Py_GoalCluster():
     cdef cppInter.GoalCluster* c_goal
     cdef PY_node goal
+    cdef bint _hasInitiated
+    cdef bint _buildLive
 
-    def __cinit__(self, PY_Cluster clus):
+    def __cinit__(self, PY_Cluster clus, bint buildLive = False):
+        self._buildLive = not buildLive
         self.c_goal = new cppInter.GoalCluster();
         self.c_goal.clus = clus.c_Cluster
         deref(self.c_goal).buildNodes()
-        self._hasInitiated = False
+        self._hasInitiated=False
     
     @property
     def goal(self):
+        """the goal to move to will do all internal builds automaticly
+            """
         if not self._hasInitiated:
             return None
         return self.goal
     
     @goal.setter
     def goal(self, PY_node node):
-        self.c_goal.buildGraph(node.id)
+        if self._buildLive:
+            print("SET GOAL")
+            self.c_goal.setGoal(node.id)
+        else:
+            self.c_goal.buildGraph(node.id)
         self.goal = node
         self._hasInitiated = True
     
-    def getNext(self, PY_node node):
-        cdef cppInter.PathNode* nextNode = self.c_goal.getNextPos(node.id)
+    @property
+    def buildLive(self):
+        """build required vectors whenen neded
+            live building is a diferent way of building the vector field. instead of building a new field when a new goal is se
+            this method will update all the required nodesvctors to point to the new goal if they dont point correctly yet otherwise
+            the precalculateds will be used"""
+        return self._buildLive
+    
+    @buildLive.setter
+    def buildLive(self, bint live):
+        self._buildLive = live
+        if live == False:
+            self.goal = self.goal
+    
+    def getNext(self, PY_node node, int distanceKey=0):
+        """get the next node to move to to get to the goal"""
+        cdef cppInter.PathNode* nextNode
+        if self._buildLive:
+            nextNode = self.c_goal.liveGetNextNode(node.id, distanceKey)
+        else:
+            nextNode = self.c_goal.getNextPos(node.id)
+        if nextNode == NULL:
+            raise PathingError(f"no path Found")
         n = PY_node()
         n.c_node = nextNode
         return n

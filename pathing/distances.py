@@ -3,17 +3,22 @@ from numpy import array
 class __PathfindingDistances:
     @property
     def diagonal(self):
-        "diagonal distance key"
+        """diagonal distance key
+            
+            sqrt(dx**2+dy**2+dz**2)"""
         return 0
 
     @property
     def fastDiagonal(self):
-        "fast diagonal distance key"
+        """fast diagonal distance key
+            
+            dx**2+dy**2+dz**2"""
         return 1
 
     @property
     def manhattan(self):
-        "manhattan distance key"
+        """manhattan distance key
+            dx+dy+dz"""
         return 2
     
     @property

@@ -1,2 +1,35 @@
-﻿  GoalPathing.cpp
+﻿  node_Graph.cpp
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\Edge.h(17,5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\node_Graph.cpp(50,32): warning C4244: 'argument': conversion from '__int64' to 'const _Kty', possible loss of data
+          with
+          [
+              _Kty=int
+          ]
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\node_Graph.cpp(51,55): warning C4244: 'argument': conversion from '__int64' to 'const int', possible loss of data
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\node_Graph.cpp(52,52): warning C4244: 'argument': conversion from '__int64' to 'const int', possible loss of data
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\node_Graph.cpp(359,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\node_Graph.cpp(381,7): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\node_Graph.cpp(391,6): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\node_Graph.cpp(408,5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\node_Graph.cpp(491,57): warning C4267: 'argument': conversion from 'size_t' to 'const int', possible loss of data
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\node_Graph.cpp(494,47): warning C4267: 'argument': conversion from 'size_t' to 'const int', possible loss of data
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\node_Graph.cpp(497,57): warning C4267: 'argument': conversion from 'size_t' to 'const int', possible loss of data
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\node_Graph.cpp(530,8): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\utility(149,1): warning C4267: 'initializing': conversion from 'size_t' to '_Ty1', possible loss of data
+          with
+          [
+              _Ty1=const int
+          ]
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\node_Graph.cpp(39): message : see reference to function template instantiation 'std::pair<const int,Cluster *>::pair<size_t,Cluster*&,0>(_Other1 &&,_Other2) noexcept' being compiled
+          with
+          [
+              _Other1=size_t,
+              _Other2=Cluster *&
+          ]
+D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\node_Graph.cpp(39): message : see reference to function template instantiation 'std::pair<const int,Cluster *>::pair<size_t,Cluster*&,0>(_Other1 &&,_Other2) noexcept' being compiled
+          with
+          [
+              _Other1=size_t,
+              _Other2=Cluster *&
+          ]
   pathfinding.vcxproj -> D:\myCode\AGreatYear2021\reposetories\pyPathing\pathing\scr\pathfinding\x64\Debug\pathfinding.exe

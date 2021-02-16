@@ -43,7 +43,7 @@ private: void buildClusterBridges(Cluster*, Cluster*, int, int, int, node_Graph*
 public: std::vector<PathNode*>Astar(std::vector<int> start, std::vector<int> end, int lenth);
 private: PathNode* buildNode(std::vector<int> pos, std::unordered_set<PathNode*>&);
 private: void buildNode(std::vector<int>const&, Cluster*, PathNode*);
-private: void buildPath(std::vector<PathNode*>&, std::vector<PathNode*>::iterator&, PathNode*, PathNode*, int);
+private: void buildPath(std::vector<PathNode*>&, std::vector<PathNode*>::iterator&, PathNode*, PathNode*);
 
 // remove temporary memory data
 public: void cleanUp();
@@ -53,4 +53,4 @@ public: std::vector<Cluster*>getLowerClusterKeys();
 
 	// subrooten to build connections bewean clusters
 void subbuildBridges(Cluster*, Cluster*, int, node_Graph*, node_Graph*, bool);
-
+PathNode* lowerst(PathNode* a);
