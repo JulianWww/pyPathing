@@ -28,14 +28,7 @@ namespace serchers {
 			nodeMap.find(current_location)->second.pop();
 			for (auto edge_iter = currentNode->edges.begin(); edge_iter != currentNode->edges.end(); edge_iter++) {
 				// the new node to be operated on
-				PathNode* newNode;
-				// fint the new node form edge
-				if ((*edge_iter)->nodes.first != currentNode) {
-					newNode = (*edge_iter)->nodes.first;
-				}
-				else {
-					newNode = (*edge_iter)->nodes.second;
-				}
+				PathNode* newNode = edge_iter->first;
 
 				if (visited.count(newNode) == 0) {
 					// get the estimated distance  bewean 2 nodes
@@ -44,7 +37,7 @@ namespace serchers {
 					// priorityse node Distance
 					distanceQueue.push(NodeDistanceEstimate);
 					// upade lenth
-					newNode->distance = currentNode->distance + (*edge_iter)->length;
+					newNode->distance = currentNode->distance + edge_iter->second->length;
 					// create initiater
 					newNode->movedFrom = currentNode;
 					// add to map

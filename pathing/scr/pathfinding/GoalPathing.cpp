@@ -40,19 +40,14 @@ void GoalCluster::build(PathNode* start) {
 		for (auto Node = currentNodes.at(val).begin(); Node != currentNodes.at(val).end(); Node++) {
 			visitedNodes.insert((*Node));
 			for (auto currentEdge = (*Node)->edges.begin(); currentEdge != (*Node)->edges.end(); currentEdge++) {
-				PathNode* newNode;
-				if ((*currentEdge)->nodes.first == *Node) {
-					newNode = (*currentEdge)->nodes.second;
-				}
-				else {
-					newNode = (*currentEdge)->nodes.first;
-				}
+				PathNode* newNode = currentEdge->first;
+
 				if (visitedNodes.count(newNode) == 0) {
 					visitedNodes.insert(newNode);
 					auto newGoalnode = this->nodes.at(newNode->id);
 					newGoalnode->goal = this->goal;
 					newGoalnode->goalThisWay = this->nodes.at((*Node)->id);
-					newNode->distance = (*Node)->distance + (*currentEdge)->length;
+					newNode->distance = (*Node)->distance + currentEdge->second->length;
 					
 					if (currentNodes.count(newNode->distance) == 0) {
 						currentNodes.insert({ newNode->distance, {} });
@@ -96,19 +91,14 @@ void GoalCluster::liveBuildNextNode(PathNode* targetNode, int distanceKey) {
 		for (auto Node = this->currentNodes.at(val).begin(); Node != this->currentNodes.at(val).end(); Node++) {
 			this->visitedNodes.insert((*Node));
 			for (auto currentEdge = (*Node)->edges.begin(); currentEdge != (*Node)->edges.end(); currentEdge++) {
-				PathNode* newNode;
-				if ((*currentEdge)->nodes.first == *Node) {
-					newNode = (*currentEdge)->nodes.second;
-				}
-				else {
-					newNode = (*currentEdge)->nodes.first;
-				}
+				PathNode* newNode = currentEdge->first;
+
 				if (this->visitedNodes.count(newNode) == 0) {
 					this->visitedNodes.insert(newNode);
 					auto newGoalnode = this->nodes.at(newNode->id);
 					newGoalnode->goal = this->goal;
 					newGoalnode->goalThisWay = this->nodes.at((*Node)->id);
-					newNode->distance = (*Node)->distance + (*currentEdge)->length;
+					newNode->distance = (*Node)->distance + currentEdge->second->length;
 
 					float distance = newNode->distance + distance::distance(newNode, targetNode, distanceKey);
 

@@ -19,7 +19,7 @@ cdef extern from "pathfinding/Edge.h":
 cdef extern from "pathfinding/node.h": 
     cppclass PathNode:
         cvector[int] pos
-        cset[edge*] edges
+        #cunordered_map[PathNode*, edge*] edges
         PathNode()
         int id
         cvector[int]connectedNodes()

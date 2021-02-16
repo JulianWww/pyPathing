@@ -24,7 +24,7 @@ public: bool connectsClusters = false;
 public:  std::pair<PathNode*, PathNode*> nodes = {};
 	  // optionaly conains the path of the node
 
-private: void removeFromNode(PathNode*);
+private: void removeFromNode(PathNode*, PathNode*);
 
 public:
 	edge(PathNode* a, PathNode* b);

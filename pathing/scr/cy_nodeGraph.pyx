@@ -34,7 +34,8 @@ cdef class PY_node:
 
     ## conversions
     def __str__(self):
-        return f"node<edges: {deref(self.c_node).edges.size()}, name: {self.position}, id: {self.id}>"
+        #edges: {deref(self.c_node).edges.size()}, 
+        return f"node<name: {self.position}, id: {self.id}>"
     def __repr__(self):
         return self.__str__()
 

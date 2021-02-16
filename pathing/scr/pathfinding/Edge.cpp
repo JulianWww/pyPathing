@@ -4,8 +4,8 @@
 #include "Edge.h"
 
 void insert(PathNode* a, PathNode* b, edge* e) {
-	a->edges.insert(e);
-	b->edges.insert(e);
+	a->edges.insert({ b, e });
+	b->edges.insert({ a, e });
 }
 
 edge::edge(PathNode* a, PathNode* b) {
@@ -26,10 +26,10 @@ edge::edge(PathNode* a, PathNode* b, bool intra) {
 }
 
 edge::~edge() {
-	this->removeFromNode(this->nodes.first);
-	this->removeFromNode(this->nodes.second);
+	this->removeFromNode(this->nodes.first, this->nodes.second);
+	this->removeFromNode(this->nodes.second, this->nodes.first);
 }
 
-void edge::removeFromNode(PathNode* a) {
-	a->edges.erase(this);
+void edge::removeFromNode(PathNode* a, PathNode* b) {
+	a->edges.erase(b);
 }

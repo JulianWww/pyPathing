@@ -13,8 +13,8 @@
 		edge* currentEdge = new edge(this, otherNode);
 		currentEdge->length = distance::diagonal(this, *node_iter);
 		// add the pointer to the edges to the node
-		this->edges.insert(currentEdge);
-		otherNode->edges.insert(currentEdge);
+		this->edges.insert({ otherNode, currentEdge });
+		otherNode->edges.insert({ this, currentEdge });
 	}
 }
 /*
@@ -29,18 +29,14 @@ inline bool PathNode::operator<(const PathNode& rhs) const noexcept{
  }
  PathNode::~PathNode() {
 	 while (this->edges.size()) {
-		 delete(*this->edges.begin());
+		 delete((*this->edges.begin()).second);
 	 }
  }
  std::vector<int>PathNode::connectedNodes() {
 	 std::vector<int> res = {};
-	 for (auto edge = this->edges.begin(); edge != this->edges.end(); edge++) {
-		 if ((*edge)->nodes.first != this) {
-			 res.push_back((*edge)->nodes.first->id);
-		 }
-		 else {
-			 res.push_back((*edge)->nodes.second->id);
-		 }
+	 for (auto e = this->edges.begin(); e != this->edges.end(); e++) {
+		 auto a = e->first->id;
+		 res.push_back((int)a);
 	 }
 	 return res;
  }

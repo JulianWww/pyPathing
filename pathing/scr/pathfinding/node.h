@@ -1,4 +1,5 @@
 #include <set>
+#include <unordered_map>
 #include <tuple>
 #include <list>
 #include <vector>
@@ -16,7 +17,7 @@ class Cluster;
 // the node path
 class PathNode {
 	// the edges connected to this node
-public: std::set<edge*> edges = {};
+public: std::unordered_map<PathNode*, edge*> edges = {};
 	  // the postion of the postion
 public: std::vector<int> pos;
 

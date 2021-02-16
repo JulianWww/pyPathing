@@ -16,17 +16,12 @@ std::vector<PathNode*> serchers::bfs_c_node(PathNode* start, PathNode* end, bool
 
 		for (auto edge_iter = currentNode->edges.begin(); edge_iter != currentNode->edges.end(); edge_iter++) {
 			//the new node to put at the end of the queue
-			PathNode* newNode;
-			if ((*edge_iter)->nodes.first == currentNode) {
-				newNode = (*edge_iter)->nodes.second;
-			}
-			else{
-				newNode = (*edge_iter)->nodes.first;
-			}
+			PathNode* newNode = edge_iter->first;
+
 			if (visited.count(newNode) == 0) {
 				visited.insert(newNode);
 				EvaluatePostionsQueue.push(newNode);
-				newNode->distance = currentNode->distance + (*edge_iter)->length;
+				newNode->distance = currentNode->distance + edge_iter->second->length;
 				newNode->movedFrom = currentNode;
 
 				// backtrack path
@@ -71,17 +66,12 @@ std::vector<PathNode*> serchers::dfs_c_node(PathNode* start, PathNode* end, bool
 
 		for (auto edge_iter = currentNode->edges.begin(); edge_iter != currentNode->edges.end(); edge_iter++) {
 			//the new node to put at the end of the queue
-			PathNode* newNode;
-			if ((*edge_iter)->nodes.first == currentNode) {
-				newNode = (*edge_iter)->nodes.second;
-			}
-			else {
-				newNode = (*edge_iter)->nodes.first;
-			}
+			PathNode* newNode = edge_iter->first;
+
 			if (visited.count(newNode) == 0) {
 				visited.insert(newNode);
 				EvaluatePostionsQueue.push(newNode);
-				newNode->distance = currentNode->distance + (*edge_iter)->length;
+				newNode->distance = currentNode->distance + edge_iter->second->length;
 				newNode->movedFrom = currentNode;
 
 				// backtrack path

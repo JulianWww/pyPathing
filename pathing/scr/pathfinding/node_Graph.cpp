@@ -241,13 +241,7 @@ void subbuildBridges(Cluster* a, Cluster* b, int singler, node_Graph* aGraph, no
 				PathNode* currentNode = poses.front(); poses.pop();
 				int counter = 0;
 				for (auto edge_iter = currentNode->edges.begin(); edge_iter != currentNode->edges.end(); edge_iter++) {
-					PathNode* newNode;
-					if ((*edge_iter)->nodes.first != currentNode) {
-						newNode = (*edge_iter)->nodes.first;
-					}
-					else if ((*edge_iter)->nodes.second != currentNode) {
-						newNode = (*edge_iter)->nodes.second;
-					}
+					PathNode* newNode = edge_iter->first;
 
 					if (aVisited.find(newNode) == aVisited.end()) {
 						aVisited.insert(newNode);
@@ -339,10 +333,10 @@ void node_Graph::buildClusterConnections() {
 
 bool areNotConnected(PathNode* a, PathNode* b) {
 	for (auto con = a->edges.begin(); con != a->edges.end(); con++) {
-		if ((*con)->nodes.first == b) {
+		if (con->second->nodes.first == b) {
 			return false;
 		}
-		if ((*con)->nodes.second == b) {
+		if (con->second->nodes.second == b) {
 			return false;
 		}
 	}

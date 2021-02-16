@@ -1257,7 +1257,7 @@ struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node {
 };
 
 
-/* "pathing/scr/cy_nodeGraph.pyx":70
+/* "pathing/scr/cy_nodeGraph.pyx":71
  * 
  * #py wrapper class for Cluster
  * cdef class PY_Cluster:             # <<<<<<<<<<<<<<
@@ -1271,7 +1271,7 @@ struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_Cluster {
 };
 
 
-/* "pathing/scr/cy_nodeGraph.pyx":195
+/* "pathing/scr/cy_nodeGraph.pyx":196
  * 
  * #python wrapper for the c++ node Graph class
  * cdef class Py_nodeGraph():             # <<<<<<<<<<<<<<
@@ -1284,7 +1284,7 @@ struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph {
 };
 
 
-/* "pathing/scr/cy_nodeGraph.pyx":275
+/* "pathing/scr/cy_nodeGraph.pyx":276
  * 
  * #py wrapper class for the c++ goal Cluster Class
  * cdef class Py_GoalCluster():             # <<<<<<<<<<<<<<
@@ -1481,13 +1481,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
-/* BuildPyUnicode.proto */
-static PyObject* __Pyx_PyUnicode_BuildFromAscii(Py_ssize_t ulength, char* chars, int clength,
-                                                int prepend_sign, char padding_char);
-
-/* CIntToPyUnicode.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyUnicode_From_size_t(size_t value, Py_ssize_t width, char padding_char, char format_char);
-
 /* PyObjectFormatSimple.proto */
 #if CYTHON_COMPILING_IN_PYPY
     #define __Pyx_PyObject_FormatSimple(s, f) (\
@@ -1570,6 +1563,10 @@ static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyOb
     ((likely((Py_TYPE(obj) == type) | (none_allowed && (obj == Py_None)))) ? 1 :\
         __Pyx__ArgTypeTest(obj, type, name, exact))
 static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *name, int exact);
+
+/* BuildPyUnicode.proto */
+static PyObject* __Pyx_PyUnicode_BuildFromAscii(Py_ssize_t ulength, char* chars, int clength,
+                                                int prepend_sign, char padding_char);
 
 /* CIntToPyUnicode.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyUnicode_From_Py_ssize_t(Py_ssize_t value, Py_ssize_t width, char padding_char, char format_char);
@@ -2055,7 +2052,7 @@ static const char __pyx_k_dict[] = "__dict__";
 static const char __pyx_k_file[] = "file";
 static const char __pyx_k_id_2[] = "id";
 static const char __pyx_k_main[] = "__main__";
-static const char __pyx_k_name[] = ", name: ";
+static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_node[] = "node";
 static const char __pyx_k_repr[] = "__repr__";
 static const char __pyx_k_size[] = "size";
@@ -2072,7 +2069,6 @@ static const char __pyx_k_c_node[] = "c_node";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_lenght[] = "lenght";
 static const char __pyx_k_length[] = "length";
-static const char __pyx_k_name_2[] = "__name__";
 static const char __pyx_k_pickle[] = "pickle";
 static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_size_2[] = ", size = ";
@@ -2093,12 +2089,12 @@ static const char __pyx_k_reversed[] = "reversed";
 static const char __pyx_k_setstate[] = "__setstate__";
 static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_buildLive[] = "buildLive";
+static const char __pyx_k_node_name[] = "node<name: ";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
 static const char __pyx_k_PY_Cluster[] = "PY_Cluster";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_getVisited[] = "getVisited";
-static const char __pyx_k_node_edges[] = "node<edges: ";
 static const char __pyx_k_pyx_result[] = "__pyx_result";
 static const char __pyx_k_ImportError[] = "ImportError";
 static const char __pyx_k_PickleError[] = "PickleError";
@@ -2183,15 +2179,14 @@ static PyObject *__pyx_n_s_lenght;
 static PyObject *__pyx_n_s_length;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_movement;
-static PyObject *__pyx_kp_u_name;
-static PyObject *__pyx_n_s_name_2;
+static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_new;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
 static PyObject *__pyx_kp_u_no_path_Found;
 static PyObject *__pyx_kp_s_no_path_was_found;
 static PyObject *__pyx_kp_u_no_valid_path_was_found;
 static PyObject *__pyx_n_s_node;
-static PyObject *__pyx_kp_u_node_edges;
+static PyObject *__pyx_kp_u_node_name;
 static PyObject *__pyx_n_s_nodes;
 static PyObject *__pyx_kp_u_not;
 static PyObject *__pyx_kp_s_not_functionaly_implemented;
@@ -3195,8 +3190,8 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_edge_4__setstate_cyth
  * 
  *     ## conversions
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return f"node<edges: {deref(self.c_node).edges.size()}, name: {self.position}, id: {self.id}>"
- *     def __repr__(self):
+ *         #edges: {deref(self.c_node).edges.size()},
+ *         return f"node<name: {self.position}, id: {self.id}>"
  */
 
 /* Python wrapper */
@@ -3225,61 +3220,51 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node___str__(struct _
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__str__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":37
- *     ## conversions
+  /* "pathing/scr/cy_nodeGraph.pyx":38
  *     def __str__(self):
- *         return f"node<edges: {deref(self.c_node).edges.size()}, name: {self.position}, id: {self.id}>"             # <<<<<<<<<<<<<<
+ *         #edges: {deref(self.c_node).edges.size()},
+ *         return f"node<name: {self.position}, id: {self.id}>"             # <<<<<<<<<<<<<<
  *     def __repr__(self):
  *         return self.__str__()
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(7); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 37, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = 0;
   __pyx_t_3 = 127;
-  __Pyx_INCREF(__pyx_kp_u_node_edges);
-  __pyx_t_2 += 12;
-  __Pyx_GIVEREF(__pyx_kp_u_node_edges);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_node_edges);
-  __pyx_t_4 = __Pyx_PyUnicode_From_size_t((*__pyx_v_self->c_node).edges.size(), 0, ' ', 'd'); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 37, __pyx_L1_error)
+  __Pyx_INCREF(__pyx_kp_u_node_name);
+  __pyx_t_2 += 11;
+  __Pyx_GIVEREF(__pyx_kp_u_node_name);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_node_name);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_position); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
-  __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_4);
-  __pyx_t_4 = 0;
-  __Pyx_INCREF(__pyx_kp_u_name);
-  __pyx_t_2 += 8;
-  __Pyx_GIVEREF(__pyx_kp_u_name);
-  PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u_name);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_position); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 37, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_FormatSimple(__pyx_t_4, __pyx_empty_unicode); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 37, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_FormatSimple(__pyx_t_4, __pyx_empty_unicode); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_5) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_5) : __pyx_t_3;
   __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_5);
-  PyTuple_SET_ITEM(__pyx_t_1, 3, __pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_5);
   __pyx_t_5 = 0;
   __Pyx_INCREF(__pyx_kp_u_id);
   __pyx_t_2 += 6;
   __Pyx_GIVEREF(__pyx_kp_u_id);
-  PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u_id);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_id_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 37, __pyx_L1_error)
+  PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u_id);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_id_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_t_5, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 37, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_t_5, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_3;
   __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_1, 5, __pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_1, 3, __pyx_t_4);
   __pyx_t_4 = 0;
   __Pyx_INCREF(__pyx_kp_u__3);
   __pyx_t_2 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__3);
-  PyTuple_SET_ITEM(__pyx_t_1, 6, __pyx_kp_u__3);
-  __pyx_t_4 = __Pyx_PyUnicode_Join(__pyx_t_1, 7, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 37, __pyx_L1_error)
+  PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u__3);
+  __pyx_t_4 = __Pyx_PyUnicode_Join(__pyx_t_1, 5, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_4;
@@ -3290,8 +3275,8 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node___str__(struct _
  * 
  *     ## conversions
  *     def __str__(self):             # <<<<<<<<<<<<<<
- *         return f"node<edges: {deref(self.c_node).edges.size()}, name: {self.position}, id: {self.id}>"
- *     def __repr__(self):
+ *         #edges: {deref(self.c_node).edges.size()},
+ *         return f"node<name: {self.position}, id: {self.id}>"
  */
 
   /* function exit code */
@@ -3307,9 +3292,9 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node___str__(struct _
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":38
- *     def __str__(self):
- *         return f"node<edges: {deref(self.c_node).edges.size()}, name: {self.position}, id: {self.id}>"
+/* "pathing/scr/cy_nodeGraph.pyx":39
+ *         #edges: {deref(self.c_node).edges.size()},
+ *         return f"node<name: {self.position}, id: {self.id}>"
  *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return self.__str__()
  * 
@@ -3339,15 +3324,15 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_2__repr__(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__repr__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":39
- *         return f"node<edges: {deref(self.c_node).edges.size()}, name: {self.position}, id: {self.id}>"
+  /* "pathing/scr/cy_nodeGraph.pyx":40
+ *         return f"node<name: {self.position}, id: {self.id}>"
  *     def __repr__(self):
  *         return self.__str__()             # <<<<<<<<<<<<<<
  * 
  *     # edge property aces
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 39, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3361,16 +3346,16 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_2__repr__(struct
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 39, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":38
- *     def __str__(self):
- *         return f"node<edges: {deref(self.c_node).edges.size()}, name: {self.position}, id: {self.id}>"
+  /* "pathing/scr/cy_nodeGraph.pyx":39
+ *         #edges: {deref(self.c_node).edges.size()},
+ *         return f"node<name: {self.position}, id: {self.id}>"
  *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         return self.__str__()
  * 
@@ -3389,7 +3374,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_2__repr__(struct
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":43
+/* "pathing/scr/cy_nodeGraph.pyx":44
  *     # edge property aces
  *     @property
  *     def position(self):             # <<<<<<<<<<<<<<
@@ -3422,7 +3407,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_8position___get_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":45
+  /* "pathing/scr/cy_nodeGraph.pyx":46
  *     def position(self):
  *         "the name of the node"
  *         return np.array(deref(self.c_node).pos)             # <<<<<<<<<<<<<<
@@ -3430,12 +3415,12 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_8position___get_
  *     @position.setter
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 45, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 45, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __pyx_convert_vector_to_py_int((*__pyx_v_self->c_node).pos); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 45, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_to_py_int((*__pyx_v_self->c_node).pos); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -3450,14 +3435,14 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_8position___get_
   __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 45, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":43
+  /* "pathing/scr/cy_nodeGraph.pyx":44
  *     # edge property aces
  *     @property
  *     def position(self):             # <<<<<<<<<<<<<<
@@ -3479,7 +3464,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_8position___get_
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":48
+/* "pathing/scr/cy_nodeGraph.pyx":49
  * 
  *     @position.setter
  *     def position(self, cnp.ndarray pos):             # <<<<<<<<<<<<<<
@@ -3496,7 +3481,7 @@ static int __pyx_pw_7pathing_3scr_12cy_nodeGraph_7PY_node_8position_3__set__(PyO
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_pos), __pyx_ptype_5numpy_ndarray, 1, "pos", 0))) __PYX_ERR(1, 48, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_pos), __pyx_ptype_5numpy_ndarray, 1, "pos", 0))) __PYX_ERR(1, 49, __pyx_L1_error)
   __pyx_r = __pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_8position_2__set__(((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)__pyx_v_self), ((PyArrayObject *)__pyx_v_pos));
 
   /* function exit code */
@@ -3524,25 +3509,25 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_8position_2__set__(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":49
+  /* "pathing/scr/cy_nodeGraph.pyx":50
  *     @position.setter
  *     def position(self, cnp.ndarray pos):
  *         if len(pos) != self.c_node.pos.size():             # <<<<<<<<<<<<<<
  *             raise DimentionMismatched(f"postion must be lenth {deref(self.c_node).pos.size()} not {len(pos)}")
  *         deref(self.c_node).pos = pos
  */
-  __pyx_t_1 = PyObject_Length(((PyObject *)__pyx_v_pos)); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(1, 49, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(((PyObject *)__pyx_v_pos)); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(1, 50, __pyx_L1_error)
   __pyx_t_2 = ((__pyx_t_1 != __pyx_v_self->c_node->pos.size()) != 0);
   if (unlikely(__pyx_t_2)) {
 
-    /* "pathing/scr/cy_nodeGraph.pyx":50
+    /* "pathing/scr/cy_nodeGraph.pyx":51
  *     def position(self, cnp.ndarray pos):
  *         if len(pos) != self.c_node.pos.size():
  *             raise DimentionMismatched(f"postion must be lenth {deref(self.c_node).pos.size()} not {len(pos)}")             # <<<<<<<<<<<<<<
  *         deref(self.c_node).pos = pos
  *     # get the edges set
  */
-    __pyx_t_3 = PyTuple_New(4); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 50, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(4); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 51, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_1 = 0;
     __pyx_t_4 = 127;
@@ -3550,9 +3535,9 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_8position_2__set__(str
     __pyx_t_1 += 22;
     __Pyx_GIVEREF(__pyx_kp_u_postion_must_be_lenth);
     PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_kp_u_postion_must_be_lenth);
-    __pyx_t_5 = __Pyx_PyInt_FromSize_t((*__pyx_v_self->c_node).pos.size()); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 50, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_FromSize_t((*__pyx_v_self->c_node).pos.size()); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 51, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_5, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 50, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_5, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 51, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_t_4 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) > __pyx_t_4) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) : __pyx_t_4;
@@ -3564,24 +3549,24 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_8position_2__set__(str
     __pyx_t_1 += 5;
     __Pyx_GIVEREF(__pyx_kp_u_not);
     PyTuple_SET_ITEM(__pyx_t_3, 2, __pyx_kp_u_not);
-    __pyx_t_7 = PyObject_Length(((PyObject *)__pyx_v_pos)); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(1, 50, __pyx_L1_error)
-    __pyx_t_6 = __Pyx_PyUnicode_From_Py_ssize_t(__pyx_t_7, 0, ' ', 'd'); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 50, __pyx_L1_error)
+    __pyx_t_7 = PyObject_Length(((PyObject *)__pyx_v_pos)); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(1, 51, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyUnicode_From_Py_ssize_t(__pyx_t_7, 0, ' ', 'd'); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 51, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_1 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_6);
     PyTuple_SET_ITEM(__pyx_t_3, 3, __pyx_t_6);
     __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyUnicode_Join(__pyx_t_3, 4, __pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 50, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyUnicode_Join(__pyx_t_3, 4, __pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 51, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_DimentionMismatched), __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 50, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_DimentionMismatched), __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 51, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(1, 50, __pyx_L1_error)
+    __PYX_ERR(1, 51, __pyx_L1_error)
 
-    /* "pathing/scr/cy_nodeGraph.pyx":49
+    /* "pathing/scr/cy_nodeGraph.pyx":50
  *     @position.setter
  *     def position(self, cnp.ndarray pos):
  *         if len(pos) != self.c_node.pos.size():             # <<<<<<<<<<<<<<
@@ -3590,17 +3575,17 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_8position_2__set__(str
  */
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":51
+  /* "pathing/scr/cy_nodeGraph.pyx":52
  *         if len(pos) != self.c_node.pos.size():
  *             raise DimentionMismatched(f"postion must be lenth {deref(self.c_node).pos.size()} not {len(pos)}")
  *         deref(self.c_node).pos = pos             # <<<<<<<<<<<<<<
  *     # get the edges set
  * 
  */
-  __pyx_t_8 = __pyx_convert_vector_from_py_int(((PyObject *)__pyx_v_pos)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 51, __pyx_L1_error)
+  __pyx_t_8 = __pyx_convert_vector_from_py_int(((PyObject *)__pyx_v_pos)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 52, __pyx_L1_error)
   (*__pyx_v_self->c_node).pos = __pyx_t_8;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":48
+  /* "pathing/scr/cy_nodeGraph.pyx":49
  * 
  *     @position.setter
  *     def position(self, cnp.ndarray pos):             # <<<<<<<<<<<<<<
@@ -3622,7 +3607,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_8position_2__set__(str
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":55
+/* "pathing/scr/cy_nodeGraph.pyx":56
  * 
  *     @property
  *     def edges(self):             # <<<<<<<<<<<<<<
@@ -3652,7 +3637,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_5edges___get__(C
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":56
+  /* "pathing/scr/cy_nodeGraph.pyx":57
  *     @property
  *     def edges(self):
  *         return set()             # <<<<<<<<<<<<<<
@@ -3660,13 +3645,13 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_5edges___get__(C
  *     #property
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 56, __pyx_L1_error)
+  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":55
+  /* "pathing/scr/cy_nodeGraph.pyx":56
  * 
  *     @property
  *     def edges(self):             # <<<<<<<<<<<<<<
@@ -3685,7 +3670,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_5edges___get__(C
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":60
+/* "pathing/scr/cy_nodeGraph.pyx":61
  *     #property
  *     @property
  *     def id(self):             # <<<<<<<<<<<<<<
@@ -3715,7 +3700,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_2id___get__(stru
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":61
+  /* "pathing/scr/cy_nodeGraph.pyx":62
  *     @property
  *     def id(self):
  *         return deref(self.c_node).id             # <<<<<<<<<<<<<<
@@ -3723,13 +3708,13 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_2id___get__(stru
  *     @property
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int((*__pyx_v_self->c_node).id); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 61, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int((*__pyx_v_self->c_node).id); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":60
+  /* "pathing/scr/cy_nodeGraph.pyx":61
  *     #property
  *     @property
  *     def id(self):             # <<<<<<<<<<<<<<
@@ -3748,7 +3733,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_2id___get__(stru
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":64
+/* "pathing/scr/cy_nodeGraph.pyx":65
  * 
  *     @property
  *     def connectedNodes(self):             # <<<<<<<<<<<<<<
@@ -3782,7 +3767,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_14connectedNodes
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":65
+  /* "pathing/scr/cy_nodeGraph.pyx":66
  *     @property
  *     def connectedNodes(self):
  *         cdef cppInter.cvector[int] connecteds = self.c_node.connectedNodes()             # <<<<<<<<<<<<<<
@@ -3791,7 +3776,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_14connectedNodes
  */
   __pyx_v_connecteds = __pyx_v_self->c_node->connectedNodes();
 
-  /* "pathing/scr/cy_nodeGraph.pyx":66
+  /* "pathing/scr/cy_nodeGraph.pyx":67
  *     def connectedNodes(self):
  *         cdef cppInter.cvector[int] connecteds = self.c_node.connectedNodes()
  *         return np.array(connecteds)             # <<<<<<<<<<<<<<
@@ -3799,12 +3784,12 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_14connectedNodes
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 66, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 66, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __pyx_convert_vector_to_py_int(__pyx_v_connecteds); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 66, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_to_py_int(__pyx_v_connecteds); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -3819,14 +3804,14 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_14connectedNodes
   __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 66, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":64
+  /* "pathing/scr/cy_nodeGraph.pyx":65
  * 
  *     @property
  *     def connectedNodes(self):             # <<<<<<<<<<<<<<
@@ -3961,7 +3946,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_7PY_node_6__setstate_cyth
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":74
+/* "pathing/scr/cy_nodeGraph.pyx":75
  *     cdef list sizes
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -3996,7 +3981,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster___cinit__(CYTHON_U
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":84
+/* "pathing/scr/cy_nodeGraph.pyx":85
  *         #self.c_Cluster = *cppInter.Cluster()
  * 
  *     def build(self, arr, int dir=0):             # <<<<<<<<<<<<<<
@@ -4043,7 +4028,7 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_3build(PyObj
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "build") < 0)) __PYX_ERR(1, 84, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "build") < 0)) __PYX_ERR(1, 85, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -4056,14 +4041,14 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_3build(PyObj
     }
     __pyx_v_arr = values[0];
     if (values[1]) {
-      __pyx_v_dir = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_dir == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 84, __pyx_L3_error)
+      __pyx_v_dir = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_dir == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 85, __pyx_L3_error)
     } else {
       __pyx_v_dir = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("build", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 84, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("build", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 85, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pathing.scr.cy_nodeGraph.PY_Cluster.build", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4088,17 +4073,17 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_2build(struc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("build", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":86
+  /* "pathing/scr/cy_nodeGraph.pyx":87
  *     def build(self, arr, int dir=0):
  *         "build node graph from 3d np array"
  *         cdef cppInter.Cluster* clus = new cppInter.Cluster(arr,  dir)             # <<<<<<<<<<<<<<
  *         self.c_Cluster = (clus)
  *         self.sizes = list(arr.shape)
  */
-  __pyx_t_1 = __pyx_convert_vector_from_py_std_3a__3a_vector_3c_std_3a__3a_vector_3c_int_3e____3e___(__pyx_v_arr); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 86, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_from_py_std_3a__3a_vector_3c_std_3a__3a_vector_3c_int_3e____3e___(__pyx_v_arr); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 87, __pyx_L1_error)
   __pyx_v_clus = new Cluster(__pyx_t_1, __pyx_v_dir);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":87
+  /* "pathing/scr/cy_nodeGraph.pyx":88
  *         "build node graph from 3d np array"
  *         cdef cppInter.Cluster* clus = new cppInter.Cluster(arr,  dir)
  *         self.c_Cluster = (clus)             # <<<<<<<<<<<<<<
@@ -4107,16 +4092,16 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_2build(struc
  */
   __pyx_v_self->c_Cluster = __pyx_v_clus;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":88
+  /* "pathing/scr/cy_nodeGraph.pyx":89
  *         cdef cppInter.Cluster* clus = new cppInter.Cluster(arr,  dir)
  *         self.c_Cluster = (clus)
  *         self.sizes = list(arr.shape)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_arr, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 88, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_arr, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 89, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PySequence_List(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 88, __pyx_L1_error)
+  __pyx_t_3 = PySequence_List(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 89, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_GIVEREF(__pyx_t_3);
@@ -4125,7 +4110,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_2build(struc
   __pyx_v_self->sizes = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":84
+  /* "pathing/scr/cy_nodeGraph.pyx":85
  *         #self.c_Cluster = *cppInter.Cluster()
  * 
  *     def build(self, arr, int dir=0):             # <<<<<<<<<<<<<<
@@ -4147,7 +4132,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_2build(struc
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":91
+/* "pathing/scr/cy_nodeGraph.pyx":92
  * 
  *     @property
  *     def size(self):             # <<<<<<<<<<<<<<
@@ -4173,7 +4158,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4size___get_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":92
+  /* "pathing/scr/cy_nodeGraph.pyx":93
  *     @property
  *     def size(self):
  *         return self.sizes             # <<<<<<<<<<<<<<
@@ -4185,7 +4170,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4size___get_
   __pyx_r = __pyx_v_self->sizes;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":91
+  /* "pathing/scr/cy_nodeGraph.pyx":92
  * 
  *     @property
  *     def size(self):             # <<<<<<<<<<<<<<
@@ -4200,7 +4185,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4size___get_
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":95
+/* "pathing/scr/cy_nodeGraph.pyx":96
  * 
  *     #atribute acces for the node tuple
  *     def getnode(self, poses):             # <<<<<<<<<<<<<<
@@ -4249,7 +4234,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("getnode", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":97
+  /* "pathing/scr/cy_nodeGraph.pyx":98
  *     def getnode(self, poses):
  *         "get a node assuming the initaialisation was by nd matrix"
  *         if len(self.sizes) == 0: raise RuntimeError(f"class must be initiated")             # <<<<<<<<<<<<<<
@@ -4260,45 +4245,45 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(1, 97, __pyx_L1_error)
+    __PYX_ERR(1, 98, __pyx_L1_error)
   }
-  __pyx_t_2 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(1, 97, __pyx_L1_error)
+  __pyx_t_2 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(1, 98, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = ((__pyx_t_2 == 0) != 0);
   if (unlikely(__pyx_t_3)) {
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 97, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 98, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(1, 97, __pyx_L1_error)
+    __PYX_ERR(1, 98, __pyx_L1_error)
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":98
+  /* "pathing/scr/cy_nodeGraph.pyx":99
  *         "get a node assuming the initaialisation was by nd matrix"
  *         if len(self.sizes) == 0: raise RuntimeError(f"class must be initiated")
  *         if len(poses) != len(self.sizes): raise DimentionMismatched()             # <<<<<<<<<<<<<<
  * 
  *         cdef int identity = 1
  */
-  __pyx_t_2 = PyObject_Length(__pyx_v_poses); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(1, 98, __pyx_L1_error)
+  __pyx_t_2 = PyObject_Length(__pyx_v_poses); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(1, 99, __pyx_L1_error)
   __pyx_t_1 = __pyx_v_self->sizes;
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(1, 98, __pyx_L1_error)
+    __PYX_ERR(1, 99, __pyx_L1_error)
   }
-  __pyx_t_4 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(1, 98, __pyx_L1_error)
+  __pyx_t_4 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(1, 99, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = ((__pyx_t_2 != __pyx_t_4) != 0);
   if (unlikely(__pyx_t_3)) {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_DimentionMismatched)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 98, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_DimentionMismatched)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 99, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(1, 98, __pyx_L1_error)
+    __PYX_ERR(1, 99, __pyx_L1_error)
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":100
+  /* "pathing/scr/cy_nodeGraph.pyx":101
  *         if len(poses) != len(self.sizes): raise DimentionMismatched()
  * 
  *         cdef int identity = 1             # <<<<<<<<<<<<<<
@@ -4307,7 +4292,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
  */
   __pyx_v_identity = 1;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":101
+  /* "pathing/scr/cy_nodeGraph.pyx":102
  * 
  *         cdef int identity = 1
  *         cdef int dimentionidx = 0             # <<<<<<<<<<<<<<
@@ -4316,7 +4301,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
  */
   __pyx_v_dimentionidx = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":103
+  /* "pathing/scr/cy_nodeGraph.pyx":104
  *         cdef int dimentionidx = 0
  *         cdef int postition, dimentionSize, sizeMultiplyer;
  *         sizeMultiplyer = 1             # <<<<<<<<<<<<<<
@@ -4325,18 +4310,18 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
  */
   __pyx_v_sizeMultiplyer = 1;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":104
+  /* "pathing/scr/cy_nodeGraph.pyx":105
  *         cdef int postition, dimentionSize, sizeMultiplyer;
  *         sizeMultiplyer = 1
  *         for postition, dimentionSize in zip(reversed(poses), reversed(self.sizes)):             # <<<<<<<<<<<<<<
  *             if postition >= dimentionSize: raise ValueError(f"pos{postition} out of grid for dimention {dimentionidx} of size {dimentionSize}")
  *             dimentionidx+=1
  */
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_reversed, __pyx_v_poses); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 104, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_reversed, __pyx_v_poses); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_builtin_reversed, __pyx_v_self->sizes); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 104, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_builtin_reversed, __pyx_v_self->sizes); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 104, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
@@ -4344,16 +4329,16 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
   PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_5);
   __pyx_t_1 = 0;
   __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_6, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 104, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_6, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   if (likely(PyList_CheckExact(__pyx_t_5)) || PyTuple_CheckExact(__pyx_t_5)) {
     __pyx_t_6 = __pyx_t_5; __Pyx_INCREF(__pyx_t_6); __pyx_t_4 = 0;
     __pyx_t_7 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 104, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 104, __pyx_L1_error)
+    __pyx_t_7 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 105, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   for (;;) {
@@ -4361,17 +4346,17 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
       if (likely(PyList_CheckExact(__pyx_t_6))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_6)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_4); __Pyx_INCREF(__pyx_t_5); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(1, 104, __pyx_L1_error)
+        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_4); __Pyx_INCREF(__pyx_t_5); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(1, 105, __pyx_L1_error)
         #else
-        __pyx_t_5 = PySequence_ITEM(__pyx_t_6, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 104, __pyx_L1_error)
+        __pyx_t_5 = PySequence_ITEM(__pyx_t_6, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 105, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_4); __Pyx_INCREF(__pyx_t_5); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(1, 104, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_4); __Pyx_INCREF(__pyx_t_5); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(1, 105, __pyx_L1_error)
         #else
-        __pyx_t_5 = PySequence_ITEM(__pyx_t_6, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 104, __pyx_L1_error)
+        __pyx_t_5 = PySequence_ITEM(__pyx_t_6, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 105, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       }
@@ -4381,7 +4366,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(1, 104, __pyx_L1_error)
+          else __PYX_ERR(1, 105, __pyx_L1_error)
         }
         break;
       }
@@ -4393,7 +4378,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(1, 104, __pyx_L1_error)
+        __PYX_ERR(1, 105, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -4406,15 +4391,15 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
       __Pyx_INCREF(__pyx_t_1);
       __Pyx_INCREF(__pyx_t_8);
       #else
-      __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 104, __pyx_L1_error)
+      __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 105, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 104, __pyx_L1_error)
+      __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 105, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       #endif
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_9 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 104, __pyx_L1_error)
+      __pyx_t_9 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 105, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_10 = Py_TYPE(__pyx_t_9)->tp_iternext;
@@ -4422,7 +4407,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
       __Pyx_GOTREF(__pyx_t_1);
       index = 1; __pyx_t_8 = __pyx_t_10(__pyx_t_9); if (unlikely(!__pyx_t_8)) goto __pyx_L7_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_8);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(1, 104, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(1, 105, __pyx_L1_error)
       __pyx_t_10 = NULL;
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       goto __pyx_L8_unpacking_done;
@@ -4430,17 +4415,17 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __pyx_t_10 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(1, 104, __pyx_L1_error)
+      __PYX_ERR(1, 105, __pyx_L1_error)
       __pyx_L8_unpacking_done:;
     }
-    __pyx_t_11 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_11 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 104, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_11 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 105, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_12 = __Pyx_PyInt_As_int(__pyx_t_8); if (unlikely((__pyx_t_12 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 104, __pyx_L1_error)
+    __pyx_t_12 = __Pyx_PyInt_As_int(__pyx_t_8); if (unlikely((__pyx_t_12 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 105, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __pyx_v_postition = __pyx_t_11;
     __pyx_v_dimentionSize = __pyx_t_12;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":105
+    /* "pathing/scr/cy_nodeGraph.pyx":106
  *         sizeMultiplyer = 1
  *         for postition, dimentionSize in zip(reversed(poses), reversed(self.sizes)):
  *             if postition >= dimentionSize: raise ValueError(f"pos{postition} out of grid for dimention {dimentionidx} of size {dimentionSize}")             # <<<<<<<<<<<<<<
@@ -4449,7 +4434,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
  */
     __pyx_t_3 = ((__pyx_v_postition >= __pyx_v_dimentionSize) != 0);
     if (unlikely(__pyx_t_3)) {
-      __pyx_t_5 = PyTuple_New(6); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 105, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(6); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_2 = 0;
       __pyx_t_13 = 127;
@@ -4457,7 +4442,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
       __pyx_t_2 += 3;
       __Pyx_GIVEREF(__pyx_n_u_pos);
       PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_n_u_pos);
-      __pyx_t_8 = __Pyx_PyUnicode_From_int(__pyx_v_postition, 0, ' ', 'd'); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 105, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyUnicode_From_int(__pyx_v_postition, 0, ' ', 'd'); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_8);
       __Pyx_GIVEREF(__pyx_t_8);
@@ -4467,7 +4452,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
       __pyx_t_2 += 27;
       __Pyx_GIVEREF(__pyx_kp_u_out_of_grid_for_dimention);
       PyTuple_SET_ITEM(__pyx_t_5, 2, __pyx_kp_u_out_of_grid_for_dimention);
-      __pyx_t_8 = __Pyx_PyUnicode_From_int(__pyx_v_dimentionidx, 0, ' ', 'd'); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 105, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyUnicode_From_int(__pyx_v_dimentionidx, 0, ' ', 'd'); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_8);
       __Pyx_GIVEREF(__pyx_t_8);
@@ -4477,24 +4462,24 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
       __pyx_t_2 += 9;
       __Pyx_GIVEREF(__pyx_kp_u_of_size);
       PyTuple_SET_ITEM(__pyx_t_5, 4, __pyx_kp_u_of_size);
-      __pyx_t_8 = __Pyx_PyUnicode_From_int(__pyx_v_dimentionSize, 0, ' ', 'd'); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 105, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyUnicode_From_int(__pyx_v_dimentionSize, 0, ' ', 'd'); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_8);
       __Pyx_GIVEREF(__pyx_t_8);
       PyTuple_SET_ITEM(__pyx_t_5, 5, __pyx_t_8);
       __pyx_t_8 = 0;
-      __pyx_t_8 = __Pyx_PyUnicode_Join(__pyx_t_5, 6, __pyx_t_2, __pyx_t_13); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 105, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyUnicode_Join(__pyx_t_5, 6, __pyx_t_2, __pyx_t_13); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 105, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_Raise(__pyx_t_5, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __PYX_ERR(1, 105, __pyx_L1_error)
+      __PYX_ERR(1, 106, __pyx_L1_error)
     }
 
-    /* "pathing/scr/cy_nodeGraph.pyx":106
+    /* "pathing/scr/cy_nodeGraph.pyx":107
  *         for postition, dimentionSize in zip(reversed(poses), reversed(self.sizes)):
  *             if postition >= dimentionSize: raise ValueError(f"pos{postition} out of grid for dimention {dimentionidx} of size {dimentionSize}")
  *             dimentionidx+=1             # <<<<<<<<<<<<<<
@@ -4503,7 +4488,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
  */
     __pyx_v_dimentionidx = (__pyx_v_dimentionidx + 1);
 
-    /* "pathing/scr/cy_nodeGraph.pyx":107
+    /* "pathing/scr/cy_nodeGraph.pyx":108
  *             if postition >= dimentionSize: raise ValueError(f"pos{postition} out of grid for dimention {dimentionidx} of size {dimentionSize}")
  *             dimentionidx+=1
  *             identity += postition*sizeMultiplyer             # <<<<<<<<<<<<<<
@@ -4512,7 +4497,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
  */
     __pyx_v_identity = (__pyx_v_identity + (__pyx_v_postition * __pyx_v_sizeMultiplyer));
 
-    /* "pathing/scr/cy_nodeGraph.pyx":108
+    /* "pathing/scr/cy_nodeGraph.pyx":109
  *             dimentionidx+=1
  *             identity += postition*sizeMultiplyer
  *             sizeMultiplyer*= dimentionSize             # <<<<<<<<<<<<<<
@@ -4521,7 +4506,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
  */
     __pyx_v_sizeMultiplyer = (__pyx_v_sizeMultiplyer * __pyx_v_dimentionSize);
 
-    /* "pathing/scr/cy_nodeGraph.pyx":104
+    /* "pathing/scr/cy_nodeGraph.pyx":105
  *         cdef int postition, dimentionSize, sizeMultiplyer;
  *         sizeMultiplyer = 1
  *         for postition, dimentionSize in zip(reversed(poses), reversed(self.sizes)):             # <<<<<<<<<<<<<<
@@ -4531,7 +4516,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":110
+  /* "pathing/scr/cy_nodeGraph.pyx":111
  *             sizeMultiplyer*= dimentionSize
  * 
  *         if self.c_Cluster.nodes.count(identity) == 0:             # <<<<<<<<<<<<<<
@@ -4541,20 +4526,20 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
   __pyx_t_3 = ((__pyx_v_self->c_Cluster->nodes.count(__pyx_v_identity) == 0) != 0);
   if (unlikely(__pyx_t_3)) {
 
-    /* "pathing/scr/cy_nodeGraph.pyx":111
+    /* "pathing/scr/cy_nodeGraph.pyx":112
  * 
  *         if self.c_Cluster.nodes.count(identity) == 0:
  *             raise ValueError(f"pathNode not found: the postion you where loking at is unwalkable")             # <<<<<<<<<<<<<<
  *         cdef PY_node n = PY_node()
  *         n.c_node = self.c_Cluster.nodes[identity]
  */
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 111, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 112, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(1, 111, __pyx_L1_error)
+    __PYX_ERR(1, 112, __pyx_L1_error)
 
-    /* "pathing/scr/cy_nodeGraph.pyx":110
+    /* "pathing/scr/cy_nodeGraph.pyx":111
  *             sizeMultiplyer*= dimentionSize
  * 
  *         if self.c_Cluster.nodes.count(identity) == 0:             # <<<<<<<<<<<<<<
@@ -4563,19 +4548,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
  */
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":112
+  /* "pathing/scr/cy_nodeGraph.pyx":113
  *         if self.c_Cluster.nodes.count(identity) == 0:
  *             raise ValueError(f"pathNode not found: the postion you where loking at is unwalkable")
  *         cdef PY_node n = PY_node()             # <<<<<<<<<<<<<<
  *         n.c_node = self.c_Cluster.nodes[identity]
  *         return n
  */
-  __pyx_t_6 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 112, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_v_n = ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)__pyx_t_6);
   __pyx_t_6 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":113
+  /* "pathing/scr/cy_nodeGraph.pyx":114
  *             raise ValueError(f"pathNode not found: the postion you where loking at is unwalkable")
  *         cdef PY_node n = PY_node()
  *         n.c_node = self.c_Cluster.nodes[identity]             # <<<<<<<<<<<<<<
@@ -4584,7 +4569,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
  */
   __pyx_v_n->c_node = (__pyx_v_self->c_Cluster->nodes[__pyx_v_identity]);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":114
+  /* "pathing/scr/cy_nodeGraph.pyx":115
  *         cdef PY_node n = PY_node()
  *         n.c_node = self.c_Cluster.nodes[identity]
  *         return n             # <<<<<<<<<<<<<<
@@ -4596,7 +4581,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
   __pyx_r = ((PyObject *)__pyx_v_n);
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":95
+  /* "pathing/scr/cy_nodeGraph.pyx":96
  * 
  *     #atribute acces for the node tuple
  *     def getnode(self, poses):             # <<<<<<<<<<<<<<
@@ -4620,7 +4605,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_4getnode(str
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":117
+/* "pathing/scr/cy_nodeGraph.pyx":118
  * 
  * 
  *     def runAstar(self, PY_node start, PY_node end, int distanceKey=0, bint getVisited=False):             # <<<<<<<<<<<<<<
@@ -4669,7 +4654,7 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_7runAstar(Py
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_end)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("runAstar", 0, 2, 4, 1); __PYX_ERR(1, 117, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("runAstar", 0, 2, 4, 1); __PYX_ERR(1, 118, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -4685,7 +4670,7 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_7runAstar(Py
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runAstar") < 0)) __PYX_ERR(1, 117, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runAstar") < 0)) __PYX_ERR(1, 118, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -4702,26 +4687,26 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_7runAstar(Py
     __pyx_v_start = ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)values[0]);
     __pyx_v_end = ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)values[1]);
     if (values[2]) {
-      __pyx_v_distanceKey = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_distanceKey == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 117, __pyx_L3_error)
+      __pyx_v_distanceKey = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_distanceKey == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 118, __pyx_L3_error)
     } else {
       __pyx_v_distanceKey = ((int)0);
     }
     if (values[3]) {
-      __pyx_v_getVisited = __Pyx_PyObject_IsTrue(values[3]); if (unlikely((__pyx_v_getVisited == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 117, __pyx_L3_error)
+      __pyx_v_getVisited = __Pyx_PyObject_IsTrue(values[3]); if (unlikely((__pyx_v_getVisited == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 118, __pyx_L3_error)
     } else {
       __pyx_v_getVisited = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("runAstar", 0, 2, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 117, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("runAstar", 0, 2, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 118, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pathing.scr.cy_nodeGraph.PY_Cluster.runAstar", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "start", 0))) __PYX_ERR(1, 117, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_end), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "end", 0))) __PYX_ERR(1, 117, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "start", 0))) __PYX_ERR(1, 118, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_end), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "end", 0))) __PYX_ERR(1, 118, __pyx_L1_error)
   __pyx_r = __pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_6runAstar(((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_Cluster *)__pyx_v_self), __pyx_v_start, __pyx_v_end, __pyx_v_distanceKey, __pyx_v_getVisited);
 
   /* function exit code */
@@ -4757,45 +4742,45 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_6runAstar(st
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("runAstar", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":120
+  /* "pathing/scr/cy_nodeGraph.pyx":121
  *         """run A* pathfinding algorythem to find a path from start to end with distanceKey
  *         """
  *         cdef a = start.id             # <<<<<<<<<<<<<<
  *         cdef b = end.id
  *         cdef cnp.ndarray nodeIds
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_start), __pyx_n_s_id_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 120, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_start), __pyx_n_s_id_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_a = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":121
+  /* "pathing/scr/cy_nodeGraph.pyx":122
  *         """
  *         cdef a = start.id
  *         cdef b = end.id             # <<<<<<<<<<<<<<
  *         cdef cnp.ndarray nodeIds
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_end), __pyx_n_s_id_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 121, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_end), __pyx_n_s_id_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_b = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":124
+  /* "pathing/scr/cy_nodeGraph.pyx":125
  *         cdef cnp.ndarray nodeIds
  * 
  *         nodeIds = np.array(self.c_Cluster.Astar(a, b, distanceKey, getVisited))             # <<<<<<<<<<<<<<
  *         if nodeIds.size == 0: raise PathingError(f"no valid path was found")
  *         cdef list nodes = []
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 124, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 124, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_a); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 124, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_b); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 124, __pyx_L1_error)
-  __pyx_t_2 = __pyx_convert_vector_to_py_int(__pyx_v_self->c_Cluster->Astar(__pyx_t_4, __pyx_t_5, __pyx_v_distanceKey, __pyx_v_getVisited)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 124, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_a); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 125, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_b); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 125, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_to_py_int(__pyx_v_self->c_Cluster->Astar(__pyx_t_4, __pyx_t_5, __pyx_v_distanceKey, __pyx_v_getVisited)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -4810,48 +4795,48 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_6runAstar(st
   __pyx_t_1 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_6, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 124, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 124, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 125, __pyx_L1_error)
   __pyx_v_nodeIds = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":125
+  /* "pathing/scr/cy_nodeGraph.pyx":126
  * 
  *         nodeIds = np.array(self.c_Cluster.Astar(a, b, distanceKey, getVisited))
  *         if nodeIds.size == 0: raise PathingError(f"no valid path was found")             # <<<<<<<<<<<<<<
  *         cdef list nodes = []
  *         cdef PY_node n
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_nodeIds), __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 125, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_nodeIds), __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyInt_EqObjC(__pyx_t_1, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 125, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_EqObjC(__pyx_t_1, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(1, 125, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(1, 126, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (unlikely(__pyx_t_7)) {
-    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PathingError), __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 125, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PathingError), __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 126, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(1, 125, __pyx_L1_error)
+    __PYX_ERR(1, 126, __pyx_L1_error)
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":126
+  /* "pathing/scr/cy_nodeGraph.pyx":127
  *         nodeIds = np.array(self.c_Cluster.Astar(a, b, distanceKey, getVisited))
  *         if nodeIds.size == 0: raise PathingError(f"no valid path was found")
  *         cdef list nodes = []             # <<<<<<<<<<<<<<
  *         cdef PY_node n
  *         for idx in nodeIds:
  */
-  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 126, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_nodes = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":128
+  /* "pathing/scr/cy_nodeGraph.pyx":129
  *         cdef list nodes = []
  *         cdef PY_node n
  *         for idx in nodeIds:             # <<<<<<<<<<<<<<
@@ -4862,26 +4847,26 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_6runAstar(st
     __pyx_t_3 = ((PyObject *)__pyx_v_nodeIds); __Pyx_INCREF(__pyx_t_3); __pyx_t_8 = 0;
     __pyx_t_9 = NULL;
   } else {
-    __pyx_t_8 = -1; __pyx_t_3 = PyObject_GetIter(((PyObject *)__pyx_v_nodeIds)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 128, __pyx_L1_error)
+    __pyx_t_8 = -1; __pyx_t_3 = PyObject_GetIter(((PyObject *)__pyx_v_nodeIds)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 129, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 128, __pyx_L1_error)
+    __pyx_t_9 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 129, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_9)) {
       if (likely(PyList_CheckExact(__pyx_t_3))) {
         if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(1, 128, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(1, 129, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 128, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 129, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(1, 128, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(1, 129, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 128, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 129, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -4891,7 +4876,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_6runAstar(st
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(1, 128, __pyx_L1_error)
+          else __PYX_ERR(1, 129, __pyx_L1_error)
         }
         break;
       }
@@ -4900,38 +4885,38 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_6runAstar(st
     __Pyx_XDECREF_SET(__pyx_v_idx, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":129
+    /* "pathing/scr/cy_nodeGraph.pyx":130
  *         cdef PY_node n
  *         for idx in nodeIds:
  *             n = PY_node()             # <<<<<<<<<<<<<<
  *             n.c_node = self.c_Cluster.nodes[idx]
  *             nodes.append(n)
  */
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 129, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 130, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_n, ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":130
+    /* "pathing/scr/cy_nodeGraph.pyx":131
  *         for idx in nodeIds:
  *             n = PY_node()
  *             n.c_node = self.c_Cluster.nodes[idx]             # <<<<<<<<<<<<<<
  *             nodes.append(n)
  *         return nodes
  */
-    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_idx); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 130, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_idx); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 131, __pyx_L1_error)
     __pyx_v_n->c_node = (__pyx_v_self->c_Cluster->nodes[__pyx_t_5]);
 
-    /* "pathing/scr/cy_nodeGraph.pyx":131
+    /* "pathing/scr/cy_nodeGraph.pyx":132
  *             n = PY_node()
  *             n.c_node = self.c_Cluster.nodes[idx]
  *             nodes.append(n)             # <<<<<<<<<<<<<<
  *         return nodes
  * 
  */
-    __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_nodes, ((PyObject *)__pyx_v_n)); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(1, 131, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_nodes, ((PyObject *)__pyx_v_n)); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(1, 132, __pyx_L1_error)
 
-    /* "pathing/scr/cy_nodeGraph.pyx":128
+    /* "pathing/scr/cy_nodeGraph.pyx":129
  *         cdef list nodes = []
  *         cdef PY_node n
  *         for idx in nodeIds:             # <<<<<<<<<<<<<<
@@ -4941,7 +4926,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_6runAstar(st
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":132
+  /* "pathing/scr/cy_nodeGraph.pyx":133
  *             n.c_node = self.c_Cluster.nodes[idx]
  *             nodes.append(n)
  *         return nodes             # <<<<<<<<<<<<<<
@@ -4953,7 +4938,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_6runAstar(st
   __pyx_r = __pyx_v_nodes;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":117
+  /* "pathing/scr/cy_nodeGraph.pyx":118
  * 
  * 
  *     def runAstar(self, PY_node start, PY_node end, int distanceKey=0, bint getVisited=False):             # <<<<<<<<<<<<<<
@@ -4981,7 +4966,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_6runAstar(st
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":134
+/* "pathing/scr/cy_nodeGraph.pyx":135
  *         return nodes
  * 
  *     def runBfs(self, PY_node start, PY_node end, bint getVisited=False):             # <<<<<<<<<<<<<<
@@ -5027,7 +5012,7 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_9runBfs(PyOb
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_end)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("runBfs", 0, 2, 3, 1); __PYX_ERR(1, 134, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("runBfs", 0, 2, 3, 1); __PYX_ERR(1, 135, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -5037,7 +5022,7 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_9runBfs(PyOb
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runBfs") < 0)) __PYX_ERR(1, 134, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runBfs") < 0)) __PYX_ERR(1, 135, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -5052,21 +5037,21 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_9runBfs(PyOb
     __pyx_v_start = ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)values[0]);
     __pyx_v_end = ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)values[1]);
     if (values[2]) {
-      __pyx_v_getVisited = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_getVisited == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 134, __pyx_L3_error)
+      __pyx_v_getVisited = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_getVisited == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 135, __pyx_L3_error)
     } else {
       __pyx_v_getVisited = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("runBfs", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 134, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("runBfs", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 135, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pathing.scr.cy_nodeGraph.PY_Cluster.runBfs", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "start", 0))) __PYX_ERR(1, 134, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_end), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "end", 0))) __PYX_ERR(1, 134, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "start", 0))) __PYX_ERR(1, 135, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_end), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "end", 0))) __PYX_ERR(1, 135, __pyx_L1_error)
   __pyx_r = __pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_8runBfs(((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_Cluster *)__pyx_v_self), __pyx_v_start, __pyx_v_end, __pyx_v_getVisited);
 
   /* function exit code */
@@ -5105,31 +5090,31 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_8runBfs(stru
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("runBfs", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":137
+  /* "pathing/scr/cy_nodeGraph.pyx":138
  *         """run A* pathfinding algorythem to find a path from start to end with distanceKey
  *         """
  *         cdef a = start.id             # <<<<<<<<<<<<<<
  *         cdef b = end.id
  *         cdef cnp.ndarray nodeIds
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_start), __pyx_n_s_id_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 137, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_start), __pyx_n_s_id_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 138, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_a = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":138
+  /* "pathing/scr/cy_nodeGraph.pyx":139
  *         """
  *         cdef a = start.id
  *         cdef b = end.id             # <<<<<<<<<<<<<<
  *         cdef cnp.ndarray nodeIds
  *         try:
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_end), __pyx_n_s_id_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 138, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_end), __pyx_n_s_id_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_b = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":140
+  /* "pathing/scr/cy_nodeGraph.pyx":141
  *         cdef b = end.id
  *         cdef cnp.ndarray nodeIds
  *         try:             # <<<<<<<<<<<<<<
@@ -5145,21 +5130,21 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_8runBfs(stru
     __Pyx_XGOTREF(__pyx_t_4);
     /*try:*/ {
 
-      /* "pathing/scr/cy_nodeGraph.pyx":141
+      /* "pathing/scr/cy_nodeGraph.pyx":142
  *         cdef cnp.ndarray nodeIds
  *         try:
  *             nodeIds = np.array(self.c_Cluster.bfs(a, b, getVisited))             # <<<<<<<<<<<<<<
  *         except:
  *             raise PathingError("no path was found")
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 141, __pyx_L3_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 142, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_array); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 141, __pyx_L3_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_array); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 142, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_v_a); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 141, __pyx_L3_error)
-      __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_b); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 141, __pyx_L3_error)
-      __pyx_t_5 = __pyx_convert_vector_to_py_int(__pyx_v_self->c_Cluster->bfs(__pyx_t_7, __pyx_t_8, __pyx_v_getVisited)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 141, __pyx_L3_error)
+      __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_v_a); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 142, __pyx_L3_error)
+      __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_b); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 142, __pyx_L3_error)
+      __pyx_t_5 = __pyx_convert_vector_to_py_int(__pyx_v_self->c_Cluster->bfs(__pyx_t_7, __pyx_t_8, __pyx_v_getVisited)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 142, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_9 = NULL;
       if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
@@ -5174,14 +5159,14 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_8runBfs(stru
       __pyx_t_1 = (__pyx_t_9) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_9, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5);
       __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 141, __pyx_L3_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 142, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 141, __pyx_L3_error)
+      if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(1, 142, __pyx_L3_error)
       __pyx_v_nodeIds = ((PyArrayObject *)__pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "pathing/scr/cy_nodeGraph.pyx":140
+      /* "pathing/scr/cy_nodeGraph.pyx":141
  *         cdef b = end.id
  *         cdef cnp.ndarray nodeIds
  *         try:             # <<<<<<<<<<<<<<
@@ -5199,7 +5184,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_8runBfs(stru
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":142
+    /* "pathing/scr/cy_nodeGraph.pyx":143
  *         try:
  *             nodeIds = np.array(self.c_Cluster.bfs(a, b, getVisited))
  *         except:             # <<<<<<<<<<<<<<
@@ -5208,27 +5193,27 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_8runBfs(stru
  */
     /*except:*/ {
       __Pyx_AddTraceback("pathing.scr.cy_nodeGraph.PY_Cluster.runBfs", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_6, &__pyx_t_5) < 0) __PYX_ERR(1, 142, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_6, &__pyx_t_5) < 0) __PYX_ERR(1, 143, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_5);
 
-      /* "pathing/scr/cy_nodeGraph.pyx":143
+      /* "pathing/scr/cy_nodeGraph.pyx":144
  *             nodeIds = np.array(self.c_Cluster.bfs(a, b, getVisited))
  *         except:
  *             raise PathingError("no path was found")             # <<<<<<<<<<<<<<
  *         if nodeIds.size == 0: raise PathingError(f"no valid path was found")
  *         cdef list nodes = []
  */
-      __pyx_t_9 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PathingError), __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 143, __pyx_L5_except_error)
+      __pyx_t_9 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PathingError), __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 144, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_Raise(__pyx_t_9, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __PYX_ERR(1, 143, __pyx_L5_except_error)
+      __PYX_ERR(1, 144, __pyx_L5_except_error)
     }
     __pyx_L5_except_error:;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":140
+    /* "pathing/scr/cy_nodeGraph.pyx":141
  *         cdef b = end.id
  *         cdef cnp.ndarray nodeIds
  *         try:             # <<<<<<<<<<<<<<
@@ -5243,41 +5228,41 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_8runBfs(stru
     __pyx_L8_try_end:;
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":144
+  /* "pathing/scr/cy_nodeGraph.pyx":145
  *         except:
  *             raise PathingError("no path was found")
  *         if nodeIds.size == 0: raise PathingError(f"no valid path was found")             # <<<<<<<<<<<<<<
  *         cdef list nodes = []
  *         cdef PY_node n
  */
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_nodeIds), __pyx_n_s_size); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 144, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_nodeIds), __pyx_n_s_size); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyInt_EqObjC(__pyx_t_5, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 144, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_EqObjC(__pyx_t_5, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(1, 144, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(1, 145, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   if (unlikely(__pyx_t_10)) {
-    __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PathingError), __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 144, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PathingError), __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 145, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(1, 144, __pyx_L1_error)
+    __PYX_ERR(1, 145, __pyx_L1_error)
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":145
+  /* "pathing/scr/cy_nodeGraph.pyx":146
  *             raise PathingError("no path was found")
  *         if nodeIds.size == 0: raise PathingError(f"no valid path was found")
  *         cdef list nodes = []             # <<<<<<<<<<<<<<
  *         cdef PY_node n
  *         for idx in nodeIds:
  */
-  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 145, __pyx_L1_error)
+  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_v_nodes = ((PyObject*)__pyx_t_6);
   __pyx_t_6 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":147
+  /* "pathing/scr/cy_nodeGraph.pyx":148
  *         cdef list nodes = []
  *         cdef PY_node n
  *         for idx in nodeIds:             # <<<<<<<<<<<<<<
@@ -5288,26 +5273,26 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_8runBfs(stru
     __pyx_t_6 = ((PyObject *)__pyx_v_nodeIds); __Pyx_INCREF(__pyx_t_6); __pyx_t_11 = 0;
     __pyx_t_12 = NULL;
   } else {
-    __pyx_t_11 = -1; __pyx_t_6 = PyObject_GetIter(((PyObject *)__pyx_v_nodeIds)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 147, __pyx_L1_error)
+    __pyx_t_11 = -1; __pyx_t_6 = PyObject_GetIter(((PyObject *)__pyx_v_nodeIds)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 148, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_12 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_12)) __PYX_ERR(1, 147, __pyx_L1_error)
+    __pyx_t_12 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_12)) __PYX_ERR(1, 148, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_12)) {
       if (likely(PyList_CheckExact(__pyx_t_6))) {
         if (__pyx_t_11 >= PyList_GET_SIZE(__pyx_t_6)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_11); __Pyx_INCREF(__pyx_t_5); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(1, 147, __pyx_L1_error)
+        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_11); __Pyx_INCREF(__pyx_t_5); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(1, 148, __pyx_L1_error)
         #else
-        __pyx_t_5 = PySequence_ITEM(__pyx_t_6, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 147, __pyx_L1_error)
+        __pyx_t_5 = PySequence_ITEM(__pyx_t_6, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 148, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       } else {
         if (__pyx_t_11 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_11); __Pyx_INCREF(__pyx_t_5); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(1, 147, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_11); __Pyx_INCREF(__pyx_t_5); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(1, 148, __pyx_L1_error)
         #else
-        __pyx_t_5 = PySequence_ITEM(__pyx_t_6, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 147, __pyx_L1_error)
+        __pyx_t_5 = PySequence_ITEM(__pyx_t_6, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 148, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       }
@@ -5317,7 +5302,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_8runBfs(stru
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(1, 147, __pyx_L1_error)
+          else __PYX_ERR(1, 148, __pyx_L1_error)
         }
         break;
       }
@@ -5326,38 +5311,38 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_8runBfs(stru
     __Pyx_XDECREF_SET(__pyx_v_idx, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":148
+    /* "pathing/scr/cy_nodeGraph.pyx":149
  *         cdef PY_node n
  *         for idx in nodeIds:
  *             n = PY_node()             # <<<<<<<<<<<<<<
  *             n.c_node = self.c_Cluster.nodes[idx]
  *             nodes.append(n)
  */
-    __pyx_t_5 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 148, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 149, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_XDECREF_SET(__pyx_v_n, ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)__pyx_t_5));
     __pyx_t_5 = 0;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":149
+    /* "pathing/scr/cy_nodeGraph.pyx":150
  *         for idx in nodeIds:
  *             n = PY_node()
  *             n.c_node = self.c_Cluster.nodes[idx]             # <<<<<<<<<<<<<<
  *             nodes.append(n)
  *         return nodes
  */
-    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_idx); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 149, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_v_idx); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 150, __pyx_L1_error)
     __pyx_v_n->c_node = (__pyx_v_self->c_Cluster->nodes[__pyx_t_8]);
 
-    /* "pathing/scr/cy_nodeGraph.pyx":150
+    /* "pathing/scr/cy_nodeGraph.pyx":151
  *             n = PY_node()
  *             n.c_node = self.c_Cluster.nodes[idx]
  *             nodes.append(n)             # <<<<<<<<<<<<<<
  *         return nodes
  * 
  */
-    __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_nodes, ((PyObject *)__pyx_v_n)); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(1, 150, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_nodes, ((PyObject *)__pyx_v_n)); if (unlikely(__pyx_t_13 == ((int)-1))) __PYX_ERR(1, 151, __pyx_L1_error)
 
-    /* "pathing/scr/cy_nodeGraph.pyx":147
+    /* "pathing/scr/cy_nodeGraph.pyx":148
  *         cdef list nodes = []
  *         cdef PY_node n
  *         for idx in nodeIds:             # <<<<<<<<<<<<<<
@@ -5367,7 +5352,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_8runBfs(stru
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":151
+  /* "pathing/scr/cy_nodeGraph.pyx":152
  *             n.c_node = self.c_Cluster.nodes[idx]
  *             nodes.append(n)
  *         return nodes             # <<<<<<<<<<<<<<
@@ -5379,7 +5364,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_8runBfs(stru
   __pyx_r = __pyx_v_nodes;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":134
+  /* "pathing/scr/cy_nodeGraph.pyx":135
  *         return nodes
  * 
  *     def runBfs(self, PY_node start, PY_node end, bint getVisited=False):             # <<<<<<<<<<<<<<
@@ -5407,7 +5392,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_8runBfs(stru
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":153
+/* "pathing/scr/cy_nodeGraph.pyx":154
  *         return nodes
  * 
  *     def runDfs(self, PY_node start, PY_node end, bint getVisited=False):             # <<<<<<<<<<<<<<
@@ -5453,7 +5438,7 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_11runDfs(PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_end)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("runDfs", 0, 2, 3, 1); __PYX_ERR(1, 153, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("runDfs", 0, 2, 3, 1); __PYX_ERR(1, 154, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -5463,7 +5448,7 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_11runDfs(PyO
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runDfs") < 0)) __PYX_ERR(1, 153, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "runDfs") < 0)) __PYX_ERR(1, 154, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -5478,21 +5463,21 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_11runDfs(PyO
     __pyx_v_start = ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)values[0]);
     __pyx_v_end = ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)values[1]);
     if (values[2]) {
-      __pyx_v_getVisited = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_getVisited == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 153, __pyx_L3_error)
+      __pyx_v_getVisited = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_getVisited == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 154, __pyx_L3_error)
     } else {
       __pyx_v_getVisited = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("runDfs", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 153, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("runDfs", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 154, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pathing.scr.cy_nodeGraph.PY_Cluster.runDfs", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "start", 0))) __PYX_ERR(1, 153, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_end), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "end", 0))) __PYX_ERR(1, 153, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "start", 0))) __PYX_ERR(1, 154, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_end), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "end", 0))) __PYX_ERR(1, 154, __pyx_L1_error)
   __pyx_r = __pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_10runDfs(((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_Cluster *)__pyx_v_self), __pyx_v_start, __pyx_v_end, __pyx_v_getVisited);
 
   /* function exit code */
@@ -5513,20 +5498,20 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_10runDfs(CYT
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("runDfs", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":156
+  /* "pathing/scr/cy_nodeGraph.pyx":157
  *         """run A* pathfinding algorythem to find a path from start to end with distanceKey
  *         """
  *         raise Exception("not functionaly implemented")             # <<<<<<<<<<<<<<
  *         cdef a = start.id
  *         cdef b = end.id
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])), __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 156, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(((PyObject *)(&((PyTypeObject*)PyExc_Exception)[0])), __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(1, 156, __pyx_L1_error)
+  __PYX_ERR(1, 157, __pyx_L1_error)
 
-  /* "pathing/scr/cy_nodeGraph.pyx":153
+  /* "pathing/scr/cy_nodeGraph.pyx":154
  *         return nodes
  * 
  *     def runDfs(self, PY_node start, PY_node end, bint getVisited=False):             # <<<<<<<<<<<<<<
@@ -5544,7 +5529,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_10runDfs(CYT
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":174
+/* "pathing/scr/cy_nodeGraph.pyx":175
  *         return nodes
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -5579,7 +5564,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_12__str__(st
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__str__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":175
+  /* "pathing/scr/cy_nodeGraph.pyx":176
  * 
  *     def __str__(self):
  *         return f"Cluster<nodes: {len(self.nodes)}, size = {self.size}>"             # <<<<<<<<<<<<<<
@@ -5587,7 +5572,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_12__str__(st
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 175, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = 0;
   __pyx_t_3 = 127;
@@ -5595,11 +5580,11 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_12__str__(st
   __pyx_t_2 += 15;
   __Pyx_GIVEREF(__pyx_kp_u_Cluster_nodes);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_Cluster_nodes);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_nodes); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 175, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_nodes); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyObject_Length(__pyx_t_4); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(1, 175, __pyx_L1_error)
+  __pyx_t_5 = PyObject_Length(__pyx_t_4); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyUnicode_From_Py_ssize_t(__pyx_t_5, 0, ' ', 'd'); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 175, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyUnicode_From_Py_ssize_t(__pyx_t_5, 0, ' ', 'd'); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_4);
@@ -5609,9 +5594,9 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_12__str__(st
   __pyx_t_2 += 9;
   __Pyx_GIVEREF(__pyx_kp_u_size_2);
   PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u_size_2);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 175, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_4, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 175, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_4, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) : __pyx_t_3;
@@ -5623,14 +5608,14 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_12__str__(st
   __pyx_t_2 += 1;
   __Pyx_GIVEREF(__pyx_kp_u__3);
   PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u__3);
-  __pyx_t_6 = __Pyx_PyUnicode_Join(__pyx_t_1, 5, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 175, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyUnicode_Join(__pyx_t_1, 5, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_6;
   __pyx_t_6 = 0;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":174
+  /* "pathing/scr/cy_nodeGraph.pyx":175
  *         return nodes
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -5651,7 +5636,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_12__str__(st
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":179
+/* "pathing/scr/cy_nodeGraph.pyx":180
  * 
  *     @property
  *     def nodes(self):             # <<<<<<<<<<<<<<
@@ -5687,19 +5672,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_5nodes___get
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":180
+  /* "pathing/scr/cy_nodeGraph.pyx":181
  *     @property
  *     def nodes(self):
  *         res = {}             # <<<<<<<<<<<<<<
  *         cdef cppInter.cvector[int] keys = self.c_Cluster.getNodeKeys()
  *         cdef int itr
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 180, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 181, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_res = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":181
+  /* "pathing/scr/cy_nodeGraph.pyx":182
  *     def nodes(self):
  *         res = {}
  *         cdef cppInter.cvector[int] keys = self.c_Cluster.getNodeKeys()             # <<<<<<<<<<<<<<
@@ -5708,7 +5693,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_5nodes___get
  */
   __pyx_v_keys = __pyx_v_self->c_Cluster->getNodeKeys();
 
-  /* "pathing/scr/cy_nodeGraph.pyx":184
+  /* "pathing/scr/cy_nodeGraph.pyx":185
  *         cdef int itr
  *         cdef PY_node n
  *         for itr in keys:             # <<<<<<<<<<<<<<
@@ -5722,19 +5707,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_5nodes___get
     ++__pyx_t_2;
     __pyx_v_itr = __pyx_t_3;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":185
+    /* "pathing/scr/cy_nodeGraph.pyx":186
  *         cdef PY_node n
  *         for itr in keys:
  *             n = PY_node()             # <<<<<<<<<<<<<<
  *             n.c_node = self.c_Cluster.nodes[itr]
  *             res[itr] = n
  */
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 185, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 186, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_n, ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":186
+    /* "pathing/scr/cy_nodeGraph.pyx":187
  *         for itr in keys:
  *             n = PY_node()
  *             n.c_node = self.c_Cluster.nodes[itr]             # <<<<<<<<<<<<<<
@@ -5743,19 +5728,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_5nodes___get
  */
     __pyx_v_n->c_node = (__pyx_v_self->c_Cluster->nodes[__pyx_v_itr]);
 
-    /* "pathing/scr/cy_nodeGraph.pyx":187
+    /* "pathing/scr/cy_nodeGraph.pyx":188
  *             n = PY_node()
  *             n.c_node = self.c_Cluster.nodes[itr]
  *             res[itr] = n             # <<<<<<<<<<<<<<
  *         return res
  * 
  */
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_itr); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 187, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_itr); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 188, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (unlikely(PyDict_SetItem(__pyx_v_res, __pyx_t_1, ((PyObject *)__pyx_v_n)) < 0)) __PYX_ERR(1, 187, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__pyx_v_res, __pyx_t_1, ((PyObject *)__pyx_v_n)) < 0)) __PYX_ERR(1, 188, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":184
+    /* "pathing/scr/cy_nodeGraph.pyx":185
  *         cdef int itr
  *         cdef PY_node n
  *         for itr in keys:             # <<<<<<<<<<<<<<
@@ -5764,7 +5749,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_5nodes___get
  */
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":188
+  /* "pathing/scr/cy_nodeGraph.pyx":189
  *             n.c_node = self.c_Cluster.nodes[itr]
  *             res[itr] = n
  *         return res             # <<<<<<<<<<<<<<
@@ -5776,7 +5761,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_5nodes___get
   __pyx_r = __pyx_v_res;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":179
+  /* "pathing/scr/cy_nodeGraph.pyx":180
  * 
  *     @property
  *     def nodes(self):             # <<<<<<<<<<<<<<
@@ -5797,7 +5782,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_5nodes___get
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":191
+/* "pathing/scr/cy_nodeGraph.pyx":192
  * 
  *     @property
  *     def pos(self):             # <<<<<<<<<<<<<<
@@ -5830,7 +5815,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_3pos___get__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":192
+  /* "pathing/scr/cy_nodeGraph.pyx":193
  *     @property
  *     def pos(self):
  *         return np.array(self.c_node.postion)             # <<<<<<<<<<<<<<
@@ -5838,14 +5823,14 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_3pos___get__
  * #python wrapper for the c++ node Graph class
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 192, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 192, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_c_node); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 192, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_c_node); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_postion); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 192, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_postion); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -5861,14 +5846,14 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_3pos___get__
   __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_2, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 192, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":191
+  /* "pathing/scr/cy_nodeGraph.pyx":192
  * 
  *     @property
  *     def pos(self):             # <<<<<<<<<<<<<<
@@ -6003,7 +5988,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_10PY_Cluster_16__setstate
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":201
+/* "pathing/scr/cy_nodeGraph.pyx":202
  *     cdef cppInter.node_Graph* cppHandler
  * 
  *     def buildFromArr(self, cnp.ndarray[int, ndim=3] arr, cnp.ndarray[int, ndim=1] sizes, int movement=0, int singler=0):             # <<<<<<<<<<<<<<
@@ -6051,7 +6036,7 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_1buildFrom
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_sizes)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("buildFromArr", 0, 2, 4, 1); __PYX_ERR(1, 201, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("buildFromArr", 0, 2, 4, 1); __PYX_ERR(1, 202, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -6067,7 +6052,7 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_1buildFrom
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "buildFromArr") < 0)) __PYX_ERR(1, 201, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "buildFromArr") < 0)) __PYX_ERR(1, 202, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -6084,26 +6069,26 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_1buildFrom
     __pyx_v_arr = ((PyArrayObject *)values[0]);
     __pyx_v_sizes = ((PyArrayObject *)values[1]);
     if (values[2]) {
-      __pyx_v_movement = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_movement == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 201, __pyx_L3_error)
+      __pyx_v_movement = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_movement == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 202, __pyx_L3_error)
     } else {
       __pyx_v_movement = ((int)0);
     }
     if (values[3]) {
-      __pyx_v_singler = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_singler == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 201, __pyx_L3_error)
+      __pyx_v_singler = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_singler == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 202, __pyx_L3_error)
     } else {
       __pyx_v_singler = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("buildFromArr", 0, 2, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 201, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("buildFromArr", 0, 2, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 202, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pathing.scr.cy_nodeGraph.Py_nodeGraph.buildFromArr", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_arr), __pyx_ptype_5numpy_ndarray, 1, "arr", 0))) __PYX_ERR(1, 201, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_sizes), __pyx_ptype_5numpy_ndarray, 1, "sizes", 0))) __PYX_ERR(1, 201, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_arr), __pyx_ptype_5numpy_ndarray, 1, "arr", 0))) __PYX_ERR(1, 202, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_sizes), __pyx_ptype_5numpy_ndarray, 1, "sizes", 0))) __PYX_ERR(1, 202, __pyx_L1_error)
   __pyx_r = __pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_buildFromArr(((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph *)__pyx_v_self), __pyx_v_arr, __pyx_v_sizes, __pyx_v_movement, __pyx_v_singler);
 
   /* function exit code */
@@ -6139,27 +6124,27 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_buildFromA
   __pyx_pybuffernd_sizes.rcbuffer = &__pyx_pybuffer_sizes;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack) == -1)) __PYX_ERR(1, 201, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_arr, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack) == -1)) __PYX_ERR(1, 202, __pyx_L1_error)
   }
   __pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_arr.diminfo[1].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_arr.diminfo[1].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_arr.diminfo[2].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_arr.diminfo[2].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[2];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sizes.rcbuffer->pybuffer, (PyObject*)__pyx_v_sizes, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 201, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sizes.rcbuffer->pybuffer, (PyObject*)__pyx_v_sizes, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 202, __pyx_L1_error)
   }
   __pyx_pybuffernd_sizes.diminfo[0].strides = __pyx_pybuffernd_sizes.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sizes.diminfo[0].shape = __pyx_pybuffernd_sizes.rcbuffer->pybuffer.shape[0];
 
-  /* "pathing/scr/cy_nodeGraph.pyx":202
+  /* "pathing/scr/cy_nodeGraph.pyx":203
  * 
  *     def buildFromArr(self, cnp.ndarray[int, ndim=3] arr, cnp.ndarray[int, ndim=1] sizes, int movement=0, int singler=0):
  *         cdef cppInter.node_Graph* graph = new cppInter.node_Graph(arr, sizes, movement, singler)             # <<<<<<<<<<<<<<
  *         self.cppHandler = graph
  * 
  */
-  __pyx_t_1 = __pyx_convert_vector_from_py_std_3a__3a_vector_3c_std_3a__3a_vector_3c_int_3e____3e___(((PyObject *)__pyx_v_arr)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 202, __pyx_L1_error)
-  __pyx_t_2 = __pyx_convert_vector_from_py_int(((PyObject *)__pyx_v_sizes)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 202, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_from_py_std_3a__3a_vector_3c_std_3a__3a_vector_3c_int_3e____3e___(((PyObject *)__pyx_v_arr)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 203, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_int(((PyObject *)__pyx_v_sizes)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 203, __pyx_L1_error)
   __pyx_v_graph = new node_Graph(__pyx_t_1, __pyx_t_2, __pyx_v_movement, __pyx_v_singler);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":203
+  /* "pathing/scr/cy_nodeGraph.pyx":204
  *     def buildFromArr(self, cnp.ndarray[int, ndim=3] arr, cnp.ndarray[int, ndim=1] sizes, int movement=0, int singler=0):
  *         cdef cppInter.node_Graph* graph = new cppInter.node_Graph(arr, sizes, movement, singler)
  *         self.cppHandler = graph             # <<<<<<<<<<<<<<
@@ -6168,7 +6153,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_buildFromA
  */
   __pyx_v_self->cppHandler = __pyx_v_graph;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":201
+  /* "pathing/scr/cy_nodeGraph.pyx":202
  *     cdef cppInter.node_Graph* cppHandler
  * 
  *     def buildFromArr(self, cnp.ndarray[int, ndim=3] arr, cnp.ndarray[int, ndim=1] sizes, int movement=0, int singler=0):             # <<<<<<<<<<<<<<
@@ -6199,7 +6184,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_buildFromA
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":206
+/* "pathing/scr/cy_nodeGraph.pyx":207
  * 
  * 
  *     def serch(self, cnp.ndarray[int, ndim=1] start, cnp.ndarray[int, ndim=1] end, int lenght):             # <<<<<<<<<<<<<<
@@ -6244,17 +6229,17 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_3serch(PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_end)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("serch", 1, 3, 3, 1); __PYX_ERR(1, 206, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("serch", 1, 3, 3, 1); __PYX_ERR(1, 207, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_lenght)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("serch", 1, 3, 3, 2); __PYX_ERR(1, 206, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("serch", 1, 3, 3, 2); __PYX_ERR(1, 207, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "serch") < 0)) __PYX_ERR(1, 206, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "serch") < 0)) __PYX_ERR(1, 207, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -6265,18 +6250,18 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_3serch(PyO
     }
     __pyx_v_start = ((PyArrayObject *)values[0]);
     __pyx_v_end = ((PyArrayObject *)values[1]);
-    __pyx_v_lenght = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_lenght == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 206, __pyx_L3_error)
+    __pyx_v_lenght = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_lenght == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 207, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("serch", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 206, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("serch", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 207, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pathing.scr.cy_nodeGraph.Py_nodeGraph.serch", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start), __pyx_ptype_5numpy_ndarray, 1, "start", 0))) __PYX_ERR(1, 206, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_end), __pyx_ptype_5numpy_ndarray, 1, "end", 0))) __PYX_ERR(1, 206, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start), __pyx_ptype_5numpy_ndarray, 1, "start", 0))) __PYX_ERR(1, 207, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_end), __pyx_ptype_5numpy_ndarray, 1, "end", 0))) __PYX_ERR(1, 207, __pyx_L1_error)
   __pyx_r = __pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_2serch(((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph *)__pyx_v_self), __pyx_v_start, __pyx_v_end, __pyx_v_lenght);
 
   /* function exit code */
@@ -6319,39 +6304,39 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_2serch(str
   __pyx_pybuffernd_end.rcbuffer = &__pyx_pybuffer_end;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_start.rcbuffer->pybuffer, (PyObject*)__pyx_v_start, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 206, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_start.rcbuffer->pybuffer, (PyObject*)__pyx_v_start, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 207, __pyx_L1_error)
   }
   __pyx_pybuffernd_start.diminfo[0].strides = __pyx_pybuffernd_start.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_start.diminfo[0].shape = __pyx_pybuffernd_start.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_end.rcbuffer->pybuffer, (PyObject*)__pyx_v_end, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 206, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_end.rcbuffer->pybuffer, (PyObject*)__pyx_v_end, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 207, __pyx_L1_error)
   }
   __pyx_pybuffernd_end.diminfo[0].strides = __pyx_pybuffernd_end.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_end.diminfo[0].shape = __pyx_pybuffernd_end.rcbuffer->pybuffer.shape[0];
 
-  /* "pathing/scr/cy_nodeGraph.pyx":207
+  /* "pathing/scr/cy_nodeGraph.pyx":208
  * 
  *     def serch(self, cnp.ndarray[int, ndim=1] start, cnp.ndarray[int, ndim=1] end, int lenght):
  *         cdef cppInter.cvector[cppInter.PathNode*] nodes = self.cppHandler.Astar(start, end, lenght)             # <<<<<<<<<<<<<<
  *         cdef list Pynodes=[]
  *         cdef cppInter.PathNode* currentNode
  */
-  __pyx_t_1 = __pyx_convert_vector_from_py_int(((PyObject *)__pyx_v_start)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 207, __pyx_L1_error)
-  __pyx_t_2 = __pyx_convert_vector_from_py_int(((PyObject *)__pyx_v_end)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 207, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_from_py_int(((PyObject *)__pyx_v_start)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 208, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_int(((PyObject *)__pyx_v_end)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 208, __pyx_L1_error)
   __pyx_v_nodes = __pyx_v_self->cppHandler->Astar(__pyx_t_1, __pyx_t_2, __pyx_v_lenght);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":208
+  /* "pathing/scr/cy_nodeGraph.pyx":209
  *     def serch(self, cnp.ndarray[int, ndim=1] start, cnp.ndarray[int, ndim=1] end, int lenght):
  *         cdef cppInter.cvector[cppInter.PathNode*] nodes = self.cppHandler.Astar(start, end, lenght)
  *         cdef list Pynodes=[]             # <<<<<<<<<<<<<<
  *         cdef cppInter.PathNode* currentNode
  *         for currentNode in nodes:
  */
-  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 208, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_Pynodes = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":210
+  /* "pathing/scr/cy_nodeGraph.pyx":211
  *         cdef list Pynodes=[]
  *         cdef cppInter.PathNode* currentNode
  *         for currentNode in nodes:             # <<<<<<<<<<<<<<
@@ -6365,19 +6350,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_2serch(str
     ++__pyx_t_4;
     __pyx_v_currentNode = __pyx_t_5;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":211
+    /* "pathing/scr/cy_nodeGraph.pyx":212
  *         cdef cppInter.PathNode* currentNode
  *         for currentNode in nodes:
  *             n = PY_node()             # <<<<<<<<<<<<<<
  *             n.c_node = currentNode
  *             Pynodes.append(n)
  */
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 211, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_XDECREF_SET(__pyx_v_n, ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":212
+    /* "pathing/scr/cy_nodeGraph.pyx":213
  *         for currentNode in nodes:
  *             n = PY_node()
  *             n.c_node = currentNode             # <<<<<<<<<<<<<<
@@ -6386,16 +6371,16 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_2serch(str
  */
     __pyx_v_n->c_node = __pyx_v_currentNode;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":213
+    /* "pathing/scr/cy_nodeGraph.pyx":214
  *             n = PY_node()
  *             n.c_node = currentNode
  *             Pynodes.append(n)             # <<<<<<<<<<<<<<
  *         return Pynodes
  * 
  */
-    __pyx_t_6 = __Pyx_PyList_Append(__pyx_v_Pynodes, ((PyObject *)__pyx_v_n)); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(1, 213, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyList_Append(__pyx_v_Pynodes, ((PyObject *)__pyx_v_n)); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(1, 214, __pyx_L1_error)
 
-    /* "pathing/scr/cy_nodeGraph.pyx":210
+    /* "pathing/scr/cy_nodeGraph.pyx":211
  *         cdef list Pynodes=[]
  *         cdef cppInter.PathNode* currentNode
  *         for currentNode in nodes:             # <<<<<<<<<<<<<<
@@ -6404,7 +6389,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_2serch(str
  */
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":214
+  /* "pathing/scr/cy_nodeGraph.pyx":215
  *             n.c_node = currentNode
  *             Pynodes.append(n)
  *         return Pynodes             # <<<<<<<<<<<<<<
@@ -6416,7 +6401,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_2serch(str
   __pyx_r = __pyx_v_Pynodes;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":206
+  /* "pathing/scr/cy_nodeGraph.pyx":207
  * 
  * 
  *     def serch(self, cnp.ndarray[int, ndim=1] start, cnp.ndarray[int, ndim=1] end, int lenght):             # <<<<<<<<<<<<<<
@@ -6448,7 +6433,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_2serch(str
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":216
+/* "pathing/scr/cy_nodeGraph.pyx":217
  *         return Pynodes
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -6474,7 +6459,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_4__str__(C
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__str__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":217
+  /* "pathing/scr/cy_nodeGraph.pyx":218
  * 
  *     def __str__(self):
  *         return f"abstract node Graph"             # <<<<<<<<<<<<<<
@@ -6486,7 +6471,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_4__str__(C
   __pyx_r = __pyx_kp_u_abstract_node_Graph;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":216
+  /* "pathing/scr/cy_nodeGraph.pyx":217
  *         return Pynodes
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -6501,7 +6486,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_4__str__(C
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":221
+/* "pathing/scr/cy_nodeGraph.pyx":222
  * 
  *     @property
  *     def size(self)->list[int]:             # <<<<<<<<<<<<<<
@@ -6531,7 +6516,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_4size___ge
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":222
+  /* "pathing/scr/cy_nodeGraph.pyx":223
  *     @property
  *     def size(self)->list[int]:
  *         return self.cppHandler.size             # <<<<<<<<<<<<<<
@@ -6539,13 +6524,13 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_4size___ge
  *     @property
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->cppHandler->size); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 222, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->cppHandler->size); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 223, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":221
+  /* "pathing/scr/cy_nodeGraph.pyx":222
  * 
  *     @property
  *     def size(self)->list[int]:             # <<<<<<<<<<<<<<
@@ -6564,7 +6549,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_4size___ge
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":225
+/* "pathing/scr/cy_nodeGraph.pyx":226
  * 
  *     @property
  *     def abstractCluster(self):             # <<<<<<<<<<<<<<
@@ -6599,19 +6584,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_15abstract
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":226
+  /* "pathing/scr/cy_nodeGraph.pyx":227
  *     @property
  *     def abstractCluster(self):
  *         clus = PY_Cluster()             # <<<<<<<<<<<<<<
  *         clus.c_Cluster = self.cppHandler.superCluster
  *         clus.sizes = list(np.array(clus.c_Cluster.clusterShape) * self.size)
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_Cluster)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 226, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_Cluster)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 227, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_clus = ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_Cluster *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":227
+  /* "pathing/scr/cy_nodeGraph.pyx":228
  *     def abstractCluster(self):
  *         clus = PY_Cluster()
  *         clus.c_Cluster = self.cppHandler.superCluster             # <<<<<<<<<<<<<<
@@ -6621,19 +6606,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_15abstract
   __pyx_t_2 = __pyx_v_self->cppHandler->superCluster;
   __pyx_v_clus->c_Cluster = __pyx_t_2;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":228
+  /* "pathing/scr/cy_nodeGraph.pyx":229
  *         clus = PY_Cluster()
  *         clus.c_Cluster = self.cppHandler.superCluster
  *         clus.sizes = list(np.array(clus.c_Cluster.clusterShape) * self.size)             # <<<<<<<<<<<<<<
  *         return clus
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 228, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_array); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 228, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_array); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __pyx_convert_vector_to_py_int(__pyx_v_clus->c_Cluster->clusterShape); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 228, __pyx_L1_error)
+  __pyx_t_3 = __pyx_convert_vector_to_py_int(__pyx_v_clus->c_Cluster->clusterShape); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_5 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
@@ -6648,16 +6633,16 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_15abstract
   __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 228, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 228, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 228, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PySequence_List(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 228, __pyx_L1_error)
+  __pyx_t_4 = PySequence_List(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_GIVEREF(__pyx_t_4);
@@ -6666,7 +6651,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_15abstract
   __pyx_v_clus->sizes = ((PyObject*)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":229
+  /* "pathing/scr/cy_nodeGraph.pyx":230
  *         clus.c_Cluster = self.cppHandler.superCluster
  *         clus.sizes = list(np.array(clus.c_Cluster.clusterShape) * self.size)
  *         return clus             # <<<<<<<<<<<<<<
@@ -6678,7 +6663,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_15abstract
   __pyx_r = ((PyObject *)__pyx_v_clus);
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":225
+  /* "pathing/scr/cy_nodeGraph.pyx":226
  * 
  *     @property
  *     def abstractCluster(self):             # <<<<<<<<<<<<<<
@@ -6701,7 +6686,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_15abstract
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":232
+/* "pathing/scr/cy_nodeGraph.pyx":233
  * 
  *     @property
  *     def lowerNodeGraphs(self):             # <<<<<<<<<<<<<<
@@ -6738,19 +6723,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_15lowerNod
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":233
+  /* "pathing/scr/cy_nodeGraph.pyx":234
  *     @property
  *     def lowerNodeGraphs(self):
  *         lowerGrphs = []             # <<<<<<<<<<<<<<
  *         cdef cppInter.cvector[cppInter.node_Graph*] graphs = deref(self.cppHandler).getLowerKeys()
  *         cdef cppInter.node_Graph* graph
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 233, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_lowerGrphs = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":234
+  /* "pathing/scr/cy_nodeGraph.pyx":235
  *     def lowerNodeGraphs(self):
  *         lowerGrphs = []
  *         cdef cppInter.cvector[cppInter.node_Graph*] graphs = deref(self.cppHandler).getLowerKeys()             # <<<<<<<<<<<<<<
@@ -6759,7 +6744,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_15lowerNod
  */
   __pyx_v_graphs = (*__pyx_v_self->cppHandler).getLowerKeys();
 
-  /* "pathing/scr/cy_nodeGraph.pyx":236
+  /* "pathing/scr/cy_nodeGraph.pyx":237
  *         cdef cppInter.cvector[cppInter.node_Graph*] graphs = deref(self.cppHandler).getLowerKeys()
  *         cdef cppInter.node_Graph* graph
  *         for graph in graphs:             # <<<<<<<<<<<<<<
@@ -6773,19 +6758,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_15lowerNod
     ++__pyx_t_2;
     __pyx_v_graph = __pyx_t_3;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":237
+    /* "pathing/scr/cy_nodeGraph.pyx":238
  *         cdef cppInter.node_Graph* graph
  *         for graph in graphs:
  *             g = Py_nodeGraph()             # <<<<<<<<<<<<<<
  *             g.cppHandler = graph
  *             lowerGrphs.append(g)
  */
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 237, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 238, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_g, ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":238
+    /* "pathing/scr/cy_nodeGraph.pyx":239
  *         for graph in graphs:
  *             g = Py_nodeGraph()
  *             g.cppHandler = graph             # <<<<<<<<<<<<<<
@@ -6794,16 +6779,16 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_15lowerNod
  */
     __pyx_v_g->cppHandler = __pyx_v_graph;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":239
+    /* "pathing/scr/cy_nodeGraph.pyx":240
  *             g = Py_nodeGraph()
  *             g.cppHandler = graph
  *             lowerGrphs.append(g)             # <<<<<<<<<<<<<<
  *         return lowerGrphs
  * 
  */
-    __pyx_t_4 = __Pyx_PyList_Append(__pyx_v_lowerGrphs, ((PyObject *)__pyx_v_g)); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(1, 239, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyList_Append(__pyx_v_lowerGrphs, ((PyObject *)__pyx_v_g)); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(1, 240, __pyx_L1_error)
 
-    /* "pathing/scr/cy_nodeGraph.pyx":236
+    /* "pathing/scr/cy_nodeGraph.pyx":237
  *         cdef cppInter.cvector[cppInter.node_Graph*] graphs = deref(self.cppHandler).getLowerKeys()
  *         cdef cppInter.node_Graph* graph
  *         for graph in graphs:             # <<<<<<<<<<<<<<
@@ -6812,7 +6797,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_15lowerNod
  */
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":240
+  /* "pathing/scr/cy_nodeGraph.pyx":241
  *             g.cppHandler = graph
  *             lowerGrphs.append(g)
  *         return lowerGrphs             # <<<<<<<<<<<<<<
@@ -6824,7 +6809,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_15lowerNod
   __pyx_r = __pyx_v_lowerGrphs;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":232
+  /* "pathing/scr/cy_nodeGraph.pyx":233
  * 
  *     @property
  *     def lowerNodeGraphs(self):             # <<<<<<<<<<<<<<
@@ -6845,7 +6830,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_15lowerNod
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":243
+/* "pathing/scr/cy_nodeGraph.pyx":244
  * 
  *     @property
  *     def clusters(self):             # <<<<<<<<<<<<<<
@@ -6882,19 +6867,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_8clusters_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":244
+  /* "pathing/scr/cy_nodeGraph.pyx":245
  *     @property
  *     def clusters(self):
  *         res = []             # <<<<<<<<<<<<<<
  *         cdef cppInter.cvector[cppInter.Cluster*] clusters = self.cppHandler.getLowerClusterKeys()
  *         cdef cppInter.Cluster* clus
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 244, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_res = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":245
+  /* "pathing/scr/cy_nodeGraph.pyx":246
  *     def clusters(self):
  *         res = []
  *         cdef cppInter.cvector[cppInter.Cluster*] clusters = self.cppHandler.getLowerClusterKeys()             # <<<<<<<<<<<<<<
@@ -6903,7 +6888,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_8clusters_
  */
   __pyx_v_clusters = __pyx_v_self->cppHandler->getLowerClusterKeys();
 
-  /* "pathing/scr/cy_nodeGraph.pyx":247
+  /* "pathing/scr/cy_nodeGraph.pyx":248
  *         cdef cppInter.cvector[cppInter.Cluster*] clusters = self.cppHandler.getLowerClusterKeys()
  *         cdef cppInter.Cluster* clus
  *         for clus in clusters:             # <<<<<<<<<<<<<<
@@ -6917,19 +6902,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_8clusters_
     ++__pyx_t_2;
     __pyx_v_clus = __pyx_t_3;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":248
+    /* "pathing/scr/cy_nodeGraph.pyx":249
  *         cdef cppInter.Cluster* clus
  *         for clus in clusters:
  *             c = PY_Cluster()             # <<<<<<<<<<<<<<
  *             c.c_Cluster = clus
  *             res.append(c)
  */
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_Cluster)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 248, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_Cluster)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 249, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_c, ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_Cluster *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":249
+    /* "pathing/scr/cy_nodeGraph.pyx":250
  *         for clus in clusters:
  *             c = PY_Cluster()
  *             c.c_Cluster = clus             # <<<<<<<<<<<<<<
@@ -6938,16 +6923,16 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_8clusters_
  */
     __pyx_v_c->c_Cluster = __pyx_v_clus;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":250
+    /* "pathing/scr/cy_nodeGraph.pyx":251
  *             c = PY_Cluster()
  *             c.c_Cluster = clus
  *             res.append(c)             # <<<<<<<<<<<<<<
  *         return res
  * 
  */
-    __pyx_t_4 = __Pyx_PyList_Append(__pyx_v_res, ((PyObject *)__pyx_v_c)); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(1, 250, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyList_Append(__pyx_v_res, ((PyObject *)__pyx_v_c)); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(1, 251, __pyx_L1_error)
 
-    /* "pathing/scr/cy_nodeGraph.pyx":247
+    /* "pathing/scr/cy_nodeGraph.pyx":248
  *         cdef cppInter.cvector[cppInter.Cluster*] clusters = self.cppHandler.getLowerClusterKeys()
  *         cdef cppInter.Cluster* clus
  *         for clus in clusters:             # <<<<<<<<<<<<<<
@@ -6956,7 +6941,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_8clusters_
  */
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":251
+  /* "pathing/scr/cy_nodeGraph.pyx":252
  *             c.c_Cluster = clus
  *             res.append(c)
  *         return res             # <<<<<<<<<<<<<<
@@ -6968,7 +6953,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_8clusters_
   __pyx_r = __pyx_v_res;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":243
+  /* "pathing/scr/cy_nodeGraph.pyx":244
  * 
  *     @property
  *     def clusters(self):             # <<<<<<<<<<<<<<
@@ -6989,7 +6974,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_8clusters_
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":253
+/* "pathing/scr/cy_nodeGraph.pyx":254
  *         return res
  * 
  *     def Astar(self, cnp.ndarray[int, ndim=1] start, cnp.ndarray[int, ndim=1] end, int length, bint cleanup=True):             # <<<<<<<<<<<<<<
@@ -7037,13 +7022,13 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_7Astar(PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_end)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("Astar", 0, 3, 4, 1); __PYX_ERR(1, 253, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("Astar", 0, 3, 4, 1); __PYX_ERR(1, 254, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_length)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("Astar", 0, 3, 4, 2); __PYX_ERR(1, 253, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("Astar", 0, 3, 4, 2); __PYX_ERR(1, 254, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -7053,7 +7038,7 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_7Astar(PyO
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Astar") < 0)) __PYX_ERR(1, 253, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Astar") < 0)) __PYX_ERR(1, 254, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -7068,23 +7053,23 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_7Astar(PyO
     }
     __pyx_v_start = ((PyArrayObject *)values[0]);
     __pyx_v_end = ((PyArrayObject *)values[1]);
-    __pyx_v_length = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_length == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 253, __pyx_L3_error)
+    __pyx_v_length = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_length == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 254, __pyx_L3_error)
     if (values[3]) {
-      __pyx_v_cleanup = __Pyx_PyObject_IsTrue(values[3]); if (unlikely((__pyx_v_cleanup == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 253, __pyx_L3_error)
+      __pyx_v_cleanup = __Pyx_PyObject_IsTrue(values[3]); if (unlikely((__pyx_v_cleanup == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 254, __pyx_L3_error)
     } else {
       __pyx_v_cleanup = ((int)1);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("Astar", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 253, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("Astar", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 254, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pathing.scr.cy_nodeGraph.Py_nodeGraph.Astar", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start), __pyx_ptype_5numpy_ndarray, 1, "start", 0))) __PYX_ERR(1, 253, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_end), __pyx_ptype_5numpy_ndarray, 1, "end", 0))) __PYX_ERR(1, 253, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_start), __pyx_ptype_5numpy_ndarray, 1, "start", 0))) __PYX_ERR(1, 254, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_end), __pyx_ptype_5numpy_ndarray, 1, "end", 0))) __PYX_ERR(1, 254, __pyx_L1_error)
   __pyx_r = __pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph *)__pyx_v_self), __pyx_v_start, __pyx_v_end, __pyx_v_length, __pyx_v_cleanup);
 
   /* function exit code */
@@ -7128,27 +7113,27 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(str
   __pyx_pybuffernd_end.rcbuffer = &__pyx_pybuffer_end;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_start.rcbuffer->pybuffer, (PyObject*)__pyx_v_start, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 253, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_start.rcbuffer->pybuffer, (PyObject*)__pyx_v_start, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 254, __pyx_L1_error)
   }
   __pyx_pybuffernd_start.diminfo[0].strides = __pyx_pybuffernd_start.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_start.diminfo[0].shape = __pyx_pybuffernd_start.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_end.rcbuffer->pybuffer, (PyObject*)__pyx_v_end, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 253, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_end.rcbuffer->pybuffer, (PyObject*)__pyx_v_end, &__Pyx_TypeInfo_int, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(1, 254, __pyx_L1_error)
   }
   __pyx_pybuffernd_end.diminfo[0].strides = __pyx_pybuffernd_end.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_end.diminfo[0].shape = __pyx_pybuffernd_end.rcbuffer->pybuffer.shape[0];
 
-  /* "pathing/scr/cy_nodeGraph.pyx":254
+  /* "pathing/scr/cy_nodeGraph.pyx":255
  * 
  *     def Astar(self, cnp.ndarray[int, ndim=1] start, cnp.ndarray[int, ndim=1] end, int length, bint cleanup=True):
  *         cdef cppInter.cvector[cppInter.PathNode*] path = self.cppHandler.Astar(start, end, length)             # <<<<<<<<<<<<<<
  *         cdef cppInter.cvector[cppInter.PathNode*].iterator itr = path.begin()
  *         res = []
  */
-  __pyx_t_1 = __pyx_convert_vector_from_py_int(((PyObject *)__pyx_v_start)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 254, __pyx_L1_error)
-  __pyx_t_2 = __pyx_convert_vector_from_py_int(((PyObject *)__pyx_v_end)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 254, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_from_py_int(((PyObject *)__pyx_v_start)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 255, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_from_py_int(((PyObject *)__pyx_v_end)); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 255, __pyx_L1_error)
   __pyx_v_path = __pyx_v_self->cppHandler->Astar(__pyx_t_1, __pyx_t_2, __pyx_v_length);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":255
+  /* "pathing/scr/cy_nodeGraph.pyx":256
  *     def Astar(self, cnp.ndarray[int, ndim=1] start, cnp.ndarray[int, ndim=1] end, int length, bint cleanup=True):
  *         cdef cppInter.cvector[cppInter.PathNode*] path = self.cppHandler.Astar(start, end, length)
  *         cdef cppInter.cvector[cppInter.PathNode*].iterator itr = path.begin()             # <<<<<<<<<<<<<<
@@ -7157,19 +7142,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(str
  */
   __pyx_v_itr = __pyx_v_path.begin();
 
-  /* "pathing/scr/cy_nodeGraph.pyx":256
+  /* "pathing/scr/cy_nodeGraph.pyx":257
  *         cdef cppInter.cvector[cppInter.PathNode*] path = self.cppHandler.Astar(start, end, length)
  *         cdef cppInter.cvector[cppInter.PathNode*].iterator itr = path.begin()
  *         res = []             # <<<<<<<<<<<<<<
  *         if path.size() == 0: raise PathingError(f"no valid path was found")
  * 
  */
-  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 256, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 257, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_res = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":257
+  /* "pathing/scr/cy_nodeGraph.pyx":258
  *         cdef cppInter.cvector[cppInter.PathNode*].iterator itr = path.begin()
  *         res = []
  *         if path.size() == 0: raise PathingError(f"no valid path was found")             # <<<<<<<<<<<<<<
@@ -7178,14 +7163,14 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(str
  */
   __pyx_t_4 = ((__pyx_v_path.size() == 0) != 0);
   if (unlikely(__pyx_t_4)) {
-    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PathingError), __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 257, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PathingError), __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 258, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(1, 257, __pyx_L1_error)
+    __PYX_ERR(1, 258, __pyx_L1_error)
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":259
+  /* "pathing/scr/cy_nodeGraph.pyx":260
  *         if path.size() == 0: raise PathingError(f"no valid path was found")
  * 
  *         while itr != path.end():             # <<<<<<<<<<<<<<
@@ -7196,7 +7181,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(str
     __pyx_t_4 = ((__pyx_v_itr != __pyx_v_path.end()) != 0);
     if (!__pyx_t_4) break;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":260
+    /* "pathing/scr/cy_nodeGraph.pyx":261
  * 
  *         while itr != path.end():
  *             if deref(itr) == NULL:             # <<<<<<<<<<<<<<
@@ -7206,7 +7191,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(str
     __pyx_t_4 = (((*__pyx_v_itr) == NULL) != 0);
     if (__pyx_t_4) {
 
-      /* "pathing/scr/cy_nodeGraph.pyx":261
+      /* "pathing/scr/cy_nodeGraph.pyx":262
  *         while itr != path.end():
  *             if deref(itr) == NULL:
  *                 return res;             # <<<<<<<<<<<<<<
@@ -7218,7 +7203,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(str
       __pyx_r = __pyx_v_res;
       goto __pyx_L0;
 
-      /* "pathing/scr/cy_nodeGraph.pyx":260
+      /* "pathing/scr/cy_nodeGraph.pyx":261
  * 
  *         while itr != path.end():
  *             if deref(itr) == NULL:             # <<<<<<<<<<<<<<
@@ -7227,19 +7212,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(str
  */
     }
 
-    /* "pathing/scr/cy_nodeGraph.pyx":262
+    /* "pathing/scr/cy_nodeGraph.pyx":263
  *             if deref(itr) == NULL:
  *                 return res;
  *             n = PY_node()             # <<<<<<<<<<<<<<
  *             n.c_node = deref(itr)
  *             res.append(n)
  */
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 262, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 263, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_XDECREF_SET(__pyx_v_n, ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":263
+    /* "pathing/scr/cy_nodeGraph.pyx":264
  *                 return res;
  *             n = PY_node()
  *             n.c_node = deref(itr)             # <<<<<<<<<<<<<<
@@ -7248,16 +7233,16 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(str
  */
     __pyx_v_n->c_node = (*__pyx_v_itr);
 
-    /* "pathing/scr/cy_nodeGraph.pyx":264
+    /* "pathing/scr/cy_nodeGraph.pyx":265
  *             n = PY_node()
  *             n.c_node = deref(itr)
  *             res.append(n)             # <<<<<<<<<<<<<<
  *             inc(itr)
  * 
  */
-    __pyx_t_5 = __Pyx_PyList_Append(__pyx_v_res, ((PyObject *)__pyx_v_n)); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(1, 264, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyList_Append(__pyx_v_res, ((PyObject *)__pyx_v_n)); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(1, 265, __pyx_L1_error)
 
-    /* "pathing/scr/cy_nodeGraph.pyx":265
+    /* "pathing/scr/cy_nodeGraph.pyx":266
  *             n.c_node = deref(itr)
  *             res.append(n)
  *             inc(itr)             # <<<<<<<<<<<<<<
@@ -7267,7 +7252,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(str
     (void)((++__pyx_v_itr));
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":267
+  /* "pathing/scr/cy_nodeGraph.pyx":268
  *             inc(itr)
  * 
  *         if cleanup: self.cleanUp()             # <<<<<<<<<<<<<<
@@ -7276,7 +7261,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(str
  */
   __pyx_t_4 = (__pyx_v_cleanup != 0);
   if (__pyx_t_4) {
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_cleanUp); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 267, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_cleanUp); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 268, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_7 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
@@ -7290,13 +7275,13 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(str
     }
     __pyx_t_3 = (__pyx_t_7) ? __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7) : __Pyx_PyObject_CallNoArg(__pyx_t_6);
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 267, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 268, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":268
+  /* "pathing/scr/cy_nodeGraph.pyx":269
  * 
  *         if cleanup: self.cleanUp()
  *         return res             # <<<<<<<<<<<<<<
@@ -7308,7 +7293,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(str
   __pyx_r = __pyx_v_res;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":253
+  /* "pathing/scr/cy_nodeGraph.pyx":254
  *         return res
  * 
  *     def Astar(self, cnp.ndarray[int, ndim=1] start, cnp.ndarray[int, ndim=1] end, int length, bint cleanup=True):             # <<<<<<<<<<<<<<
@@ -7342,7 +7327,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_6Astar(str
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":270
+/* "pathing/scr/cy_nodeGraph.pyx":271
  *         return res
  * 
  *     def cleanUp(self):             # <<<<<<<<<<<<<<
@@ -7368,7 +7353,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_8cleanUp(s
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("cleanUp", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":271
+  /* "pathing/scr/cy_nodeGraph.pyx":272
  * 
  *     def cleanUp(self):
  *         deref(self.cppHandler).cleanUp()             # <<<<<<<<<<<<<<
@@ -7377,7 +7362,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_8cleanUp(s
  */
   (*__pyx_v_self->cppHandler).cleanUp();
 
-  /* "pathing/scr/cy_nodeGraph.pyx":272
+  /* "pathing/scr/cy_nodeGraph.pyx":273
  *     def cleanUp(self):
  *         deref(self.cppHandler).cleanUp()
  *         return             # <<<<<<<<<<<<<<
@@ -7388,7 +7373,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_8cleanUp(s
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":270
+  /* "pathing/scr/cy_nodeGraph.pyx":271
  *         return res
  * 
  *     def cleanUp(self):             # <<<<<<<<<<<<<<
@@ -7516,7 +7501,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_12Py_nodeGraph_12__setsta
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":281
+/* "pathing/scr/cy_nodeGraph.pyx":282
  *     cdef bint _buildLive
  * 
  *     def __cinit__(self, PY_Cluster clus, bint buildLive = False):             # <<<<<<<<<<<<<<
@@ -7562,7 +7547,7 @@ static int __pyx_pw_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_1__cinit__(PyO
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(1, 281, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(1, 282, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -7575,20 +7560,20 @@ static int __pyx_pw_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_1__cinit__(PyO
     }
     __pyx_v_clus = ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_Cluster *)values[0]);
     if (values[1]) {
-      __pyx_v_buildLive = __Pyx_PyObject_IsTrue(values[1]); if (unlikely((__pyx_v_buildLive == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 281, __pyx_L3_error)
+      __pyx_v_buildLive = __Pyx_PyObject_IsTrue(values[1]); if (unlikely((__pyx_v_buildLive == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 282, __pyx_L3_error)
     } else {
       __pyx_v_buildLive = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 281, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 282, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pathing.scr.cy_nodeGraph.Py_GoalCluster.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_clus), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_Cluster, 1, "clus", 0))) __PYX_ERR(1, 281, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_clus), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_Cluster, 1, "clus", 0))) __PYX_ERR(1, 282, __pyx_L1_error)
   __pyx_r = __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster___cinit__(((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster *)__pyx_v_self), __pyx_v_clus, __pyx_v_buildLive);
 
   /* function exit code */
@@ -7606,7 +7591,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster___cinit__(stru
   Cluster *__pyx_t_1;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":282
+  /* "pathing/scr/cy_nodeGraph.pyx":283
  * 
  *     def __cinit__(self, PY_Cluster clus, bint buildLive = False):
  *         self._buildLive = not buildLive             # <<<<<<<<<<<<<<
@@ -7615,7 +7600,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster___cinit__(stru
  */
   __pyx_v_self->_buildLive = (!(__pyx_v_buildLive != 0));
 
-  /* "pathing/scr/cy_nodeGraph.pyx":283
+  /* "pathing/scr/cy_nodeGraph.pyx":284
  *     def __cinit__(self, PY_Cluster clus, bint buildLive = False):
  *         self._buildLive = not buildLive
  *         self.c_goal = new cppInter.GoalCluster();             # <<<<<<<<<<<<<<
@@ -7624,7 +7609,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster___cinit__(stru
  */
   __pyx_v_self->c_goal = new GoalCluster();
 
-  /* "pathing/scr/cy_nodeGraph.pyx":284
+  /* "pathing/scr/cy_nodeGraph.pyx":285
  *         self._buildLive = not buildLive
  *         self.c_goal = new cppInter.GoalCluster();
  *         self.c_goal.clus = clus.c_Cluster             # <<<<<<<<<<<<<<
@@ -7634,7 +7619,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster___cinit__(stru
   __pyx_t_1 = __pyx_v_clus->c_Cluster;
   __pyx_v_self->c_goal->clus = __pyx_t_1;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":285
+  /* "pathing/scr/cy_nodeGraph.pyx":286
  *         self.c_goal = new cppInter.GoalCluster();
  *         self.c_goal.clus = clus.c_Cluster
  *         deref(self.c_goal).buildNodes()             # <<<<<<<<<<<<<<
@@ -7643,7 +7628,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster___cinit__(stru
  */
   (*__pyx_v_self->c_goal).buildNodes();
 
-  /* "pathing/scr/cy_nodeGraph.pyx":286
+  /* "pathing/scr/cy_nodeGraph.pyx":287
  *         self.c_goal.clus = clus.c_Cluster
  *         deref(self.c_goal).buildNodes()
  *         self._hasInitiated=False             # <<<<<<<<<<<<<<
@@ -7652,7 +7637,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster___cinit__(stru
  */
   __pyx_v_self->_hasInitiated = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":281
+  /* "pathing/scr/cy_nodeGraph.pyx":282
  *     cdef bint _buildLive
  * 
  *     def __cinit__(self, PY_Cluster clus, bint buildLive = False):             # <<<<<<<<<<<<<<
@@ -7666,7 +7651,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster___cinit__(stru
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":289
+/* "pathing/scr/cy_nodeGraph.pyx":290
  * 
  *     @property
  *     def goal(self):             # <<<<<<<<<<<<<<
@@ -7693,7 +7678,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal___
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":292
+  /* "pathing/scr/cy_nodeGraph.pyx":293
  *         """the goal to move to will do all internal builds automaticly
  *             """
  *         if not self._hasInitiated:             # <<<<<<<<<<<<<<
@@ -7703,7 +7688,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal___
   __pyx_t_1 = ((!(__pyx_v_self->_hasInitiated != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "pathing/scr/cy_nodeGraph.pyx":293
+    /* "pathing/scr/cy_nodeGraph.pyx":294
  *             """
  *         if not self._hasInitiated:
  *             return None             # <<<<<<<<<<<<<<
@@ -7714,7 +7699,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal___
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":292
+    /* "pathing/scr/cy_nodeGraph.pyx":293
  *         """the goal to move to will do all internal builds automaticly
  *             """
  *         if not self._hasInitiated:             # <<<<<<<<<<<<<<
@@ -7723,7 +7708,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal___
  */
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":294
+  /* "pathing/scr/cy_nodeGraph.pyx":295
  *         if not self._hasInitiated:
  *             return None
  *         return self.goal             # <<<<<<<<<<<<<<
@@ -7735,7 +7720,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal___
   __pyx_r = ((PyObject *)__pyx_v_self->goal);
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":289
+  /* "pathing/scr/cy_nodeGraph.pyx":290
  * 
  *     @property
  *     def goal(self):             # <<<<<<<<<<<<<<
@@ -7750,7 +7735,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal___
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":297
+/* "pathing/scr/cy_nodeGraph.pyx":298
  * 
  *     @goal.setter
  *     def goal(self, PY_node node):             # <<<<<<<<<<<<<<
@@ -7767,7 +7752,7 @@ static int __pyx_pw_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal_3__set__
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "node", 0))) __PYX_ERR(1, 297, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "node", 0))) __PYX_ERR(1, 298, __pyx_L1_error)
   __pyx_r = __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal_2__set__(((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster *)__pyx_v_self), ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)__pyx_v_node));
 
   /* function exit code */
@@ -7790,7 +7775,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal_2__set__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":298
+  /* "pathing/scr/cy_nodeGraph.pyx":299
  *     @goal.setter
  *     def goal(self, PY_node node):
  *         if self._buildLive:             # <<<<<<<<<<<<<<
@@ -7800,29 +7785,29 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal_2__set__
   __pyx_t_1 = (__pyx_v_self->_buildLive != 0);
   if (__pyx_t_1) {
 
-    /* "pathing/scr/cy_nodeGraph.pyx":299
+    /* "pathing/scr/cy_nodeGraph.pyx":300
  *     def goal(self, PY_node node):
  *         if self._buildLive:
  *             print("SET GOAL")             # <<<<<<<<<<<<<<
  *             self.c_goal.setGoal(node.id)
  *         else:
  */
-    if (__Pyx_PrintOne(0, __pyx_kp_s_SET_GOAL) < 0) __PYX_ERR(1, 299, __pyx_L1_error)
+    if (__Pyx_PrintOne(0, __pyx_kp_s_SET_GOAL) < 0) __PYX_ERR(1, 300, __pyx_L1_error)
 
-    /* "pathing/scr/cy_nodeGraph.pyx":300
+    /* "pathing/scr/cy_nodeGraph.pyx":301
  *         if self._buildLive:
  *             print("SET GOAL")
  *             self.c_goal.setGoal(node.id)             # <<<<<<<<<<<<<<
  *         else:
  *             self.c_goal.buildGraph(node.id)
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_node), __pyx_n_s_id_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 300, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_node), __pyx_n_s_id_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 301, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 300, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 301, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_self->c_goal->setGoal(__pyx_t_3);
 
-    /* "pathing/scr/cy_nodeGraph.pyx":298
+    /* "pathing/scr/cy_nodeGraph.pyx":299
  *     @goal.setter
  *     def goal(self, PY_node node):
  *         if self._buildLive:             # <<<<<<<<<<<<<<
@@ -7832,7 +7817,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal_2__set__
     goto __pyx_L3;
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":302
+  /* "pathing/scr/cy_nodeGraph.pyx":303
  *             self.c_goal.setGoal(node.id)
  *         else:
  *             self.c_goal.buildGraph(node.id)             # <<<<<<<<<<<<<<
@@ -7840,15 +7825,15 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal_2__set__
  *         self._hasInitiated = True
  */
   /*else*/ {
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_node), __pyx_n_s_id_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 302, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_node), __pyx_n_s_id_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 303, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 302, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 303, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_self->c_goal->buildGraph(__pyx_t_3);
   }
   __pyx_L3:;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":303
+  /* "pathing/scr/cy_nodeGraph.pyx":304
  *         else:
  *             self.c_goal.buildGraph(node.id)
  *         self.goal = node             # <<<<<<<<<<<<<<
@@ -7861,7 +7846,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal_2__set__
   __Pyx_DECREF(((PyObject *)__pyx_v_self->goal));
   __pyx_v_self->goal = __pyx_v_node;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":304
+  /* "pathing/scr/cy_nodeGraph.pyx":305
  *             self.c_goal.buildGraph(node.id)
  *         self.goal = node
  *         self._hasInitiated = True             # <<<<<<<<<<<<<<
@@ -7870,7 +7855,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal_2__set__
  */
   __pyx_v_self->_hasInitiated = 1;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":297
+  /* "pathing/scr/cy_nodeGraph.pyx":298
  * 
  *     @goal.setter
  *     def goal(self, PY_node node):             # <<<<<<<<<<<<<<
@@ -7890,7 +7875,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_4goal_2__set__
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":307
+/* "pathing/scr/cy_nodeGraph.pyx":308
  * 
  *     @property
  *     def buildLive(self):             # <<<<<<<<<<<<<<
@@ -7920,7 +7905,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_9buildLi
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":312
+  /* "pathing/scr/cy_nodeGraph.pyx":313
  *             this method will update all the required nodesvctors to point to the new goal if they dont point correctly yet otherwise
  *             the precalculateds will be used"""
  *         return self._buildLive             # <<<<<<<<<<<<<<
@@ -7928,13 +7913,13 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_9buildLi
  *     @buildLive.setter
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->_buildLive); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 312, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->_buildLive); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":307
+  /* "pathing/scr/cy_nodeGraph.pyx":308
  * 
  *     @property
  *     def buildLive(self):             # <<<<<<<<<<<<<<
@@ -7953,7 +7938,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_9buildLi
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":315
+/* "pathing/scr/cy_nodeGraph.pyx":316
  * 
  *     @buildLive.setter
  *     def buildLive(self, bint live):             # <<<<<<<<<<<<<<
@@ -7972,7 +7957,7 @@ static int __pyx_pw_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_9buildLive_3__
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   assert(__pyx_arg_live); {
-    __pyx_v_live = __Pyx_PyObject_IsTrue(__pyx_arg_live); if (unlikely((__pyx_v_live == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 315, __pyx_L3_error)
+    __pyx_v_live = __Pyx_PyObject_IsTrue(__pyx_arg_live); if (unlikely((__pyx_v_live == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 316, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -7994,7 +7979,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_9buildLive_2__
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":316
+  /* "pathing/scr/cy_nodeGraph.pyx":317
  *     @buildLive.setter
  *     def buildLive(self, bint live):
  *         self._buildLive = live             # <<<<<<<<<<<<<<
@@ -8003,7 +7988,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_9buildLive_2__
  */
   __pyx_v_self->_buildLive = __pyx_v_live;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":317
+  /* "pathing/scr/cy_nodeGraph.pyx":318
  *     def buildLive(self, bint live):
  *         self._buildLive = live
  *         if live == False:             # <<<<<<<<<<<<<<
@@ -8013,7 +7998,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_9buildLive_2__
   __pyx_t_1 = ((__pyx_v_live == 0) != 0);
   if (__pyx_t_1) {
 
-    /* "pathing/scr/cy_nodeGraph.pyx":318
+    /* "pathing/scr/cy_nodeGraph.pyx":319
  *         self._buildLive = live
  *         if live == False:
  *             self.goal = self.goal             # <<<<<<<<<<<<<<
@@ -8028,7 +8013,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_9buildLive_2__
     __pyx_v_self->goal = ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "pathing/scr/cy_nodeGraph.pyx":317
+    /* "pathing/scr/cy_nodeGraph.pyx":318
  *     def buildLive(self, bint live):
  *         self._buildLive = live
  *         if live == False:             # <<<<<<<<<<<<<<
@@ -8037,7 +8022,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_9buildLive_2__
  */
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":315
+  /* "pathing/scr/cy_nodeGraph.pyx":316
  * 
  *     @buildLive.setter
  *     def buildLive(self, bint live):             # <<<<<<<<<<<<<<
@@ -8051,7 +8036,7 @@ static int __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_9buildLive_2__
   return __pyx_r;
 }
 
-/* "pathing/scr/cy_nodeGraph.pyx":320
+/* "pathing/scr/cy_nodeGraph.pyx":321
  *             self.goal = self.goal
  * 
  *     def getNext(self, PY_node node, int distanceKey=0):             # <<<<<<<<<<<<<<
@@ -8098,7 +8083,7 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_3getNext
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "getNext") < 0)) __PYX_ERR(1, 320, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "getNext") < 0)) __PYX_ERR(1, 321, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -8111,20 +8096,20 @@ static PyObject *__pyx_pw_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_3getNext
     }
     __pyx_v_node = ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)values[0]);
     if (values[1]) {
-      __pyx_v_distanceKey = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_distanceKey == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 320, __pyx_L3_error)
+      __pyx_v_distanceKey = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_distanceKey == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 321, __pyx_L3_error)
     } else {
       __pyx_v_distanceKey = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("getNext", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 320, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("getNext", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 321, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pathing.scr.cy_nodeGraph.Py_GoalCluster.getNext", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "node", 0))) __PYX_ERR(1, 320, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_node), __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node, 1, "node", 0))) __PYX_ERR(1, 321, __pyx_L1_error)
   __pyx_r = __pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_2getNext(((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster *)__pyx_v_self), __pyx_v_node, __pyx_v_distanceKey);
 
   /* function exit code */
@@ -8149,7 +8134,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_2getNext
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("getNext", 0);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":323
+  /* "pathing/scr/cy_nodeGraph.pyx":324
  *         """get the next node to move to to get to the goal"""
  *         cdef cppInter.PathNode* nextNode
  *         if self._buildLive:             # <<<<<<<<<<<<<<
@@ -8159,20 +8144,20 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_2getNext
   __pyx_t_1 = (__pyx_v_self->_buildLive != 0);
   if (__pyx_t_1) {
 
-    /* "pathing/scr/cy_nodeGraph.pyx":324
+    /* "pathing/scr/cy_nodeGraph.pyx":325
  *         cdef cppInter.PathNode* nextNode
  *         if self._buildLive:
  *             nextNode = self.c_goal.liveGetNextNode(node.id, distanceKey)             # <<<<<<<<<<<<<<
  *         else:
  *             nextNode = self.c_goal.getNextPos(node.id)
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_node), __pyx_n_s_id_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 324, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_node), __pyx_n_s_id_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 325, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 324, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 325, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_nextNode = __pyx_v_self->c_goal->liveGetNextNode(__pyx_t_3, __pyx_v_distanceKey);
 
-    /* "pathing/scr/cy_nodeGraph.pyx":323
+    /* "pathing/scr/cy_nodeGraph.pyx":324
  *         """get the next node to move to to get to the goal"""
  *         cdef cppInter.PathNode* nextNode
  *         if self._buildLive:             # <<<<<<<<<<<<<<
@@ -8182,7 +8167,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_2getNext
     goto __pyx_L3;
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":326
+  /* "pathing/scr/cy_nodeGraph.pyx":327
  *             nextNode = self.c_goal.liveGetNextNode(node.id, distanceKey)
  *         else:
  *             nextNode = self.c_goal.getNextPos(node.id)             # <<<<<<<<<<<<<<
@@ -8190,15 +8175,15 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_2getNext
  *             raise PathingError(f"no path Found")
  */
   /*else*/ {
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_node), __pyx_n_s_id_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 326, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_node), __pyx_n_s_id_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 327, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 326, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 327, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_v_nextNode = __pyx_v_self->c_goal->getNextPos(__pyx_t_3);
   }
   __pyx_L3:;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":327
+  /* "pathing/scr/cy_nodeGraph.pyx":328
  *         else:
  *             nextNode = self.c_goal.getNextPos(node.id)
  *         if nextNode == NULL:             # <<<<<<<<<<<<<<
@@ -8208,20 +8193,20 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_2getNext
   __pyx_t_1 = ((__pyx_v_nextNode == NULL) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "pathing/scr/cy_nodeGraph.pyx":328
+    /* "pathing/scr/cy_nodeGraph.pyx":329
  *             nextNode = self.c_goal.getNextPos(node.id)
  *         if nextNode == NULL:
  *             raise PathingError(f"no path Found")             # <<<<<<<<<<<<<<
  *         n = PY_node()
  *         n.c_node = nextNode
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PathingError), __pyx_tuple__15, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 328, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PathingError), __pyx_tuple__15, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 329, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(1, 328, __pyx_L1_error)
+    __PYX_ERR(1, 329, __pyx_L1_error)
 
-    /* "pathing/scr/cy_nodeGraph.pyx":327
+    /* "pathing/scr/cy_nodeGraph.pyx":328
  *         else:
  *             nextNode = self.c_goal.getNextPos(node.id)
  *         if nextNode == NULL:             # <<<<<<<<<<<<<<
@@ -8230,19 +8215,19 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_2getNext
  */
   }
 
-  /* "pathing/scr/cy_nodeGraph.pyx":329
+  /* "pathing/scr/cy_nodeGraph.pyx":330
  *         if nextNode == NULL:
  *             raise PathingError(f"no path Found")
  *         n = PY_node()             # <<<<<<<<<<<<<<
  *         n.c_node = nextNode
  *         return n
  */
-  __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 329, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 330, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_n = ((struct __pyx_obj_7pathing_3scr_12cy_nodeGraph_PY_node *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":330
+  /* "pathing/scr/cy_nodeGraph.pyx":331
  *             raise PathingError(f"no path Found")
  *         n = PY_node()
  *         n.c_node = nextNode             # <<<<<<<<<<<<<<
@@ -8251,7 +8236,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_2getNext
  */
   __pyx_v_n->c_node = __pyx_v_nextNode;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":331
+  /* "pathing/scr/cy_nodeGraph.pyx":332
  *         n = PY_node()
  *         n.c_node = nextNode
  *         return n             # <<<<<<<<<<<<<<
@@ -8263,7 +8248,7 @@ static PyObject *__pyx_pf_7pathing_3scr_12cy_nodeGraph_14Py_GoalCluster_2getNext
   __pyx_r = ((PyObject *)__pyx_v_n);
   goto __pyx_L0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":320
+  /* "pathing/scr/cy_nodeGraph.pyx":321
  *             self.goal = self.goal
  * 
  *     def getNext(self, PY_node node, int distanceKey=0):             # <<<<<<<<<<<<<<
@@ -12131,15 +12116,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_length, __pyx_k_length, sizeof(__pyx_k_length), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_movement, __pyx_k_movement, sizeof(__pyx_k_movement), 0, 0, 1, 1},
-  {&__pyx_kp_u_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 1, 0, 0},
-  {&__pyx_n_s_name_2, __pyx_k_name_2, sizeof(__pyx_k_name_2), 0, 0, 1, 1},
+  {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_new, __pyx_k_new, sizeof(__pyx_k_new), 0, 0, 1, 1},
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
   {&__pyx_kp_u_no_path_Found, __pyx_k_no_path_Found, sizeof(__pyx_k_no_path_Found), 0, 1, 0, 0},
   {&__pyx_kp_s_no_path_was_found, __pyx_k_no_path_was_found, sizeof(__pyx_k_no_path_was_found), 0, 0, 1, 0},
   {&__pyx_kp_u_no_valid_path_was_found, __pyx_k_no_valid_path_was_found, sizeof(__pyx_k_no_valid_path_was_found), 0, 1, 0, 0},
   {&__pyx_n_s_node, __pyx_k_node, sizeof(__pyx_k_node), 0, 0, 1, 1},
-  {&__pyx_kp_u_node_edges, __pyx_k_node_edges, sizeof(__pyx_k_node_edges), 0, 1, 0, 0},
+  {&__pyx_kp_u_node_name, __pyx_k_node_name, sizeof(__pyx_k_node_name), 0, 1, 0, 0},
   {&__pyx_n_s_nodes, __pyx_k_nodes, sizeof(__pyx_k_nodes), 0, 0, 1, 1},
   {&__pyx_kp_u_not, __pyx_k_not, sizeof(__pyx_k_not), 0, 1, 0, 0},
   {&__pyx_kp_s_not_functionaly_implemented, __pyx_k_not_functionaly_implemented, sizeof(__pyx_k_not_functionaly_implemented), 0, 0, 1, 0},
@@ -12191,10 +12175,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 2, __pyx_L1_error)
-  __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 97, __pyx_L1_error)
-  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(1, 104, __pyx_L1_error)
-  __pyx_builtin_reversed = __Pyx_GetBuiltinName(__pyx_n_s_reversed); if (!__pyx_builtin_reversed) __PYX_ERR(1, 104, __pyx_L1_error)
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 105, __pyx_L1_error)
+  __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 98, __pyx_L1_error)
+  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(1, 105, __pyx_L1_error)
+  __pyx_builtin_reversed = __Pyx_GetBuiltinName(__pyx_n_s_reversed); if (!__pyx_builtin_reversed) __PYX_ERR(1, 105, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 106, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(2, 959, __pyx_L1_error)
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 61, __pyx_L1_error)
   return 0;
@@ -12244,58 +12228,58 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":97
+  /* "pathing/scr/cy_nodeGraph.pyx":98
  *     def getnode(self, poses):
  *         "get a node assuming the initaialisation was by nd matrix"
  *         if len(self.sizes) == 0: raise RuntimeError(f"class must be initiated")             # <<<<<<<<<<<<<<
  *         if len(poses) != len(self.sizes): raise DimentionMismatched()
  * 
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_class_must_be_initiated); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 97, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_class_must_be_initiated); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 98, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":111
+  /* "pathing/scr/cy_nodeGraph.pyx":112
  * 
  *         if self.c_Cluster.nodes.count(identity) == 0:
  *             raise ValueError(f"pathNode not found: the postion you where loking at is unwalkable")             # <<<<<<<<<<<<<<
  *         cdef PY_node n = PY_node()
  *         n.c_node = self.c_Cluster.nodes[identity]
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_u_pathNode_not_found_the_postion_y); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 111, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_u_pathNode_not_found_the_postion_y); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":125
+  /* "pathing/scr/cy_nodeGraph.pyx":126
  * 
  *         nodeIds = np.array(self.c_Cluster.Astar(a, b, distanceKey, getVisited))
  *         if nodeIds.size == 0: raise PathingError(f"no valid path was found")             # <<<<<<<<<<<<<<
  *         cdef list nodes = []
  *         cdef PY_node n
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_no_valid_path_was_found); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 125, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_no_valid_path_was_found); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":143
+  /* "pathing/scr/cy_nodeGraph.pyx":144
  *             nodeIds = np.array(self.c_Cluster.bfs(a, b, getVisited))
  *         except:
  *             raise PathingError("no path was found")             # <<<<<<<<<<<<<<
  *         if nodeIds.size == 0: raise PathingError(f"no valid path was found")
  *         cdef list nodes = []
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_s_no_path_was_found); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(1, 143, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_s_no_path_was_found); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(1, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":156
+  /* "pathing/scr/cy_nodeGraph.pyx":157
  *         """run A* pathfinding algorythem to find a path from start to end with distanceKey
  *         """
  *         raise Exception("not functionaly implemented")             # <<<<<<<<<<<<<<
  *         cdef a = start.id
  *         cdef b = end.id
  */
-  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_s_not_functionaly_implemented); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(1, 156, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_s_not_functionaly_implemented); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(1, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
 
@@ -12337,14 +12321,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__14);
   __Pyx_GIVEREF(__pyx_tuple__14);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":328
+  /* "pathing/scr/cy_nodeGraph.pyx":329
  *             nextNode = self.c_goal.getNextPos(node.id)
  *         if nextNode == NULL:
  *             raise PathingError(f"no path Found")             # <<<<<<<<<<<<<<
  *         n = PY_node()
  *         n.c_node = nextNode
  */
-  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_kp_u_no_path_Found); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(1, 328, __pyx_L1_error)
+  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_kp_u_no_path_Found); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(1, 329, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__15);
   __Pyx_GIVEREF(__pyx_tuple__15);
 
@@ -12532,35 +12516,35 @@ static int __Pyx_modinit_type_init_code(void) {
   if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PY_node, (PyObject *)&__pyx_type_7pathing_3scr_12cy_nodeGraph_PY_node) < 0) __PYX_ERR(1, 30, __pyx_L1_error)
   if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7pathing_3scr_12cy_nodeGraph_PY_node) < 0) __PYX_ERR(1, 30, __pyx_L1_error)
   __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_node = &__pyx_type_7pathing_3scr_12cy_nodeGraph_PY_node;
-  if (PyType_Ready(&__pyx_type_7pathing_3scr_12cy_nodeGraph_PY_Cluster) < 0) __PYX_ERR(1, 70, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7pathing_3scr_12cy_nodeGraph_PY_Cluster) < 0) __PYX_ERR(1, 71, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_7pathing_3scr_12cy_nodeGraph_PY_Cluster.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7pathing_3scr_12cy_nodeGraph_PY_Cluster.tp_dictoffset && __pyx_type_7pathing_3scr_12cy_nodeGraph_PY_Cluster.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_7pathing_3scr_12cy_nodeGraph_PY_Cluster.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PY_Cluster, (PyObject *)&__pyx_type_7pathing_3scr_12cy_nodeGraph_PY_Cluster) < 0) __PYX_ERR(1, 70, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7pathing_3scr_12cy_nodeGraph_PY_Cluster) < 0) __PYX_ERR(1, 70, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PY_Cluster, (PyObject *)&__pyx_type_7pathing_3scr_12cy_nodeGraph_PY_Cluster) < 0) __PYX_ERR(1, 71, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7pathing_3scr_12cy_nodeGraph_PY_Cluster) < 0) __PYX_ERR(1, 71, __pyx_L1_error)
   __pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_Cluster = &__pyx_type_7pathing_3scr_12cy_nodeGraph_PY_Cluster;
-  if (PyType_Ready(&__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph) < 0) __PYX_ERR(1, 195, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph) < 0) __PYX_ERR(1, 196, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph.tp_dictoffset && __pyx_type_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Py_nodeGraph, (PyObject *)&__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph) < 0) __PYX_ERR(1, 195, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph) < 0) __PYX_ERR(1, 195, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Py_nodeGraph, (PyObject *)&__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph) < 0) __PYX_ERR(1, 196, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph) < 0) __PYX_ERR(1, 196, __pyx_L1_error)
   __pyx_ptype_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph = &__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph;
-  if (PyType_Ready(&__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster) < 0) __PYX_ERR(1, 275, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster) < 0) __PYX_ERR(1, 276, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster.tp_dictoffset && __pyx_type_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Py_GoalCluster, (PyObject *)&__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster) < 0) __PYX_ERR(1, 275, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster) < 0) __PYX_ERR(1, 275, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Py_GoalCluster, (PyObject *)&__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster) < 0) __PYX_ERR(1, 276, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster) < 0) __PYX_ERR(1, 276, __pyx_L1_error)
   __pyx_ptype_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster = &__pyx_type_7pathing_3scr_12cy_nodeGraph_Py_GoalCluster;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -12800,7 +12784,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
   if (__pyx_module_is_main_pathing__scr__cy_nodeGraph) {
-    if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name_2, __pyx_n_s_main) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+    if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
@@ -12839,29 +12823,29 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(1, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pathing/scr/cy_nodeGraph.pyx":176
+  /* "pathing/scr/cy_nodeGraph.pyx":177
  *     def __str__(self):
  *         return f"Cluster<nodes: {len(self.nodes)}, size = {self.size}>"
  *     __repr__=__str__             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_GetNameInClass(__pyx_t_1, (PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_Cluster, __pyx_n_s_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 176, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_1, (PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_Cluster, __pyx_n_s_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_Cluster->tp_dict, __pyx_n_s_repr, __pyx_t_1) < 0) __PYX_ERR(1, 176, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_Cluster->tp_dict, __pyx_n_s_repr, __pyx_t_1) < 0) __PYX_ERR(1, 177, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7pathing_3scr_12cy_nodeGraph_PY_Cluster);
 
-  /* "pathing/scr/cy_nodeGraph.pyx":218
+  /* "pathing/scr/cy_nodeGraph.pyx":219
  *     def __str__(self):
  *         return f"abstract node Graph"
  *     __repr__=__str__             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __Pyx_GetNameInClass(__pyx_t_1, (PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph, __pyx_n_s_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 218, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_1, (PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph, __pyx_n_s_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph->tp_dict, __pyx_n_s_repr, __pyx_t_1) < 0) __PYX_ERR(1, 218, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph->tp_dict, __pyx_n_s_repr, __pyx_t_1) < 0) __PYX_ERR(1, 219, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_7pathing_3scr_12cy_nodeGraph_Py_nodeGraph);
 
@@ -13292,197 +13276,6 @@ bad:
 }
 #endif
 
-/* CIntToDigits */
-static const char DIGIT_PAIRS_10[2*10*10+1] = {
-    "00010203040506070809"
-    "10111213141516171819"
-    "20212223242526272829"
-    "30313233343536373839"
-    "40414243444546474849"
-    "50515253545556575859"
-    "60616263646566676869"
-    "70717273747576777879"
-    "80818283848586878889"
-    "90919293949596979899"
-};
-static const char DIGIT_PAIRS_8[2*8*8+1] = {
-    "0001020304050607"
-    "1011121314151617"
-    "2021222324252627"
-    "3031323334353637"
-    "4041424344454647"
-    "5051525354555657"
-    "6061626364656667"
-    "7071727374757677"
-};
-static const char DIGITS_HEX[2*16+1] = {
-    "0123456789abcdef"
-    "0123456789ABCDEF"
-};
-
-/* BuildPyUnicode */
-static PyObject* __Pyx_PyUnicode_BuildFromAscii(Py_ssize_t ulength, char* chars, int clength,
-                                                int prepend_sign, char padding_char) {
-    PyObject *uval;
-    Py_ssize_t uoffset = ulength - clength;
-#if CYTHON_USE_UNICODE_INTERNALS
-    Py_ssize_t i;
-#if CYTHON_PEP393_ENABLED
-    void *udata;
-    uval = PyUnicode_New(ulength, 127);
-    if (unlikely(!uval)) return NULL;
-    udata = PyUnicode_DATA(uval);
-#else
-    Py_UNICODE *udata;
-    uval = PyUnicode_FromUnicode(NULL, ulength);
-    if (unlikely(!uval)) return NULL;
-    udata = PyUnicode_AS_UNICODE(uval);
-#endif
-    if (uoffset > 0) {
-        i = 0;
-        if (prepend_sign) {
-            __Pyx_PyUnicode_WRITE(PyUnicode_1BYTE_KIND, udata, 0, '-');
-            i++;
-        }
-        for (; i < uoffset; i++) {
-            __Pyx_PyUnicode_WRITE(PyUnicode_1BYTE_KIND, udata, i, padding_char);
-        }
-    }
-    for (i=0; i < clength; i++) {
-        __Pyx_PyUnicode_WRITE(PyUnicode_1BYTE_KIND, udata, uoffset+i, chars[i]);
-    }
-#else
-    {
-        PyObject *sign = NULL, *padding = NULL;
-        uval = NULL;
-        if (uoffset > 0) {
-            prepend_sign = !!prepend_sign;
-            if (uoffset > prepend_sign) {
-                padding = PyUnicode_FromOrdinal(padding_char);
-                if (likely(padding) && uoffset > prepend_sign + 1) {
-                    PyObject *tmp;
-                    PyObject *repeat = PyInt_FromSize_t(uoffset - prepend_sign);
-                    if (unlikely(!repeat)) goto done_or_error;
-                    tmp = PyNumber_Multiply(padding, repeat);
-                    Py_DECREF(repeat);
-                    Py_DECREF(padding);
-                    padding = tmp;
-                }
-                if (unlikely(!padding)) goto done_or_error;
-            }
-            if (prepend_sign) {
-                sign = PyUnicode_FromOrdinal('-');
-                if (unlikely(!sign)) goto done_or_error;
-            }
-        }
-        uval = PyUnicode_DecodeASCII(chars, clength, NULL);
-        if (likely(uval) && padding) {
-            PyObject *tmp = PyNumber_Add(padding, uval);
-            Py_DECREF(uval);
-            uval = tmp;
-        }
-        if (likely(uval) && sign) {
-            PyObject *tmp = PyNumber_Add(sign, uval);
-            Py_DECREF(uval);
-            uval = tmp;
-        }
-done_or_error:
-        Py_XDECREF(padding);
-        Py_XDECREF(sign);
-    }
-#endif
-    return uval;
-}
-
-/* CIntToPyUnicode */
-#ifdef _MSC_VER
-    #ifndef _MSC_STDINT_H_
-        #if _MSC_VER < 1300
-           typedef unsigned short    uint16_t;
-        #else
-           typedef unsigned __int16  uint16_t;
-        #endif
-    #endif
-#else
-   #include <stdint.h>
-#endif
-#if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
-#define GCC_DIAGNOSTIC
-#endif
-static CYTHON_INLINE PyObject* __Pyx_PyUnicode_From_size_t(size_t value, Py_ssize_t width, char padding_char, char format_char) {
-    char digits[sizeof(size_t)*3+2];
-    char *dpos, *end = digits + sizeof(size_t)*3+2;
-    const char *hex_digits = DIGITS_HEX;
-    Py_ssize_t length, ulength;
-    int prepend_sign, last_one_off;
-    size_t remaining;
-#ifdef GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const size_t neg_one = (size_t) -1, const_zero = (size_t) 0;
-#ifdef GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (format_char == 'X') {
-        hex_digits += 16;
-        format_char = 'x';
-    }
-    remaining = value;
-    last_one_off = 0;
-    dpos = end;
-    do {
-        int digit_pos;
-        switch (format_char) {
-        case 'o':
-            digit_pos = abs((int)(remaining % (8*8)));
-            remaining = (size_t) (remaining / (8*8));
-            dpos -= 2;
-            *(uint16_t*)dpos = ((const uint16_t*)DIGIT_PAIRS_8)[digit_pos];
-            last_one_off = (digit_pos < 8);
-            break;
-        case 'd':
-            digit_pos = abs((int)(remaining % (10*10)));
-            remaining = (size_t) (remaining / (10*10));
-            dpos -= 2;
-            *(uint16_t*)dpos = ((const uint16_t*)DIGIT_PAIRS_10)[digit_pos];
-            last_one_off = (digit_pos < 10);
-            break;
-        case 'x':
-            *(--dpos) = hex_digits[abs((int)(remaining % 16))];
-            remaining = (size_t) (remaining / 16);
-            break;
-        default:
-            assert(0);
-            break;
-        }
-    } while (unlikely(remaining != 0));
-    if (last_one_off) {
-        assert(*dpos == '0');
-        dpos++;
-    }
-    length = end - dpos;
-    ulength = length;
-    prepend_sign = 0;
-    if (!is_unsigned && value <= neg_one) {
-        if (padding_char == ' ' || width <= length + 1) {
-            *(--dpos) = '-';
-            ++length;
-        } else {
-            prepend_sign = 1;
-        }
-        ++ulength;
-    }
-    if (width > ulength) {
-        ulength = width;
-    }
-    if (ulength == 1) {
-        return PyUnicode_FromOrdinal(*dpos);
-    }
-    return __Pyx_PyUnicode_BuildFromAscii(ulength, dpos, (int) length, prepend_sign, padding_char);
-}
-
 /* JoinPyUnicode */
 static PyObject* __Pyx_PyUnicode_Join(PyObject* value_tuple, Py_ssize_t value_count, Py_ssize_t result_ulength,
                                       CYTHON_UNUSED Py_UCS4 max_char) {
@@ -13817,6 +13610,108 @@ static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *nam
         "Argument '%.200s' has incorrect type (expected %.200s, got %.200s)",
         name, type->tp_name, Py_TYPE(obj)->tp_name);
     return 0;
+}
+
+/* CIntToDigits */
+static const char DIGIT_PAIRS_10[2*10*10+1] = {
+    "00010203040506070809"
+    "10111213141516171819"
+    "20212223242526272829"
+    "30313233343536373839"
+    "40414243444546474849"
+    "50515253545556575859"
+    "60616263646566676869"
+    "70717273747576777879"
+    "80818283848586878889"
+    "90919293949596979899"
+};
+static const char DIGIT_PAIRS_8[2*8*8+1] = {
+    "0001020304050607"
+    "1011121314151617"
+    "2021222324252627"
+    "3031323334353637"
+    "4041424344454647"
+    "5051525354555657"
+    "6061626364656667"
+    "7071727374757677"
+};
+static const char DIGITS_HEX[2*16+1] = {
+    "0123456789abcdef"
+    "0123456789ABCDEF"
+};
+
+/* BuildPyUnicode */
+static PyObject* __Pyx_PyUnicode_BuildFromAscii(Py_ssize_t ulength, char* chars, int clength,
+                                                int prepend_sign, char padding_char) {
+    PyObject *uval;
+    Py_ssize_t uoffset = ulength - clength;
+#if CYTHON_USE_UNICODE_INTERNALS
+    Py_ssize_t i;
+#if CYTHON_PEP393_ENABLED
+    void *udata;
+    uval = PyUnicode_New(ulength, 127);
+    if (unlikely(!uval)) return NULL;
+    udata = PyUnicode_DATA(uval);
+#else
+    Py_UNICODE *udata;
+    uval = PyUnicode_FromUnicode(NULL, ulength);
+    if (unlikely(!uval)) return NULL;
+    udata = PyUnicode_AS_UNICODE(uval);
+#endif
+    if (uoffset > 0) {
+        i = 0;
+        if (prepend_sign) {
+            __Pyx_PyUnicode_WRITE(PyUnicode_1BYTE_KIND, udata, 0, '-');
+            i++;
+        }
+        for (; i < uoffset; i++) {
+            __Pyx_PyUnicode_WRITE(PyUnicode_1BYTE_KIND, udata, i, padding_char);
+        }
+    }
+    for (i=0; i < clength; i++) {
+        __Pyx_PyUnicode_WRITE(PyUnicode_1BYTE_KIND, udata, uoffset+i, chars[i]);
+    }
+#else
+    {
+        PyObject *sign = NULL, *padding = NULL;
+        uval = NULL;
+        if (uoffset > 0) {
+            prepend_sign = !!prepend_sign;
+            if (uoffset > prepend_sign) {
+                padding = PyUnicode_FromOrdinal(padding_char);
+                if (likely(padding) && uoffset > prepend_sign + 1) {
+                    PyObject *tmp;
+                    PyObject *repeat = PyInt_FromSize_t(uoffset - prepend_sign);
+                    if (unlikely(!repeat)) goto done_or_error;
+                    tmp = PyNumber_Multiply(padding, repeat);
+                    Py_DECREF(repeat);
+                    Py_DECREF(padding);
+                    padding = tmp;
+                }
+                if (unlikely(!padding)) goto done_or_error;
+            }
+            if (prepend_sign) {
+                sign = PyUnicode_FromOrdinal('-');
+                if (unlikely(!sign)) goto done_or_error;
+            }
+        }
+        uval = PyUnicode_DecodeASCII(chars, clength, NULL);
+        if (likely(uval) && padding) {
+            PyObject *tmp = PyNumber_Add(padding, uval);
+            Py_DECREF(uval);
+            uval = tmp;
+        }
+        if (likely(uval) && sign) {
+            PyObject *tmp = PyNumber_Add(sign, uval);
+            Py_DECREF(uval);
+            uval = tmp;
+        }
+done_or_error:
+        Py_XDECREF(padding);
+        Py_XDECREF(sign);
+    }
+#endif
+    return uval;
 }
 
 /* CIntToPyUnicode */
@@ -15298,7 +15193,7 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStrNoError(PyObject* obj, P
   static int __Pyx_setup_reduce_is_named(PyObject* meth, PyObject* name) {
   int ret;
   PyObject *name_attr;
-  name_attr = __Pyx_PyObject_GetAttrStr(meth, __pyx_n_s_name_2);
+  name_attr = __Pyx_PyObject_GetAttrStr(meth, __pyx_n_s_name);
   if (likely(name_attr)) {
       ret = PyObject_RichCompareBool(name_attr, name, Py_EQ);
   } else {
