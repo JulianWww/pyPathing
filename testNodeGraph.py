@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-arr = np.array([pathing.generators.rand_terain(32,32,0)], dtype=np.int)
+arr = np.array([pathing.generators.rand_terain(32,32,.2)], dtype=np.int)
 arr[0,0,0] = 1
 arr[0,30,30] = 1
 plt.imshow(arr[0])
