@@ -3,7 +3,7 @@ build/
 demoMazes/
 testPlots/
 pathing/build/
-pathing/scr/pathfinding/x64
+pathing/scr/pathfinding/x64/
 
 
 pathing/scr/cy_generators.cpp
