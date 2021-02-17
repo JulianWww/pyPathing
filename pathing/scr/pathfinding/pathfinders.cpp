@@ -2,6 +2,7 @@
 #include "Edge.h"
 #include <queue>
 #include <stack>
+#include "node.h"
 
 // perform the bfs algorythem from start to end
 std::vector<PathNode*> serchers::bfs_c_node(PathNode* start, PathNode* end, bool getVisited) {
@@ -18,7 +19,7 @@ std::vector<PathNode*> serchers::bfs_c_node(PathNode* start, PathNode* end, bool
 			//the new node to put at the end of the queue
 			PathNode* newNode = edge_iter->first;
 
-			if (visited.count(newNode) == 0) {
+			if (visited.count(newNode) == 0 && newNode->walkable && edge_iter->second->walkable) {
 				visited.insert(newNode);
 				EvaluatePostionsQueue.push(newNode);
 				newNode->distance = currentNode->distance + edge_iter->second->length;
@@ -68,7 +69,7 @@ std::vector<PathNode*> serchers::dfs_c_node(PathNode* start, PathNode* end, bool
 			//the new node to put at the end of the queue
 			PathNode* newNode = edge_iter->first;
 
-			if (visited.count(newNode) == 0) {
+			if (visited.count(newNode) == 0 && newNode->walkable && edge_iter->second->walkable) {
 				visited.insert(newNode);
 				EvaluatePostionsQueue.push(newNode);
 				newNode->distance = currentNode->distance + edge_iter->second->length;

@@ -22,10 +22,13 @@ public: std::unordered_set<PathNode*> intraClusterNodes;
 public: std::unordered_map<PathNode*, PathNode*> tempBuild;
 	  // the shape of the cluster
 public: std::vector<int> clusterShape;
+public: short movementMode;
 
 
 public: Cluster() { return; };
-public: Cluster(std::vector<std::vector<std::vector<int>>> const& arr, int movementKey = 0, std::vector<int>ofset = { 0,0,0 });
+public: Cluster(std::vector<std::vector<std::vector<int>>> const& arr, int movementKey, std::vector<int>ofset = { 0,0,0 });
+public: Cluster(std::vector<std::vector<std::vector<int>>> const& arr, short& movementKey, std::vector<int>ofset = { 0,0,0 });
+private: void init(std::vector<std::vector<std::vector<int>>> const& arr, short& movementKey, std::vector<int>ofset);
 	  
 	  // perform A* for nodes by id
 public:	std::vector<int> Astar(int start, int end, int poskey = 0, bool getVisited = false);

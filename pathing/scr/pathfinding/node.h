@@ -13,7 +13,6 @@
 class edge;
 class Cluster;
 
-
 // the node path
 class PathNode {
 	// the edges connected to this node
@@ -27,12 +26,18 @@ public: float distance = 0;
 public: size_t id=-1;
 	// internal pointer to the node that initated this one
 public: PathNode* movedFrom;
-public: Cluster* cluster;
+public: short movementMode;
 public: PathNode* lowerEquvilant=nullptr;
+	  // wether or not the node can be walked on
+public: bool walkable = true;
+	  // set wether or not this node is walkable
+public: void setWalkable(bool, short);
+public: void setWalkable(bool);
+
 
 public:
-	PathNode(std::list<PathNode*> connectedNodes, std::vector<int> postion, std::vector<int>ofset = { 0,0,0 });
-	PathNode() {};
+	PathNode(std::list<std::pair<PathNode*, short>> connectedNodes, std::vector<int> postion, short&, std::vector<int>ofset = { 0,0,0 });
+	PathNode();
 	PathNode(PathNode*);
 	~PathNode();
 

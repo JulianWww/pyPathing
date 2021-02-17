@@ -22,12 +22,14 @@ cdef extern from "pathfinding/node.h":
         #cunordered_map[PathNode*, edge*] edges
         PathNode()
         int id
+        bint walkable
+        void setWalkable(bint)
         cvector[int]connectedNodes()
 
 cdef extern from "pathfinding/Cluster.h":
     cppclass Cluster:
         Cluster()
-        Cluster(cvector[cvector[cvector[int]]], int)
+        Cluster(cvector[cvector[cvector[int]]], short&)
         cunordered_map[int, PathNode*] nodes 
 
         cvector[int]Astar(int,int,int, bint)  
@@ -54,6 +56,8 @@ cdef extern from "pathfinding/node_Graph.h":
         cunordered_set[PathNode*] tempNodes
         int size
         void cleanUp()
+
+        PathNode* getPathNode(cvector[int])
 
 cdef extern from "pathfinding/GoalPathing.h":
     cppclass GoalCluster:

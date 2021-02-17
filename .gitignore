@@ -1,6 +1,8 @@
 archive/
 build/
 demoMazes/
+pathing/__pycache__/
+pathing/scr/pathfining/.vs/
 testPlots/
 pathing/build/
 pathing/scr/pathfinding/x64/

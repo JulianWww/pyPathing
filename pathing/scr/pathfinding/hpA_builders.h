@@ -36,7 +36,17 @@ namespace utils {
 			muls = muls * (*size_iter);
 		}
 		return res;
-
+	}
+	template<typename T>
+	size_t buildNewNodePos(std::vector<T> const& pos, std::vector<T> const& sizes) {
+		auto pos_itr = pos.rbegin();
+		size_t res = 1, muls = 1;
+		for (auto sizes_itr = sizes.begin(); sizes_itr != sizes.end(); sizes_itr++) {
+			res = res + (*pos_itr) * muls;
+			muls = muls * (*sizes_itr);
+			pos_itr++;
+		}
+		return res;
 	}
 }
 #endif

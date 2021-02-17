@@ -2,7 +2,7 @@
 
 
 #include <vector>
-#include "distance.h"
+#include <list>
 
 #ifndef ASTAR_SEARCH_ALGORYTHEM
 #define ASTAR_SEARCH_ALGORYTHEM

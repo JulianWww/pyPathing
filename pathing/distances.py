@@ -37,19 +37,19 @@ class __directions:
     
     @property
     def fullDiagonal(self):
-        return 1
+        return 4
     
     @property
     def oneObstacleBlock(self):
-        return 2
+        return 1
     
     @property
     def towObstacleBlock(self):
-        return 3
+        return 2
     
     @property
     def threeObstacleBlock(self):
-        return 4
+        return 3
 
 pathfinding = __PathfindingDistances()
 directions= __directions()

@@ -13,6 +13,7 @@ the edge of path betwean 2 nodes
 class edge {
 	// the length of the path betwean the connected nodes
 public: float length = 1;
+public: short blocks = 0;
 	  //weather of not it connect clusters
 #if HIGHMEMORY
 public: std::vector<PathNode*> path = {};
@@ -25,6 +26,7 @@ public:  std::pair<PathNode*, PathNode*> nodes = {};
 	  // optionaly conains the path of the node
 
 private: void removeFromNode(PathNode*, PathNode*);
+public: bool walkable = true;
 
 public:
 	edge(PathNode* a, PathNode* b);
@@ -32,6 +34,7 @@ public:
 	edge(PathNode* a, PathNode* b, float& distance);
 	edge() {};
 	~edge();
+	void updateWalkability(int);
 };
 
 #endif

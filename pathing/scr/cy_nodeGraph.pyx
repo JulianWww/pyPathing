@@ -9,6 +9,8 @@ cdef class DimentionMismatched(Exception):
     "error raised when dimentions dont fit"
 cdef class PathingError(Exception):
     "exception raised when no path was found"
+cdef class NodeFindingError(Exception):
+    "thrown when the node dose not exist"
 
 ## py wrapper for the edge
 cdef class PY_edge:
@@ -35,7 +37,7 @@ cdef class PY_node:
     ## conversions
     def __str__(self):
         #edges: {deref(self.c_node).edges.size()}, 
-        return f"node<name: {self.position}, id: {self.id}>"
+        return f"node<name: {self.position}, id: {self.id}, walkable: {self.walkable}>"
     def __repr__(self):
         return self.__str__()
 
@@ -60,6 +62,15 @@ cdef class PY_node:
     @property
     def id(self):
         return deref(self.c_node).id
+    
+    @property
+    def walkable(self):
+        "boolean value weather or not the node is walkable"
+        return deref(self.c_node).walkable
+    
+    @walkable.setter
+    def walkable(self, bint NewWalkablility):
+        deref(self.c_node).setWalkable(NewWalkablility)
     
     @property
     def connectedNodes(self):
@@ -271,6 +282,16 @@ cdef class Py_nodeGraph():
     def cleanUp(self):
         deref(self.cppHandler).cleanUp()
         return
+    
+    def getNode(self, cnp.ndarray[int, ndim=1] pos):
+        "get a node at postion pos"
+        cdef cppInter.PathNode* nextNode
+        nextNode = self.cppHandler.getPathNode(pos)
+        if nextNode == NULL:
+            raise NodeFindingError(f"no node was found at postion {pos}")
+        cdef PY_node res = PY_node()
+        res.c_node = nextNode
+        return res
 
 #py wrapper class for the c++ goal Cluster Class
 cdef class Py_GoalCluster():

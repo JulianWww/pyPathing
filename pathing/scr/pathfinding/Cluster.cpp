@@ -4,8 +4,16 @@
 #include "distance.h"
 #include "hpA_builders.h"
 
-
 Cluster::Cluster(std::vector<std::vector<std::vector<int>>> const& arr, int movementKey, std::vector<int>ofset) {
+	short val = (short)movementKey;
+	this->init(arr, val, ofset);
+}
+Cluster::Cluster(std::vector<std::vector<std::vector<int>>> const& arr, short& movementKey, std::vector<int>ofset) {
+	this->init(arr, movementKey, ofset);
+}
+
+void Cluster::init(std::vector<std::vector<std::vector<int>>> const& arr, short& movementKey, std::vector<int>ofset){
+	this->movementMode = movementKey;
 	int x, y;
 	int z_posi;
 	this->clusterShape = { (int)arr[0][0].size(), (int)arr[0].size(), (int)arr.size() };
@@ -27,17 +35,18 @@ Cluster::Cluster(std::vector<std::vector<std::vector<int>>> const& arr, int move
 				int x_val = *x_iter;
 				if (x_val == 1 && utils::isWalkable(x, y, z_posi, arr)) {
 					// go over all the naibours and add them as nabors
-					std::list<PathNode*> connecteds;
+					std::list<std::pair<PathNode*, short>> connecteds;
 					for (auto direction_pair = directions.begin(); direction_pair != directions.end(); direction_pair++) {
 						std::tuple<int, int, int> pos = *direction_pair;
 						size_t newPos = utils::buildNewPos(x, y, z_posi, pos, arr);
 						// if a node at that matrix pos exist add it to linking queue
-						if (createdNodes.count(newPos) != 0 && newPos != 0 && movements::furtherMovement(movementKey, arr, { z_posi,y,x }, pos)) {
-							connecteds.push_back(createdNodes[newPos]);
+						auto obsticleData = movements::furtherMovement(movementKey, arr, { z_posi,y,x }, pos);
+						if (createdNodes.count(newPos) != 0 && newPos != 0 && obsticleData.first) {
+							connecteds.push_back({ createdNodes[newPos], obsticleData.second});
 						}
 					}
 					// build node and its connections of length 1
-					PathNode* n = new PathNode(connecteds, { x,y,z_posi }, ofset);
+					PathNode* n = new PathNode(connecteds, { x,y,z_posi }, movementKey, ofset);
 					size_t posId = buildPos(x, y, z_posi, arr);
 					createdNodes.insert({ {posId, n} });
 					n->id = posId;

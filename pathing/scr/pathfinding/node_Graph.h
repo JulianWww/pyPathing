@@ -2,12 +2,11 @@
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
+#include "node.h";
 
 
 
 class Cluster;
-class PathNode;
-
 
 class node_Graph {
 	/* an abstrackted node graph
@@ -25,10 +24,10 @@ public: std::unordered_set<PathNode*> tempNodes;
 
 
 	  // spit the input matrix into its postitions and build the node pathings for arrays
-public: node_Graph(std::vector<std::vector<std::vector<int>>> const& vec, int sizes, int movementKey = 0);
-public: void std_init(std::vector<std::vector<std::vector<int>>> const& vec, int sizes, int movementKey = 0, std::vector<int >ofset = {0, 0, 0});
-public: node_Graph(std::vector<std::vector<std::vector<int>>> const& vec, std::vector<int> sizes, int movementKey=0, int singler=0);
-private: void buildMulit(std::vector<std::vector<std::vector<int>>> const& vec, std::vector<int> sizes, int movementKey, std::vector<int> ofset, int singler = 0);
+public: node_Graph(std::vector<std::vector<std::vector<int>>> const& vec, int sizes, short movementKey);
+public: void std_init(std::vector<std::vector<std::vector<int>>> const& vec, int sizes, short& movementKey, std::vector<int >ofset = {0, 0, 0});
+public: node_Graph(std::vector<std::vector<std::vector<int>>> const& vec, std::vector<int> sizes, int movementKey, int singler=0);
+private: void buildMulit(std::vector<std::vector<std::vector<int>>> const& vec, std::vector<int> sizes, short& movementKey, std::vector<int> ofset, int singler = 0);
 private: void buildBridges(Cluster* a, Cluster* b, int singler=0);
 private: void buildClusterConnections();
 private: void buildClusterConnections(Cluster*);
@@ -49,8 +48,10 @@ private: void buildPath(std::vector<PathNode*>&, std::vector<PathNode*>::iterato
 public: void cleanUp();
 public: std::vector<node_Graph*>getLowerKeys();
 public: std::vector<Cluster*>getLowerClusterKeys();
+
+public: PathNode* getPathNode(std::vector<int>);
 };
 
 	// subrooten to build connections bewean clusters
-void subbuildBridges(Cluster*, Cluster*, int, node_Graph*, node_Graph*, bool);
+void subbuildBridges(Cluster*, Cluster*, int, node_Graph*, node_Graph*, bool, int=0);
 PathNode* lowerst(PathNode* a);

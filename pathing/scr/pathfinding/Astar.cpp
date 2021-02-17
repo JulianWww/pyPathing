@@ -2,6 +2,8 @@
 #include <queue> 
 #include <unordered_map>
 #include "Edge.h"
+#include "node.h"
+#include "distance.h"
 
 
 
@@ -30,7 +32,7 @@ namespace serchers {
 				// the new node to be operated on
 				PathNode* newNode = edge_iter->first;
 
-				if (visited.count(newNode) == 0) {
+				if (visited.count(newNode) == 0 && newNode->walkable && edge_iter->second->walkable) {
 					// get the estimated distance  bewean 2 nodes
 					float NodeDistanceEstimate = distance::distance(newNode, end, distanceKey) + currentNode->distance;
 

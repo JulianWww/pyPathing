@@ -1,5 +1,6 @@
 #include "distance.h"
 #include <cmath>
+#include "node.h"
 
 
 
@@ -59,13 +60,13 @@ std::vector<std::tuple<int, int, int>> movements::movements(int key) {
 	if (key == 0) {
 		return movements::noDiagonal();
 	}
-	if (key == 1) {
+	if (key == 4) {
 		return movements::fullDiagonal();
 	}
-	if (key == 2) {
+	if (key == 1) {
 		return movements::oneMovementDiagonal();
 	}
-	if (key == 3) {
+	if (key == 2) {
 		return movements::towMovementDiagonal();
 	}
 	return {};
@@ -85,32 +86,32 @@ std::vector<std::tuple<int, int, int>> movements::towMovementDiagonal() {
 	return movements::fullDiagonal();
 }
 
-bool movements::furtherMovement(int key, std::vector<std::vector<std::vector<int>>> arr, std::tuple<int, int, int>pos, std::tuple<int,int,int> direction) {
+std::pair<bool, short> movements::furtherMovement(int key, std::vector<std::vector<std::vector<int>>> arr, std::tuple<int, int, int>pos, std::tuple<int,int,int> direction) {
 	if (key == 0) {
 		return movements::noDiagonal(arr, pos, direction);
 	}
-	if (key == 1) {
+	if (key == 4) {
 		return movements::fullDiagonal(arr, pos, direction);
 	}
-	if (key == 2) {
+	if (key == 1) {
 		return movements::oneMovementDiagonal(arr, pos, direction, 1);
 	}
-	if (key == 3) {
+	if (key == 2) {
 		return movements::oneMovementDiagonal(arr, pos, direction, 2);
 	}
-	if (key == 4) {
+	if (key == 3) {
 		return movements::oneMovementDiagonal(arr, pos, direction, 3);
 	}
-	return false;
+	return { false, 10 };
 }
-bool movements::noDiagonal(std::vector<std::vector<std::vector<int>>> arr, std::tuple<int, int, int>pos, std::tuple<int, int, int> direction) {
-	return true;
+std::pair<bool, short> movements::noDiagonal(std::vector<std::vector<std::vector<int>>> arr, std::tuple<int, int, int>pos, std::tuple<int, int, int> direction) {
+	return { true, 0 };
 }
-bool movements::fullDiagonal(std::vector<std::vector<std::vector<int>>> arr, std::tuple<int, int, int>pos, std::tuple<int, int, int> direction) {
-	return true;
+std::pair<bool, short> movements::fullDiagonal(std::vector<std::vector<std::vector<int>>> arr, std::tuple<int, int, int>pos, std::tuple<int, int, int> direction) {
+	return { true, 0 };
 };
-bool movements::oneMovementDiagonal(std::vector<std::vector<std::vector<int>>> arr, std::tuple<int, int, int>pos, std::tuple<int, int, int> direction, int nums) {
-	int counter = 0;
+std::pair<bool, short> movements::oneMovementDiagonal(std::vector<std::vector<std::vector<int>>> arr, std::tuple<int, int, int>pos, std::tuple<int, int, int> direction, int nums) {
+	short counter = 0;
 	int x, y, z;
 	for (int iter = 0; iter < 3; iter++) {
 		x = std::get<0>(pos);
@@ -132,5 +133,5 @@ bool movements::oneMovementDiagonal(std::vector<std::vector<std::vector<int>>> a
 		}
 
 	}
-	return counter < nums;
+	return { counter < nums, counter };
 }

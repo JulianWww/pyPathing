@@ -2,6 +2,7 @@
 
 #include "edge.h"
 #include "Edge.h"
+#include "node.h"
 
 void insert(PathNode* a, PathNode* b, edge* e) {
 	a->edges.insert({ b, e });
@@ -32,4 +33,13 @@ edge::~edge() {
 
 void edge::removeFromNode(PathNode* a, PathNode* b) {
 	a->edges.erase(b);
+}
+
+void edge::updateWalkability(int mode) {
+	if (mode == 0) {
+		this->walkable = (this->nodes.first->walkable && this->nodes.second->walkable);
+	}
+	else {
+		this->walkable = this->blocks < mode;
+	}
 }
