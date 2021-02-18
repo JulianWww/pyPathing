@@ -20,6 +20,8 @@ public: std::vector<int> postion;
 	  // the nodes that are used by hpA during abstract pathing
 public: std::unordered_set<PathNode*> intraClusterNodes;
 public: std::unordered_map<PathNode*, PathNode*> tempBuild;
+
+public: Cluster* superCluster = NULL;
 	  // the shape of the cluster
 public: std::vector<int> clusterShape;
 public: short movementMode;
@@ -36,4 +38,7 @@ public:	std::vector<int> bfs(int start, int end, bool getVisited = false);
 public:	std::vector<int> dfs(int start, int end, bool getVisited = false);
 public: std::vector<PathNode*> getNodes();
 public: std::vector<int>getNodeKeys();
+
+	  //update abstract edges
+public: void updateConnections();
 }; 

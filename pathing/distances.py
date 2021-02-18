@@ -51,5 +51,5 @@ class __directions:
     def threeObstacleBlock(self):
         return 3
 
-pathfinding = __PathfindingDistances()
+distance = __PathfindingDistances()
 directions= __directions()

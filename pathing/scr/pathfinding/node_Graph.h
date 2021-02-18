@@ -58,3 +58,4 @@ private: std::vector<PathNode*> buildPath(PathNode*, PathNode*, int);
 	// subrooten to build connections bewean clusters
 void subbuildBridges(Cluster*, Cluster*, int, node_Graph*, node_Graph*, bool, int=0);
 PathNode* lowerst(PathNode* a);
+bool areNotConnected(PathNode* a, PathNode* b);

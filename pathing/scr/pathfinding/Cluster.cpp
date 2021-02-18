@@ -3,6 +3,9 @@
 #include "pathfinders.h"
 #include "distance.h"
 #include "hpA_builders.h"
+#include "node_Graph.h"
+
+
 
 Cluster::Cluster(std::vector<std::vector<std::vector<int>>> const& arr, int movementKey, std::vector<int>ofset) {
 	short val = (short)movementKey;
@@ -110,3 +113,51 @@ std::vector<int> Cluster::getNodeKeys() {
 	}
 	return nodes;
 }
+
+void Cluster::updateConnections() {
+	bool updateHigher = false;
+	for (auto a_node = this->intraClusterNodes.begin(); a_node != this->intraClusterNodes.end(); a_node++) {
+		for (auto b_node = this->intraClusterNodes.begin(); b_node != this->intraClusterNodes.end() && *b_node != *a_node; b_node++) {
+			if ((*a_node) != *b_node) {
+				auto path = serchers::Astar_c_node((*a_node)->lowerEquvilant, (*b_node)->lowerEquvilant);
+				if (path.size() > 0) {
+					if (areNotConnected(*a_node, *b_node)) {
+						auto e = new edge(*a_node, *b_node, path.back()->distance);
+						#if HIGHMEMORY
+						std::vector<PathNode*> vec(path.begin(), path.end());
+						e->path = vec;
+						#endif		
+						updateHigher = true;
+					}
+					else {
+						auto e = (*a_node)->edges.at(*b_node);
+						e->walkable = true;
+						e->length = path.back()->distance;
+						#if HIGHMEMORY
+						std::vector<PathNode*> vec(path.begin(), path.end());
+						e->path = vec;
+						#endif
+						if (e->length != path.back()->distance) {
+							updateHigher = true;
+						}
+					}
+				}
+				else {
+					auto e = (*a_node)->edges.at(*b_node);
+					e->walkable = false;
+				}
+			}
+		}
+	}
+	if (updateHigher && this->superCluster != NULL) {
+		this->superCluster->updateConnections();
+	}
+}
+
+
+
+
+
+
+
+

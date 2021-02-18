@@ -111,6 +111,8 @@ void node_Graph::buildMulit(std::vector<std::vector<std::vector<int>>> const& ve
 																  (int)(z_pos + ofset[2]) },singler, bridgeKey);
 				lower->buildClusterConnections(lower->superCluster);
 
+				lower->superCluster = this->superCluster;
+
 				this->clusters.insert({ buildClusterPos(x_pos, y_pos, z_pos, vec, size), lower->superCluster });
 				lower->superCluster->postion = { (int)x_pos, (int)y_pos, (int)z_pos };
 				this->lowerNodeGraphs.insert({ buildClusterPos(x_pos, y_pos, z_pos, vec, size), lower });
@@ -382,10 +384,7 @@ std::vector<PathNode*>node_Graph::Astar(std::vector<int> start, std::vector<int>
 		return { NULL };
 	}
 
-	if (endNode->clus == startNode->clus) {
-		return this->buildInClusterPath(startNode->lowerEquvilant, endNode->lowerEquvilant, lenth);
-	}
-	return this->buildPath(startNode, endNode, lenth);
+	return this->buildInClusterPath(startNode, endNode, lenth);
 }
 
 std::vector<PathNode*>node_Graph::buildPath(PathNode* startNode, PathNode* endNode, int lenth){
@@ -422,6 +421,36 @@ PathNode* lowerst(PathNode* a) {
 }
 
 #if HIGHMEMORY
+std::vector<PathNode*> node_Graph::buildInClusterPath(PathNode* node_a, PathNode* node_b, int length) {
+	if (node_a->lowerEquvilant == NULL) {
+		auto edge = node_a->edges.at(node_b);
+		auto path = edge->path;
+
+		std::vector<PathNode*> res(length);
+		if (edge->nodes.first == node_a) {
+			auto path_itr = path.begin();
+			for (auto node_itr = res.begin(); node_itr != res.end() && path_itr != path.end(); (node_itr++, path_itr++)) {
+				*node_itr = *path_itr;
+			}
+		}
+		else {
+			auto path_itr = path.rbegin();
+			for (auto node_itr = res.begin(); node_itr != res.end() && path_itr != path.rend(); (node_itr++, path_itr++)) {
+				*node_itr = *path_itr;
+			}
+		}
+		return res;
+	}
+	if (node_a->clus == node_b->clus) {
+		auto path = this->buildInClusterPath(node_a->lowerEquvilant, node_b->lowerEquvilant, length);
+		if (path.size() == 0 || path[0] == NULL) {
+			return this->buildPath(node_a, node_b, length);
+		}
+		return path;
+	}
+	return this->buildPath(node_a, node_b, length);
+}
+
 void node_Graph::buildPath(std::vector<PathNode*>& res, std::vector<PathNode*>::iterator& res_iter, PathNode* start, PathNode* end) {
 	if (start == end) { return; }
 	if ((res.begin() == res_iter || lowerst(start) != *(res_iter-1))) {
@@ -434,14 +463,14 @@ void node_Graph::buildPath(std::vector<PathNode*>& res, std::vector<PathNode*>::
 
 	std::vector<PathNode*> path;
 	for (auto edge = start->edges.begin(); edge != start->edges.end(); edge++) {
-		if (end->edges.count(*edge) == 1) {
-			if ((*edge)->nodes.second == start) {
-				std::vector<PathNode*> vec((*edge)->path.rbegin(), (*edge)->path.rend());
+		if (edge->first==end) {
+			if (edge->second->nodes.second == start) {
+				std::vector<PathNode*> vec(edge->second->path.rbegin(), edge->second->path.rend());
 				path = vec;
 				path.push_back(end->lowerEquvilant);
 			}
 			else {
-				path = (*edge)->path;
+				path = edge->second->path;
 			}
 			break;
 		}
@@ -479,10 +508,13 @@ std::vector<PathNode*> node_Graph::buildInClusterPath(PathNode* node_a, PathNode
 		return res;
 	}
 	if (node_a->clus == node_b->clus) {
-		return this->buildInClusterPath(node_a->lowerEquvilant, node_b->lowerEquvilant, length);
+		auto path = this->buildInClusterPath(node_a->lowerEquvilant, node_b->lowerEquvilant, length);
+		if (path.size() == 0 || path[0] == NULL) {
+			return this->buildPath(node_a, node_b, length);
+		}
+		return path;
 	}
 	return this->buildPath(node_a, node_b, length);
-
 }
 void node_Graph::buildPath(std::vector<PathNode*>& res, std::vector<PathNode*>::iterator& res_iter, PathNode* start, PathNode* end) {
 	auto path = serchers::Astar_c_node(start, end);

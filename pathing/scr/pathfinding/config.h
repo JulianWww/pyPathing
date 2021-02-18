@@ -1,3 +1,3 @@
 #pragma once
 
-#define HIGHMEMORY false;
+#define HIGHMEMORY true;
