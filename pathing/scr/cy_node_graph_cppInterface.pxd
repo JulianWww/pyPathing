@@ -44,7 +44,7 @@ cdef extern from "pathfinding/Cluster.h":
 cdef extern from "pathfinding/node_Graph.h":
     cppclass node_Graph:
         node_Graph()
-        node_Graph(cvector[cvector[cvector[int]]], cvector[int], int, int)
+        node_Graph(cvector[cvector[cvector[int]]], cvector[int], short, int, int)
         cvector[PathNode*]Astar(cvector[int], cvector[int], int)
 
         cvector[node_Graph*]getLowerKeys()

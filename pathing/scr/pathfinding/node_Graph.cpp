@@ -10,14 +10,14 @@
 
 
 
-#define buildClusterPos(x,y,z, arr, size)(x/size + y/size * arr[0][0].size()/size + z/size*arr[0][0].size()/size*arr[0].size()/size+1)
+#define buildClusterPos(x,y,z, arr, size)(x/size + y/size * (arr[0][0].size()/size+1) + z/size*(arr[0][0].size()/size+1)*(arr[0].size()/size+1)+1)
 //
-node_Graph::node_Graph(std::vector<std::vector<std::vector<int>>> const& arr, int sizes, short movementKey) {
+node_Graph::node_Graph(std::vector<std::vector<std::vector<int>>> const& arr, int sizes, short movementKey, int bridgeKey) {
 	this->size = sizes;
-	this->std_init(arr, sizes, movementKey);
+	this->std_init(arr, sizes, movementKey, { 0,0,0 }, bridgeKey);
 }
 
-void node_Graph::std_init(std::vector<std::vector<std::vector<int>>> const& arr, int sizes, short& movementKey, std::vector<int> ofset) {
+void node_Graph::std_init(std::vector<std::vector<std::vector<int>>> const& arr, int sizes, short& movementKey, std::vector<int> ofset, int singler, int bridgeKey) {
 	this->superCluster = new Cluster();
 	
 	// a matrix used to figure what clusterse are connected
@@ -30,9 +30,9 @@ void node_Graph::std_init(std::vector<std::vector<std::vector<int>>> const& arr,
 			for (size_t z_pos = 0; z_pos < arr[0][0].size(); z_pos = z_pos + size) {
 
 				std::vector<std::vector<std::vector<int>>> subGraph = jce::vector::slice(arr,
-					std::make_pair(x_pos, std::min(x_pos + size, arr.size())),
-					std::make_pair(y_pos, std::min(y_pos + size, arr[0].size())),
-					std::make_pair(z_pos, std::min(z_pos + size, arr[0][0].size())));
+					std::make_pair(x_pos, x_pos + size),
+					std::make_pair(y_pos, y_pos + size),
+					std::make_pair(z_pos, z_pos + size));
 
 				Cluster* newCluster = new Cluster(subGraph, movementKey, {(int)(z_pos+ofset[2]), (int)(y_pos+ofset[1]), (int)(x_pos+ofset[0]) });
 				newCluster->postion = { (int)(x_pos + ofset[0]), (int)(y_pos+ofset[1]), (int)(z_pos+ofset[2]) };
@@ -49,7 +49,7 @@ void node_Graph::std_init(std::vector<std::vector<std::vector<int>>> const& arr,
 
 						if (this->clusters.count(newPos) == 1) {
 							if (distance::manhattan<int>(this->clusters.at(newPos)->postion, newCluster->postion) == this->size) {
-								buildBridges(newCluster, this->clusters.at(newPos));// , idx, size - 1);
+								buildBridges(newCluster, this->clusters.at(newPos), singler, bridgeKey);// , idx, size - 1);
 							}
 						}
 
@@ -75,15 +75,15 @@ void node_Graph::buildSuperNodes() {
 	}
 }
 
-node_Graph::node_Graph(std::vector<std::vector<std::vector<int>>> const& vec, std::vector<int> sizes, int movementKey, int s) {
+node_Graph::node_Graph(std::vector<std::vector<std::vector<int>>> const& vec, std::vector<int> sizes, int movementKey, int s, int bridgeKey) {
 	short key  = (short)movementKey;
-	this->buildMulit(vec, sizes, key, { 0,0,0 }, s);
+	this->buildMulit(vec, sizes, key, { 0,0,0 }, s, bridgeKey);
 	//this->buildClusterConnections(this->superCluster);
 }
-void node_Graph::buildMulit(std::vector<std::vector<std::vector<int>>> const& vec, std::vector<int> sizes, short& movementKey, std::vector<int> ofset, int singler) {
+void node_Graph::buildMulit(std::vector<std::vector<std::vector<int>>> const& vec, std::vector<int> sizes, short& movementKey, std::vector<int> ofset, int singler, int bridgeKey) {
 
 	if (sizes.size()==1) {
-		this->std_init(vec, sizes[0], movementKey, ofset);
+		this->std_init(vec, sizes[0], movementKey, ofset, singler, bridgeKey);
 		return;
 	}
 
@@ -108,7 +108,7 @@ void node_Graph::buildMulit(std::vector<std::vector<std::vector<int>>> const& ve
 				node_Graph* lower = new node_Graph();
 				lower->buildMulit(subGraph, poses, movementKey, { (int)(x_pos + ofset[0]),
 																  (int)(y_pos + ofset[1]),
-																  (int)(z_pos + ofset[2]) });
+																  (int)(z_pos + ofset[2]) },singler, bridgeKey);
 				lower->buildClusterConnections(lower->superCluster);
 
 				this->clusters.insert({ buildClusterPos(x_pos, y_pos, z_pos, vec, size), lower->superCluster });
@@ -139,7 +139,7 @@ void node_Graph::buildMulit(std::vector<std::vector<std::vector<int>>> const& ve
 	}
 	this->superCluster->clusterShape = { (int)(vec[0][0].size() /size), (int)(vec[0].size()/size), (int)(vec.size()/size) };
 	//this->buildClusterConnections();
-	this->buildClusterBridges(singler);
+	this->buildClusterBridges(singler, bridgeKey);
 	//this->superCluster->clusterShape = { (int)vec.size(), (int)vec[0].size(), (int)vec[0][0].size() };
 }
 
@@ -158,12 +158,12 @@ bool isConnected(Cluster* a, Cluster* b, int dis) {
 	return distance == dis;
 }
 
-void node_Graph::buildClusterBridges(int singler) {
+void node_Graph::buildClusterBridges(int singler, int key) {
 	for (auto a_cluster = this->clusters.begin(); a_cluster != this->clusters.end(); a_cluster++) {
 		for (auto b_cluster = this->clusters.begin(); b_cluster != a_cluster; b_cluster++) {
 			if (isConnected(a_cluster->second, b_cluster->second, this->size)) {
-				this->buildClusterBridges(a_cluster->second, b_cluster->second, singler, a_cluster->first, b_cluster->first, this, this);
-				this->buildBridges(a_cluster->second, b_cluster->second, singler);
+				this->buildClusterBridges(a_cluster->second, b_cluster->second, singler, a_cluster->first, b_cluster->first, this, this, key);
+				this->buildBridges(a_cluster->second, b_cluster->second, singler, key);
 			}
 		}
 	}
@@ -177,7 +177,7 @@ void node_Graph::buildClusterBridges(int singler) {
 
 
 // build bridges bewean lower level clusters
-void node_Graph::buildClusterBridges(Cluster* a, Cluster* b, int singler, int aId, int bId, node_Graph* aGraph, node_Graph* bGraph) {
+void node_Graph::buildClusterBridges(Cluster* a, Cluster* b, int singler, int aId, int bId, node_Graph* aGraph, node_Graph* bGraph, int key) {
 	if (this->lowerNodeGraphs.size() == 0) {
 		subbuildBridges(a, b, singler, aGraph, bGraph, false);
 		aGraph->buildSuperNodes();
@@ -189,7 +189,7 @@ void node_Graph::buildClusterBridges(Cluster* a, Cluster* b, int singler, int aI
 		for (auto a_clus = a_graph->clusters.begin(); a_clus != a_graph->clusters.end(); a_clus++) {
 			for (auto b_clus = b_graph->clusters.begin(); b_clus != b_graph->clusters.end(); b_clus++) {
 				if (isConnected(a_clus->second, b_clus->second, b_graph->size)) {
-					b_graph->buildClusterBridges(a_clus->second, b_clus->second, singler, a_clus->first, b_clus->first, a_graph, b_graph);
+					b_graph->buildClusterBridges(a_clus->second, b_clus->second, singler, a_clus->first, b_clus->first, a_graph, b_graph, key);
 				}
 			}
 		}
@@ -266,6 +266,7 @@ void subbuildBridges(Cluster* a, Cluster* b, int singler, node_Graph* aGraph, no
 				PathNode* na;
 				if (aGraph->superCluster->nodes.count((*a_connectionsIter)->id) == 0) {
 					na = new PathNode(*a_connectionsIter);
+					na->clus = a;
 
 					a->tempBuild.insert({ *a_connectionsIter, na });
 
@@ -278,6 +279,7 @@ void subbuildBridges(Cluster* a, Cluster* b, int singler, node_Graph* aGraph, no
 				PathNode* nb;
 				if (b->tempBuild.count(binterClusterConnections[std::find(ainterClusterConnections.begin(), ainterClusterConnections.end(), *a_connectionsIter) - ainterClusterConnections.begin()])) {
 					nb = new PathNode(binterClusterConnections[std::find(ainterClusterConnections.begin(), ainterClusterConnections.end(), *a_connectionsIter) - ainterClusterConnections.begin()]);
+					nb->clus = b;
 					
 					b->tempBuild.insert({ binterClusterConnections[std::find(ainterClusterConnections.begin(), ainterClusterConnections.end(), *a_connectionsIter) - ainterClusterConnections.begin()], nb });
 
@@ -298,6 +300,7 @@ void subbuildBridges(Cluster* a, Cluster* b, int singler, node_Graph* aGraph, no
 					PathNode* n;
 					if (b->tempBuild.count(binterClusterConnections[std::find(ainterClusterConnections.begin(), ainterClusterConnections.end(), *v) - ainterClusterConnections.begin()]) == 0) {
 						n = new PathNode(binterClusterConnections[std::find(ainterClusterConnections.begin(), ainterClusterConnections.end(), *v) - ainterClusterConnections.begin()]);
+						n->clus = b;
 						b->tempBuild.insert({ binterClusterConnections[std::find(ainterClusterConnections.begin(), ainterClusterConnections.end(), *v) - ainterClusterConnections.begin()], n });
 
 						//this->superCluster->nodes.insert({ this->superCluster->nodes.size(), n });
@@ -309,6 +312,7 @@ void subbuildBridges(Cluster* a, Cluster* b, int singler, node_Graph* aGraph, no
 					PathNode* nv;
 					if (a->tempBuild.count((*v)) == 0) {
 						nv = new PathNode(*v);
+						nv->clus = a;
 						a->tempBuild.insert({ *v, nv });
 						//this->superCluster->nodes.insert({ this->superCluster->nodes.size(), nv });
 					}
@@ -328,8 +332,8 @@ void subbuildBridges(Cluster* a, Cluster* b, int singler, node_Graph* aGraph, no
 	return;
 }
 
-void node_Graph::buildBridges(Cluster* a, Cluster* b, int singler) {
-	subbuildBridges(a, b, singler, this, this, true);
+void node_Graph::buildBridges(Cluster* a, Cluster* b, int singler, int key) {
+	subbuildBridges(a, b, singler, this, this, true, key);
 }
 
 void node_Graph::buildClusterConnections() {
@@ -371,18 +375,29 @@ std::vector<PathNode*>node_Graph::Astar(std::vector<int> start, std::vector<int>
 	// hpa* pathfinding 
 	PathNode* startNode = this->buildNode(start, this->tempNodes);
 	startNode->pos = start;
-	PathNode* endNode   = this->buildNode(end, this->tempNodes);
+	PathNode* endNode = this->buildNode(end, this->tempNodes);
 	endNode->pos = end;
 
+	if (startNode == NULL || endNode == NULL) {
+		return { NULL };
+	}
+
+	if (endNode->clus == startNode->clus) {
+		return this->buildInClusterPath(startNode->lowerEquvilant, endNode->lowerEquvilant, lenth);
+	}
+	return this->buildPath(startNode, endNode, lenth);
+}
+
+std::vector<PathNode*>node_Graph::buildPath(PathNode* startNode, PathNode* endNode, int lenth){
 	auto path = serchers::Astar_c_node(startNode, endNode);
 	PathNode* lastPos = startNode;
 	std::vector<PathNode*> res(lenth);
 	auto res_iter = res.begin();
 	for (auto currentToNode = path.begin(); currentToNode != path.end(); currentToNode++) {
 		#if HIGHMEMORY
-		buildPath(res, res_iter, lastPos, (*currentToNode));
+				buildPath(res, res_iter, lastPos, (*currentToNode));
 		#else
-		buildPath(res, res_iter, lastPos->lowerEquvilant, (*currentToNode)->lowerEquvilant);
+				buildPath(res, res_iter, lastPos->lowerEquvilant, (*currentToNode)->lowerEquvilant);
 		#endif	
 		if (res_iter == res.end()) {
 			return res;
@@ -390,9 +405,9 @@ std::vector<PathNode*>node_Graph::Astar(std::vector<int> start, std::vector<int>
 		lastPos = *currentToNode;
 	}
 	#if HIGHMEMORY
-	*res_iter = lowerst(endNode);
+		* res_iter = lowerst(endNode);
 	#endif
-	
+
 	return res;
 }
 
@@ -453,6 +468,22 @@ void node_Graph::buildPath(std::vector<PathNode*>& res, std::vector<PathNode*>::
 	return;
 }
 #else
+std::vector<PathNode*> node_Graph::buildInClusterPath(PathNode* node_a, PathNode* node_b, int length) {
+	if (node_a->lowerEquvilant == NULL) {
+		auto path = serchers::Astar_c_node(node_a, node_b);
+		std::vector<PathNode*> res(length);
+		auto path_itr = path.begin();
+		for (auto node_itr = res.begin(); node_itr != res.end() && path_itr != path.end(); (node_itr++, path_itr++)) {
+			*node_itr = *path_itr;
+		}
+		return res;
+	}
+	if (node_a->clus == node_b->clus) {
+		return this->buildInClusterPath(node_a->lowerEquvilant, node_b->lowerEquvilant, length);
+	}
+	return this->buildPath(node_a, node_b, length);
+
+}
 void node_Graph::buildPath(std::vector<PathNode*>& res, std::vector<PathNode*>::iterator& res_iter, PathNode* start, PathNode* end) {
 	auto path = serchers::Astar_c_node(start, end);
 	if ((res.begin() == res_iter || lowerst(start) != *(res_iter-1))) {
@@ -472,6 +503,9 @@ void node_Graph::buildPath(std::vector<PathNode*>& res, std::vector<PathNode*>::
 		}
 		else {
 			buildPath(res, res_iter, start->lowerEquvilant, (*current)->lowerEquvilant);
+			if (res_iter == res.end()) {
+				return;
+			}
 		}
 		start = *current;
 	}
@@ -487,11 +521,18 @@ PathNode* node_Graph::buildNode(std::vector<int> pos, std::unordered_set<PathNod
 	temps.insert(buildingNode);
 
 	size_t cluster_id = utils::buildNewPos(innerPos, this->superCluster->clusterShape);
+	buildingNode->clus = this->clusters.at(cluster_id);
 
 	if (this->lowerNodeGraphs.size() == 0) {
+		if (this->clusters.at(cluster_id) == 0) {
+			return NULL;
+		}
 		this->buildNode(lowerPos, this->clusters.at(cluster_id), buildingNode);
 	}
 	else {
+		if (this->lowerNodeGraphs.count(cluster_id) == 0) {
+			return NULL;
+		}
 		auto p = this->lowerNodeGraphs.at(cluster_id)->buildNode(lowerPos, temps);
 		buildingNode->lowerEquvilant = p;
 		buildingNode->pos = p->pos;
@@ -507,9 +548,7 @@ void node_Graph::buildNode(std::vector<int> const & a, Cluster* b, PathNode* Nod
 	// build node connectivity
 	PathNode* n;
 	if (Node->lowerEquvilant == nullptr) {
-		int cluster_id = a[2] +
-			             a[1] * b->clusterShape[0] +
-			             a[0] * b->clusterShape[0] * b->clusterShape[1] + 1;  // redo this
+		int cluster_id = utils::buildNewNodePos(a, b->clusterShape);  // redo this                             _________________________________________________________
 		n = b->nodes.at(cluster_id);
 		Node->lowerEquvilant = n;
 		Node->pos = Node->lowerEquvilant->pos;

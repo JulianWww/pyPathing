@@ -1,6 +1,7 @@
 #include "node.h"
 #include "Edge.h"
 #include "scr/jvector.h"
+#include "Cluster.h"
 
  PathNode::PathNode(std::list<std::pair<PathNode*, short>> connectedNodes, std::vector<int> postion, short& movementMode, std::vector<int> ofset){
 	 this->movementMode = movementMode;

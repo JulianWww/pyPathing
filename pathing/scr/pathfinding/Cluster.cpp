@@ -47,6 +47,7 @@ void Cluster::init(std::vector<std::vector<std::vector<int>>> const& arr, short&
 					}
 					// build node and its connections of length 1
 					PathNode* n = new PathNode(connecteds, { x,y,z_posi }, movementKey, ofset);
+					n->clus = this;
 					size_t posId = buildPos(x, y, z_posi, arr);
 					createdNodes.insert({ {posId, n} });
 					n->id = posId;

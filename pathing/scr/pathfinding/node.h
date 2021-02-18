@@ -6,7 +6,7 @@
 #include <string>
 
 //#define buildPos(x,y,z, arr)(x + y * arr[0][0].size() + z*arr[0][0].size()*arr[0].size()+1)
-
+class Cluster;
 #ifndef node
 #define node
 
@@ -26,6 +26,7 @@ public: float distance = 0;
 public: size_t id=-1;
 	// internal pointer to the node that initated this one
 public: PathNode* movedFrom;
+public: Cluster* clus;
 public: short movementMode;
 public: PathNode* lowerEquvilant=nullptr;
 	  // wether or not the node can be walked on

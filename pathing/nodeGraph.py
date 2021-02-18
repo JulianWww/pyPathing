@@ -80,29 +80,39 @@ def debugRender(arr3d: ndarray, poses: typing.List[node]=[], layers=None):
     size = ceil(sqrt(len(layers)))
     f, axarr = plt.subplots(ceil(len(layers)/size), size)
     axarr = array([axarr]).flatten()
-    print(axarr)
     for idx, layer in enumerate(layers):
         arr = npcopy(arr3d[layer])
         for pos in poses:
-            if pos.position[2] == layer:
-                arr[pos.position[1], pos.position[0]] = 2
+            if pos.position[0] == layer:
+                arr[pos.position[1], pos.position[2]] = 2
         
         axarr[idx].imshow(arr)
         axarr[idx].set_title(f"dim {layer}")
 
     plt.show()
 
-def debugRenderCluster(graph: nodeGraph, arr:ndarray, layer=0, width=500, height=500, x=0, y=0, colors=["red", "green"], path=[], pathColor="gold", renderNodes=True):
+def debugRenderCluster(graph: nodeGraph, 
+                       arr:ndarray, 
+                       layer=0, 
+                       width=800, 
+                       height=800, 
+                       x=0, 
+                       y=0, 
+                       colors=["red", "green"], 
+                       path=[], 
+                       pathColor="gold", 
+                       pathWidth=10,
+                       renderNodes=True):
     "draw all nodes of a cluster" 
     #splitter = "[:2]"  
-    layerer = "[2]"
     master = tkinter.Tk()
+    layerer = "[2]"
     cv = tkinter.Canvas(master, width=width, height=height)
     cv.pack()
 
     dims = arr.shape[1:]
-    for y_id, row in enumerate(arr[0]):
-        for x_id, val in enumerate(row):
+    for x_id, row in enumerate(arr[0]):
+        for y_id, val in enumerate(row):
             cv.create_rectangle(x+x_id*    width/dims[0], y+y_id*    height/dims[1],
                                 x+(x_id+1)*width/dims[0], y+(y_id+1)*height/dims[1],
                                 fill="white" if val==1 else "black")
@@ -116,16 +126,16 @@ def debugRenderCluster(graph: nodeGraph, arr:ndarray, layer=0, width=500, height
             render(element, colors[1:], w+1)
 
         _debugRenderClusterConnections(clus, cv, x, y, width, height, dims, colors, layer, w)
-    
+
     if renderNodes: render(graph, colors, 1)
 
     if len(path)>0:
-        lastPos = path[0].position[:2]
+        lastPos = path[0].position[1:]
         for node in path:
-            pos = node.position[:2]
+            pos = node.position[1:]
             cv.create_line(x+width*(lastPos[0]+.5)/dims[0], y+height*(lastPos[1]+.5)/dims[1],
                         x+width*(pos[0]+.5)    /dims[0], y+height*(pos[1]+.5)    /dims[1],
-                        fill=pathColor, width=10)
+                        fill=pathColor, width=pathWidth)
             lastPos = pos
     
 
@@ -150,15 +160,15 @@ def _debugRenderClusterConnections(clus, cv, x, y, width, height, dims, colors, 
                 if otherNodeid == -1:
                     continue
                 otherNode = nodes[otherNodeid]
-                apos = node.position[:2]
-                bpos = otherNode.position[:2]
+                apos = node.position[1:]
+                bpos = otherNode.position[1:]
                 cv.create_line(x+width*(apos[0]+0.5)/dims[0], y+height*(apos[1]+0.5)/dims[1],
                                x+width*(bpos[0]+0.5)/dims[0], y+height*(bpos[1]+0.5)/dims[1],
                                fill=colors[0], width=w)
 
     for node in clus.nodes.values():
-        pos = node.position[:2]
-        l = node.position[2]
+        pos = node.position[1:]
+        l = node.position[0]
         if layer == l:
             cv.create_oval(x+width*(pos[0]+.3)/dims[0], y+height*(pos[1]+.3)    /dims[1], 
                            x+width*(pos[0]+.7)/dims[0], y+height*(pos[1]+.7)/dims[1], fill=colors[0])

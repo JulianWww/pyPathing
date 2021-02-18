@@ -28,7 +28,7 @@ extensions = [Extension( "pathing.scr.cy_generators",
 
 
 setup(
-    ext_modules=cythonize(extensions, annotate=True, force =True)
+    ext_modules=cythonize(extensions, annotate=True, force =True, gdb_debug=True)
 )
 
 # python36 setup.py build_ext --inplace

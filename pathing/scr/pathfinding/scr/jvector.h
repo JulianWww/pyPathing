@@ -39,6 +39,9 @@ namespace jce{
         template <typename T>
         std::vector<T> slice(std::vector<T>& vec, std::pair<std::size_t, std::size_t> size) {
             // slice a vector
+            if (size.second >= vec.size()) {
+                size.second = vec.size();
+            }
          
             std::vector<T> result = make_vector<T>(size.second - size.first);
             std::copy(vec.begin() + size.first, vec.begin() + size.second, result.begin());
@@ -48,6 +51,9 @@ namespace jce{
        template<typename T, typename... Args>
        std::vector<T> slice(std::vector<T> vec, std::pair<std::size_t, std::size_t> pos,  Args... keys){
            std::vector<T> res;
+           if (pos.second >= vec.size()) {
+               pos.second = vec.size();
+           }
            for (auto iter = vec.begin() + pos.first; iter != vec.begin() + (pos.second) && iter != vec.end(); iter++) {
                auto v = slice(*iter, keys...);
                res.push_back(v);

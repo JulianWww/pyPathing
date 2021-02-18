@@ -45,13 +45,13 @@ cdef class PY_node:
     @property
     def position(self):
         "the name of the node"
-        return np.array(deref(self.c_node).pos)
+        return np.flip(np.array(deref(self.c_node).pos))
 
     @position.setter
     def position(self, cnp.ndarray pos):
         if len(pos) != self.c_node.pos.size():
             raise DimentionMismatched(f"postion must be lenth {deref(self.c_node).pos.size()} not {len(pos)}")
-        deref(self.c_node).pos = pos
+        deref(self.c_node).pos = np.flip(pos)
     # get the edges set
     
     @property
@@ -210,8 +210,8 @@ cdef class Py_nodeGraph():
     """
     cdef cppInter.node_Graph* cppHandler
     
-    def buildFromArr(self, cnp.ndarray[int, ndim=3] arr, cnp.ndarray[int, ndim=1] sizes, int movement=0, int singler=0):
-        cdef cppInter.node_Graph* graph = new cppInter.node_Graph(arr, sizes, movement, singler)
+    def buildFromArr(self, cnp.ndarray[int, ndim=3] arr, cnp.ndarray[int, ndim=1] sizes, short movement=0, int singler=0, int buildKey=0):
+        cdef cppInter.node_Graph* graph = new cppInter.node_Graph(arr, sizes, movement, singler, buildKey)
         self.cppHandler = graph
     
 
@@ -263,6 +263,11 @@ cdef class Py_nodeGraph():
         return res
 
     def Astar(self, cnp.ndarray[int, ndim=1] start, cnp.ndarray[int, ndim=1] end, int length, bint cleanup=True):
+
+        #check if the node exists
+        self.getNode(start)
+        self.getNode(end)
+
         cdef cppInter.cvector[cppInter.PathNode*] path = self.cppHandler.Astar(start, end, length)
         cdef cppInter.cvector[cppInter.PathNode*].iterator itr = path.begin()
         res = []

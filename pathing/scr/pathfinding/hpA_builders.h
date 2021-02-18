@@ -20,7 +20,7 @@ namespace utils {
 		muls = 1;
 		for (; size_iter != sizes.end(); (size_iter++, pos_iter++)) {
 			res = res + (*pos_iter) * muls;
-			muls = muls * (*size_iter);
+			muls = muls * (*size_iter+1);
 		}
 		return res;
 
