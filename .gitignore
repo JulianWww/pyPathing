@@ -2,17 +2,16 @@ archive/
 build/
 demoMazes/
 pathing/__pycache__/
-pathing/scr/pathfining/.vs/
 testPlots/
 pathing/build/
 pathing/scr/pathfinding/x64/
+pathing/scr/pathfinding/pathing/.vs/
 
 
 
 pathing/scr/cy_generators.cpp
 pathing/scr/cy_nodeGraph.cpp
 pathing/scr/cy_searchers.cpp
-pathing/scr/pathfinding/pathing/
 
 
 
