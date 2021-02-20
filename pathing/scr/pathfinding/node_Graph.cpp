@@ -101,9 +101,9 @@ void node_Graph::buildMulit(std::vector<std::vector<std::vector<int>>> const& ve
 			for (z_pos = 0; z_pos < vec[0][0].size(); z_pos = z_pos + size) {
 				std::vector<std::vector<std::vector<int>>> subGraph = jce::vector::slice(
 					vec,
-					std::make_pair(x_pos, std::min(x_pos + size, vec.size())),
-					std::make_pair(y_pos, std::min(y_pos + size, vec[0].size())),
-					std::make_pair(z_pos, std::min(z_pos + size, vec[0][0].size())));
+					std::make_pair(x_pos, x_pos + size),
+					std::make_pair(y_pos, y_pos + size),
+					std::make_pair(z_pos, z_pos + size));
 
 				node_Graph* lower = new node_Graph();
 				lower->buildMulit(subGraph, poses, movementKey, { (int)(x_pos + ofset[0]),
