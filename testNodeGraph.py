@@ -2,14 +2,14 @@ import pathing, time
 import numpy as np
 import matplotlib.pyplot as plt
 
-SIZE = 50
+SIZE = 19
 
 x1 = 0
 y1 = 0
 x2 = SIZE
 y2 = SIZE
 
-arr = np.array([pathing.generators.rand_terain(SIZE+1, SIZE+1, .1)],
+arr = np.array([pathing.generators.rand_terain(SIZE+1, SIZE+1, 0)],
                dtype=np.int)
 arr[0,0,0] = 1
 arr[0,SIZE,SIZE] = 1
@@ -26,7 +26,7 @@ print("A* build", time.time()-t)
 t = time.time()
 n = pathing.nodeGraph.nodeGraph()
 n.buildFromArr(arr,
-               np.array([5]),
+               np.array([10,5]),
                movement=pathing.directions.oneObstacleBlock,
                buildKey=0)
 

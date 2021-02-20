@@ -31,6 +31,7 @@ private: void buildMulit(std::vector<std::vector<std::vector<int>>> const& vec, 
 private: void buildBridges(Cluster* a, Cluster* b, int singler=0, int=0);
 private: void buildClusterConnections();
 private: void buildClusterConnections(Cluster*);
+private: void buildSuperBridges();
 	   // build the superclusters nodes
 private: void buildSuperNodes();
 

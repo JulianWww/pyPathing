@@ -111,7 +111,7 @@ void node_Graph::buildMulit(std::vector<std::vector<std::vector<int>>> const& ve
 																  (int)(z_pos + ofset[2]) },singler, bridgeKey);
 				lower->buildClusterConnections(lower->superCluster);
 
-				lower->superCluster = this->superCluster;
+				//lower->superCluster = this->superCluster;
 
 				this->clusters.insert({ buildClusterPos(x_pos, y_pos, z_pos, vec, size), lower->superCluster });
 				lower->superCluster->postion = { (int)x_pos, (int)y_pos, (int)z_pos };
@@ -140,8 +140,11 @@ void node_Graph::buildMulit(std::vector<std::vector<std::vector<int>>> const& ve
 		}
 	}
 	this->superCluster->clusterShape = { (int)(vec[0][0].size() /size), (int)(vec[0].size()/size), (int)(vec.size()/size) };
-	//this->buildClusterConnections();
+
 	this->buildClusterBridges(singler, bridgeKey);
+	this->buildSuperNodes();
+	this->buildClusterConnections();
+	
 	//this->superCluster->clusterShape = { (int)vec.size(), (int)vec[0].size(), (int)vec[0][0].size() };
 }
 
