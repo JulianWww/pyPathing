@@ -47,8 +47,8 @@ void node_Graph::std_init(std::vector<std::vector<std::vector<int>>> const& arr,
 
 						long long newPos = buildClusterPos(x_nextPos, y_nextPos, z_nextPos, arr, size);
 
-						if (this->clusters.count(newPos) == 1) {
-							if (distance::manhattan<int>(this->clusters.at(newPos)->postion, newCluster->postion) == this->size) {
+						if (this->clusters.count(newPos) == (size_t)1) {
+							if (distance::manhattan<int>(this->clusters.at(newPos)->postion, newCluster->postion) == (float)this->size) {
 								buildBridges(newCluster, this->clusters.at(newPos), singler, bridgeKey);// , idx, size - 1);
 							}
 						}
@@ -426,8 +426,11 @@ PathNode* lowerst(PathNode* a) {
 #if HIGHMEMORY
 std::vector<PathNode*> node_Graph::buildInClusterPath(PathNode* node_a, PathNode* node_b, int length) {
 	if (node_a->lowerEquvilant == NULL) {
-		auto edge = node_a->edges.at(node_b);
-		auto path = edge->path;
+		auto path = serchers::Astar_c_node(node_a, node_b);
+		path.push_front(node_a);
+		std::vector<PathNode*> res(path.begin(), path.end());
+
+		/*auto path = edge->path;
 
 		std::vector<PathNode*> res(length);
 		if (edge->nodes.first == node_a) {
@@ -441,7 +444,7 @@ std::vector<PathNode*> node_Graph::buildInClusterPath(PathNode* node_a, PathNode
 			for (auto node_itr = res.begin(); node_itr != res.end() && path_itr != path.rend(); (node_itr++, path_itr++)) {
 				*node_itr = *path_itr;
 			}
-		}
+		}*/
 		return res;
 	}
 	if (node_a->clus == node_b->clus) {

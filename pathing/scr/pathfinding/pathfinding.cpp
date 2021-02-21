@@ -35,11 +35,11 @@ int main()
 
 
     //g->build_hpA(3)
-    auto r = g->Astar({ 0, 0, 0 }, { 0, 50, 50 }, 10);
+    auto r = g->Astar({ 0, 0, 0 }, { 0, 19, 19 }, 10);
     g->cleanUp();
     auto a = g->getLowerClusterKeys();
 
-	auto Node = g->getPathNode({ 0, 49, 49 });
+	//auto Node = g->getPathNode({ 0, 49, 49 });
 	//Node->setWalkable(false);
     
     // auto c = g->Astar(1, 9);

@@ -5,12 +5,21 @@ from cython.operator cimport dereference as deref, preincrement as inc
 cimport numpy as cnp
 import  numpy as np
 
-cdef class DimentionMismatched(Exception):
-    "error raised when dimentions dont fit"
+
 cdef class PathingError(Exception):
     "exception raised when no path was found"
-cdef class NodeFindingError(Exception):
+
+cdef class DimentionMismatched(PathingError):
+    "error raised when dimentions dont fit"
+
+cdef class NodeFindingError(PathingError):
     "thrown when the node dose not exist"
+
+cdef class ClusterBuildError(PathingError):
+    "thrown when sublusters dont fit"
+cdef class SubClustersDontFitError(ClusterBuildError):
+    "throw when subcluster sizes dont fit"
+
 
 ## py wrapper for the edge
 cdef class PY_edge:
@@ -211,6 +220,15 @@ cdef class Py_nodeGraph():
     cdef cppInter.node_Graph* cppHandler
     
     def buildFromArr(self, cnp.ndarray[int, ndim=3] arr, cnp.ndarray[int, ndim=1] sizes, short movement=0, int singler=0, int buildKey=0):
+        
+        cdef int last = sizes[0]
+        for lowerDim in sizes[1:]:
+            print(lowerDim)
+            if last % lowerDim != 0:
+                raise SubClustersDontFitError(f"""could not build SubClusters: subClusters dont fit neatyl in Supercluster, 
+supercluster size ({last}) must be multiple of subcluster size ({lowerDim})""")
+            last = lowerDim
+        
         cdef cppInter.node_Graph* graph = new cppInter.node_Graph(arr, sizes, movement, singler, buildKey)
         self.cppHandler = graph
     

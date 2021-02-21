@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <tuple>
 #include <unordered_set>
+#include <cstdint>
 
 
 
@@ -14,7 +15,7 @@ a collection of intaconected nodes
 
 class Cluster {
 
-public: std::unordered_map<size_t, PathNode*> nodes;
+public: std::unordered_map<int, PathNode*> nodes;
 	  // the postion of the cluster used by hpA*
 public: std::vector<int> postion;
 	  // the nodes that are used by hpA during abstract pathing

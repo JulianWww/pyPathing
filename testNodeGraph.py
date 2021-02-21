@@ -2,7 +2,7 @@ import pathing, time
 import numpy as np
 import matplotlib.pyplot as plt
 
-SIZE = 19
+SIZE = 10
 
 x1 = 0
 y1 = 0
@@ -26,7 +26,7 @@ print("A* build", time.time()-t)
 t = time.time()
 n = pathing.nodeGraph.nodeGraph()
 n.buildFromArr(arr,
-               np.array([10,5]),
+               np.array([7,5]),
                movement=pathing.directions.oneObstacleBlock,
                buildKey=0)
 

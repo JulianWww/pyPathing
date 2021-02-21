@@ -66,7 +66,7 @@ def debugRenderDirections(goals: goalCluster, arr: ndarray, clus:Cluster, tk:tki
                 try:
                     node = clus.getnode((level, x_id, y_id))
                     toNode = goals.getNext(node)
-                    drawArrow(y_id, x_id, toNode.position[0], toNode.position[1])
+                    drawArrow(x_id, y_id, int(toNode.position[1]), int(toNode.position[2]))
                 except:
                     pass
 

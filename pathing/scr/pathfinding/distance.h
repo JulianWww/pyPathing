@@ -11,13 +11,13 @@ namespace distance {
 	float fastDiagonal(PathNode* a, PathNode* end);
 	float manhattan(PathNode* a, PathNode* end);
 	template <typename T>
-	float manhattan(std::vector<T> a, std::vector<T> b) {
+	int manhattan(std::vector<T> a, std::vector<T> b) {
 		if (a.size() != b.size()) {
-			return (float)1.0;
+			return (int)1;
 		}
 		auto a_iter = a.begin();
 		auto b_iter = b.begin();
-		float distance = 0.0;
+		int distance = 0;
 		for (; a_iter != a.end(); a_iter++) {
 			distance = distance + abs((*a_iter) - (*b_iter));
 			b_iter++;

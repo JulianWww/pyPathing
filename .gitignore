@@ -4,7 +4,7 @@ demoMazes/
 pathing/__pycache__/
 testPlots/
 pathing/build/
-pathing/scr/pathfinding/x64/
+pathing/scr/pathfinding/pathing/x64/
 pathing/scr/pathfinding/pathing/.vs/
 
 
@@ -13,10 +13,15 @@ pathing/scr/cy_generators.cpp
 pathing/scr/cy_nodeGraph.cpp
 pathing/scr/cy_searchers.cpp
 
+demo_goalPathfinding.py
+nico_dfs.py
+test_Astar.py
+test_goalBasedPathFinding.py
+test_prim.py
+testNodeGraph.py
+testNodeGraphupdates.py
 
 
-
-speedTest.npy
 make.bat
 
 *.html
@@ -25,6 +30,6 @@ make.bat
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
-
+*.npy
 
 
