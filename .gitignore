@@ -8,10 +8,12 @@ pypathing/scr/pathfinding/pathing/x64/
 pypathing/scr/pathfinding/pathing/.vs/
 pypathing.egg-info/
 
+cython_debug/
 
 pypathing/scr/cy_generators.cpp
 pypathing/scr/cy_nodeGraph.cpp
 pypathing/scr/cy_searchers.cpp
+pyPathing/pypathing/scr/pathfinding/pathfinding.cpp 
 dist/*
 
 demo_goalPathfinding.py
