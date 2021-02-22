@@ -380,8 +380,9 @@ cdef class Py_GoalCluster():
     cdef bint _buildLive
     cdef unsigned int _speed
 
-    def __cinit__(self, PY_Cluster clus, bint buildLive = False):
-        self._buildLive = not buildLive
+    def __cinit__(self, PY_Cluster clus, bint buildLive = False, speed=0):
+        self._speed = speed
+        self._buildLive = buildLive
         self.c_goal = new cppInter.GoalCluster();
         self.c_goal.clus = clus.c_Cluster
         deref(self.c_goal).buildNodes()
@@ -402,6 +403,7 @@ cdef class Py_GoalCluster():
     
     @goal.setter
     def goal(self, PY_node node):
+        "what the ultimate goal of the pathing is"
         self.goal = node
         if self._buildLive:
             self.c_goal.setGoal(node.id)
@@ -427,7 +429,7 @@ cdef class Py_GoalCluster():
         """get the next node to move to to get to the goal"""
         cdef cppInter.PathNode* nextNode
         if self._buildLive:
-            nextNode = self.c_goal.liveGetNextNode(node.id, distanceKey)
+            nextNode = self.c_goal.liveGetNextNode(node.id, distanceKey, self.speed)
         else:
             nextNode = self.c_goal.getNextPos(node.id)
         if nextNode == NULL:
@@ -438,7 +440,7 @@ cdef class Py_GoalCluster():
 
     @property
     def speed(self):
-        "sped of the things moving"
+        "sped of the things moving you have to update manualy"
         return self._speed
     
     @speed.setter
@@ -446,9 +448,8 @@ cdef class Py_GoalCluster():
         self._speed = newSpeed
     
     def update(self):
-        print(self.goal)
+        "update movement"
         self.c_goal.buildGraph(self.goal.id, self.speed)
-        print("done")
 
     
 

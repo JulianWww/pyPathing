@@ -72,6 +72,6 @@ cdef extern from "pathfinding/GoalPathing.h":
         PathNode* getNextPos(int)
 
         void setGoal(int)
-        PathNode* liveGetNextNode(int, int)
+        PathNode* liveGetNextNode(int, int, unsigned int) except +
 
 

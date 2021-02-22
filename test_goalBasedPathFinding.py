@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 POINTS = 20
 SIZE= 21
 
-POS=(10, 10)
+POS=(0, 0)
 
 arr = np.array([pypathing.generators.rand_terain(SIZE,SIZE,0)], dtype=np.int)
 print(list(arr))
@@ -21,12 +21,11 @@ e2 = clus.getEdge(clus.getnode((0,0,1)), clus.getnode((0,0,0)))
 e.nodeMoves = -1
 
 
-goal      = pypathing.nodeGraph.goalCluster(clus, True)
+goal      = pypathing.nodeGraph.goalCluster(clus, False)
 goal.goal = clus.getnode((0,*POS))
 
 print(goal)
-goal.speed = 1
-print(goal)
+goal.speed = 2
 
 goal.update()
 
