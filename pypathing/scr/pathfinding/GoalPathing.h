@@ -23,8 +23,8 @@ public: ~GoalCluster();
 	  //once given a cluster this will all the neaded Goal nodes
 public: void buildNodes();
 	  // build node graph pointing towards a goal given by id
-public: void buildGraph(int);
-private: void build(PathNode*);
+public: void buildGraph(int, int speed);
+private: void build(PathNode*, int speed);
 	   //get the next node
 public: PathNode* getNextPos(int);
 	  //set the goal by id

@@ -18,16 +18,16 @@ GoalCluster::~GoalCluster() {
 }
 
 void GoalCluster::buildNodes() {
-	for (auto n = this->clus->nodes.begin(); n != this->clus->nodes.end(); n++){
+	for (auto n = this->clus->nodes.begin(); n != this->clus->nodes.end(); n++) {
 		GoalNode* newNode = new GoalNode();
 		newNode->Nodeptr = n->second;
 		this->nodes.insert({ n->first, newNode });
 	}
 }
-void GoalCluster::buildGraph(int start) {
-	this->build(this->clus->nodes.at(start));
+void GoalCluster::buildGraph(int start, int speed) {
+	this->build(this->clus->nodes.at(start), speed);
 }
-void GoalCluster::build(PathNode* start) {
+void GoalCluster::build(PathNode* start, int speed) {
 	this->goal = start;
 	std::unordered_map<float, std::unordered_set<PathNode*>>currentNodes = { {0, {start}} };
 	std::priority_queue<float, std::vector<float>, std::greater<float>> priorities;
@@ -42,13 +42,15 @@ void GoalCluster::build(PathNode* start) {
 			for (auto currentEdge = (*Node)->edges.begin(); currentEdge != (*Node)->edges.end(); currentEdge++) {
 				PathNode* newNode = currentEdge->first;
 
-				if (visitedNodes.count(newNode) == 0) {
+				float edge_len = currentEdge->second->getLength(newNode, speed);
+
+				if ((visitedNodes.count(newNode) == 0 || newNode->distance > (*Node)->distance + edge_len) && edge_len!=INFINITY) {
 					visitedNodes.insert(newNode);
 					auto newGoalnode = this->nodes.at(newNode->id);
 					newGoalnode->goal = this->goal;
 					newGoalnode->goalThisWay = this->nodes.at((*Node)->id);
-					newNode->distance = (*Node)->distance + currentEdge->second->length;
-					
+					newNode->distance = (*Node)->distance + edge_len;
+
 					if (currentNodes.count(newNode->distance) == 0) {
 						currentNodes.insert({ newNode->distance, {} });
 						priorities.push(newNode->distance);
@@ -128,9 +130,3 @@ PathNode* GoalCluster::liveGetNextNode(int a, int distanceKey) {
 	}
 	return start->goalThisWay->Nodeptr;
 }
-
-
-
-
-
-

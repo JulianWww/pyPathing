@@ -1,24 +1,34 @@
-import pathing, time, tkinter, random, time, turtle, json
+import pypathing, time, tkinter, random, time, turtle, json
 import numpy as np
 import matplotlib.pyplot as plt
 
-POINTS = 10
+POINTS = 20
 SIZE= 21
 
 POS=(10, 10)
 
-arr = np.array([pathing.generators.rand_terain(SIZE,SIZE,0)], dtype=np.int)
+arr = np.array([pypathing.generators.rand_terain(SIZE,SIZE,0)], dtype=np.int)
+print(list(arr))
 
         
 plt.imshow(arr[0]);plt.show()
 
-clus = pathing.nodeGraph.Cluster()
-clus.build(arr, pathing.directions.oneObstacleBlock)
+clus = pypathing.nodeGraph.Cluster()
+clus.build(arr, 1)
+
+e  = clus.getEdge(clus.getnode((0,0,0)), clus.getnode((0,0,1)))
+e2 = clus.getEdge(clus.getnode((0,0,1)), clus.getnode((0,0,0)))
+e.nodeMoves = -1
 
 
-goal      = pathing.nodeGraph.goalCluster(clus, True)
+goal      = pypathing.nodeGraph.goalCluster(clus, True)
 goal.goal = clus.getnode((0,*POS))
 
+print(goal)
+goal.speed = 1
+print(goal)
 
-print(goal.getNext(clus.getnode((0,0,0))))
-pathing.nodeGraph.debugRenderDirections(goal, arr, clus)
+goal.update()
+
+
+pypathing.nodeGraph.debugRenderDirections(goal, arr, clus)

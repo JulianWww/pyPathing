@@ -42,7 +42,7 @@ def debugRenderDirections(goals: goalCluster, arr: ndarray, clus:Cluster, tk:tki
     level = 0
     dims = arr.shape[1:]
 
-    def drawArrow(x, y, tox, toy):
+    def drawArrow(y, x, toy, tox):
         cv.create_line((x+.5)*width/dims[0], (y+.5)*height/dims[1],
                        (x+tox+1)*width/dims[0]/2, (y+toy+1)*height/dims[1]/2,
                        fill="red", arrow=tkinter.LAST)
@@ -51,8 +51,8 @@ def debugRenderDirections(goals: goalCluster, arr: ndarray, clus:Cluster, tk:tki
     master = tkinter.Tk() if tk is None else tk
     cv = tkinter.Canvas(master, width=width, height=height)
     cv.pack()
-    for y_id, row in enumerate(arr[0]):
-        for x_id, val in enumerate(row):
+    for x_id, row in enumerate(arr[0]):
+        for y_id, val in enumerate(row):
             cv.create_rectangle((x_id)*  width/dims[0], (y_id)*    height/dims[1],
                                 (x_id+1)*width/dims[0], (y_id+1)*height/dims[1],
                                 fill="white" if val==1 else "black")
@@ -62,8 +62,11 @@ def debugRenderDirections(goals: goalCluster, arr: ndarray, clus:Cluster, tk:tki
             for x_id, _ in enumerate(row):
                 try:
                     node = clus.getnode((level, x_id, y_id))
-                    toNode = goals.getNext(node)
-                    drawArrow(x_id, y_id, int(toNode.position[1]), int(toNode.position[2]))
+                    try: 
+                        toNode = goals.getNext(node)
+                        drawArrow(x_id, y_id, int(toNode.position[1]), int(toNode.position[2]))
+                    except:
+                        print(node)
                 except:
                     pass
 

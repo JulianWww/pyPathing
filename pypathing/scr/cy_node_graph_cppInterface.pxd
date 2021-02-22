@@ -68,7 +68,7 @@ cdef extern from "pathfinding/GoalPathing.h":
         Cluster* clus
         GoalCluster()
         void buildNodes()
-        void buildGraph(int)
+        void buildGraph(int, int) except +
         PathNode* getNextPos(int)
 
         void setGoal(int)

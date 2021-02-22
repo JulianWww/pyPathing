@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-//#define buildPos(x,y,z, arr)(x + y * arr[0][0].size() + z*arr[0][0].size()*arr[0].size()+1)
+//#define buildPos(x,y,z, arr)(x + y * arr{0]{0].size() + z*arr{0]{0].size()*arr{0].size()+1)
 class Cluster;
 #ifndef node
 #define node

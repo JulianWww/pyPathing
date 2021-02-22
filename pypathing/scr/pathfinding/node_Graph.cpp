@@ -47,9 +47,9 @@ void node_Graph::std_init(std::vector<std::vector<std::vector<int>>> const& arr,
 
 						long long newPos = buildClusterPos(x_nextPos, y_nextPos, z_nextPos, arr, size);
 
-						if (this->clusters.count(newPos) == (size_t)1) {
-							if (distance::manhattan<int>(this->clusters.at(newPos)->postion, newCluster->postion) == (float)this->size) {
-								buildBridges(newCluster, this->clusters.at(newPos), singler, bridgeKey);// , idx, size - 1);
+						if (this->clusters.count((int)newPos) == (size_t)1) {
+							if (distance::manhattan<int>(this->clusters.at((int)newPos)->postion, newCluster->postion) == (float)this->size) {
+								buildBridges(newCluster, this->clusters.at((int)newPos), singler, bridgeKey);// , idx, size - 1);
 							}
 						}
 
@@ -565,7 +565,7 @@ PathNode* node_Graph::buildNode(std::vector<int> pos, std::unordered_set<PathNod
 		if (this->clusters.at(cluster_id) == 0) {
 			return NULL;
 		}
-		this->buildNode(lowerPos, this->clusters.at(cluster_id), buildingNode);
+		this->buildNode(lowerPos, this->clusters.at((int)cluster_id), buildingNode);
 	}
 	else {
 		if (this->lowerNodeGraphs.count(cluster_id) == 0) {

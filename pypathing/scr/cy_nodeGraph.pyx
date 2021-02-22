@@ -378,6 +378,7 @@ cdef class Py_GoalCluster():
     cdef PY_node goal
     cdef bint _hasInitiated
     cdef bint _buildLive
+    cdef unsigned int _speed
 
     def __cinit__(self, PY_Cluster clus, bint buildLive = False):
         self._buildLive = not buildLive
@@ -386,6 +387,11 @@ cdef class Py_GoalCluster():
         deref(self.c_goal).buildNodes()
         self._hasInitiated=False
     
+    def __str__(self):
+        return f"Goal Pathfinding Graph <goal: {self.goal}, speed: {self.speed}, live build: {self.buildLive}>"
+    __rept__ = __str__
+
+
     @property
     def goal(self):
         """the goal to move to will do all internal builds automaticly
@@ -396,12 +402,11 @@ cdef class Py_GoalCluster():
     
     @goal.setter
     def goal(self, PY_node node):
+        self.goal = node
         if self._buildLive:
-            print("SET GOAL")
             self.c_goal.setGoal(node.id)
         else:
-            self.c_goal.buildGraph(node.id)
-        self.goal = node
+            self.update()
         self._hasInitiated = True
     
     @property
@@ -431,9 +436,19 @@ cdef class Py_GoalCluster():
         n.c_node = nextNode
         return n
 
-
-
-
+    @property
+    def speed(self):
+        "sped of the things moving"
+        return self._speed
+    
+    @speed.setter
+    def speed(self, unsigned int newSpeed):
+        self._speed = newSpeed
+    
+    def update(self):
+        print(self.goal)
+        self.c_goal.buildGraph(self.goal.id, self.speed)
+        print("done")
 
     
 
