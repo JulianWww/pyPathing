@@ -1,21 +1,31 @@
 archive/
 build/
 demoMazes/
-pathing/__pycache__/
-pathing/scr/pathfining/.vs/
+pypathing/__pycache__/
 testPlots/
-pathing/build/
-pathing/scr/pathfinding/x64/
+pypathing/build/
+pypathing/scr/pathfinding/pathing/x64/
+pypathing/scr/pathfinding/pathing/.vs/
+pypathing.egg-info/
+
+cython_debug/
+
+pypathing/scr/cy_generators.cpp
+pypathing/scr/cy_nodeGraph.cpp
+pypathing/scr/cy_searchers.cpp
+pypathing/scr/pathfinding/pathfinding.cpp
+dist/*
+
+demo_goalPathfinding.py
+nico_dfs.py
+test_Astar.py
+test_goalBasedPathFinding.py
+test_prim.py
+testNodeGraph.py
+testNodeGraphupdates.py
+edgeTest.py
 
 
-pathing/scr/cy_generators.cpp
-pathing/scr/cy_nodeGraph.cpp
-pathing/scr/cy_searchers.cpp
-
-
-
-
-speedTest.npy
 make.bat
 
 *.html
@@ -24,6 +34,7 @@ make.bat
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
-
+*.npy
+*.bat
 
 

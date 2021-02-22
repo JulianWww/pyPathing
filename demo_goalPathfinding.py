@@ -8,8 +8,8 @@ SIZE=40
 
 POS=(9, 9)
 
-with open("./demoMazes/goalPathing.json") as file:
-    arr = np.array(json.load(file), dtype=np.int0)
+with open("demoMazes/maze.json") as f:
+    arr = np.array(json.load(f))
     
 
 class point(object):
@@ -77,11 +77,11 @@ class point(object):
             return
         ofset = (-currentNode.position + newNode.position)*.001*SIZE*random.random()
 
-        self.dx += ofset[0]
+        self.dx += ofset[2]
         self.dy += ofset[1]
 
-        self.dx *= .9
-        self.dy *= .9
+        self.dx *= .99
+        self.dy *= .99
         
         
         

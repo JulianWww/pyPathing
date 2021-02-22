@@ -9,9 +9,6 @@ POS=(10, 10)
 
 arr = np.array([pathing.generators.rand_terain(SIZE,SIZE,0)], dtype=np.int)
 
-with open("./demoMazes/goalPathing.json") as file:
-    arr = np.array(json.load(file))
-
         
 plt.imshow(arr[0]);plt.show()
 
@@ -23,5 +20,5 @@ goal      = pathing.nodeGraph.goalCluster(clus, True)
 goal.goal = clus.getnode((0,*POS))
 
 
-
+print(goal.getNext(clus.getnode((0,0,0))))
 pathing.nodeGraph.debugRenderDirections(goal, arr, clus)
