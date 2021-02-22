@@ -39,6 +39,7 @@ public: void setWalkable(bool);
 public:
 	PathNode(std::list<std::pair<PathNode*, short>> connectedNodes, std::vector<int> postion, short&, std::vector<int>ofset = { 0,0,0 });
 	PathNode();
+	PathNode(std::vector<int>, int);
 	PathNode(PathNode*);
 	~PathNode();
 

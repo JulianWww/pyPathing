@@ -30,6 +30,11 @@ PathNode::PathNode(PathNode* n) {
 }
 PathNode::PathNode() {
 }
+PathNode::PathNode(std::vector<int>pos, int id)
+{
+	this->pos = pos;
+	this->id = id;
+}
 PathNode::~PathNode() {
 	while (this->edges.size()) {
 		 delete((*this->edges.begin()).second);

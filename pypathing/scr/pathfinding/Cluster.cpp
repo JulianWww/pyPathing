@@ -5,9 +5,15 @@
 #include "hpA_builders.h"
 #include "node_Graph.h"
 #include <stdexcept>
+#include "scr/jvector.h"
 
 
 
+
+Cluster::Cluster(std::vector<int> size)
+{
+	this->clusterShape = size;
+}
 
 Cluster::Cluster(std::vector<std::vector<std::vector<int>>> const& arr, int movementKey, std::vector<int>ofset) {
 	short val = (short)movementKey;
@@ -169,6 +175,16 @@ edge* Cluster::c_getEdge(PathNode* a_node, PathNode* b_node)
 		return pos->second;
 	}
 	throw std::out_of_range("could not find a path betwean the nodes");
+}
+
+void Cluster::addNode(std::vector<int>pos)
+{
+	size_t id = utils::buildNewNodePos(pos, this->clusterShape);
+	if (this->nodes.count(id) == 1) {
+		throw std::out_of_range("node exists");
+	}
+	auto newNode = new PathNode(pos, id);
+	this->nodes.insert({ id, newNode });
 }
 
 

@@ -31,6 +31,7 @@ cdef extern from "pathfinding/Edge.h":
 cdef extern from "pathfinding/Cluster.h":
     cppclass Cluster:
         Cluster()
+        Cluster(cvector[int])
         Cluster(cvector[cvector[cvector[int]]], short&)
         cunordered_map[int, PathNode*] nodes 
 
@@ -44,6 +45,8 @@ cdef extern from "pathfinding/Cluster.h":
         cvector[int]clusterShape 
 
         edge* c_getEdge(PathNode*, PathNode*) except +
+
+        void addNode(cvector[int] pos) except +
 
 cdef extern from "pathfinding/node_Graph.h":
     cppclass node_Graph:

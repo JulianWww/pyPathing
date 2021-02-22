@@ -137,6 +137,13 @@ cdef class PY_Cluster:
         cdef cppInter.Cluster* clus = new cppInter.Cluster(arr,  dir)
         self.c_Cluster = (clus)
         self.sizes = list(arr.shape)
+    
+    def createEmpty(self, cnp.ndarray[int, ndim=1]sizes):
+        pos = np.where(sizes < 1)
+        if (pos[0].size !=0):
+            raise ValueError(f"no negative values or zeros allowed in sizes")
+        self.sizes = list(sizes)
+        self.c_Cluster =  new cppInter.Cluster(sizes)
 
     @property
     def size(self):
@@ -268,6 +275,21 @@ cdef class PY_Cluster:
             edge.reverse = True
 
         return edge
+    
+    def addNode(self, cnp.ndarray[int, ndim=1] pos):
+        for inx, (val, maxv) in enumerate(zip(pos, self.sizes)):
+            if val >= maxv:
+                raise IndexError(f"pos {val} is out of bounds for dimention {inx+1} of size {maxv}")
+        try:
+            self.c_Cluster.addNode(pos)
+        except IndexError:
+            raise IndexError(f"node at postion {pos} already exists")
+    
+    def getOrAddNode(self, cnp.ndarray[int, ndim=1] pos):
+        try:
+            self.addNode(pos)
+        finally:
+            return self.getnode(tuple(pos))
 
 #python wrapper for the c++ node Graph class
 cdef class Py_nodeGraph():
