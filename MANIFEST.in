@@ -20,6 +20,7 @@ include pypathing/scr/pathfinding/node_Graph.h
 include pypathing/scr/pathfinding/pathfinders.h
 include pypathing/scr/pathfinding/searchers.h
 include pypathing/scr/pathfinding/utils.h
+include pypathing/scr/pathfinding/funcs.h
 
 
 include pypathing/scr/pathfinding/scr/jvector.h

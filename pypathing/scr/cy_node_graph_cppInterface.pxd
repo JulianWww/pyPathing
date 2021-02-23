@@ -17,15 +17,20 @@ cdef extern from "pathfinding/node.h":
         PathNode()
         int id
         bint walkable
+        bint oneDirectional
         void setWalkable(bint)
         cvector[int]connectedNodes()
 
 cdef extern from "pathfinding/Edge.h":
     cppclass edge:
         edge()
+        edge(PathNode*, PathNode*, float, bint)
+        edge(PathNode*, PathNode*)
         #edge(PathNode*, PathNode*)
         float length
         float dirCoefficient
+
+        bint oneDirectional
         PathNode* getNode(bint)
 
 cdef extern from "pathfinding/Cluster.h":
@@ -77,4 +82,6 @@ cdef extern from "pathfinding/GoalPathing.h":
         void setGoal(int)
         PathNode* liveGetNextNode(int, int, unsigned int) except +
 
+cdef extern from "pathfinding/funcs.h":
+    edge* makeEdge(PathNode*, PathNode*, float, bint) except +
 

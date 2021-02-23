@@ -183,7 +183,8 @@ void Cluster::addNode(std::vector<int>pos)
 	if (this->nodes.count(id) == 1) {
 		throw std::out_of_range("node exists");
 	}
-	auto newNode = new PathNode(pos, id);
+	std::vector<int> poses(pos.rbegin(), pos.rend());
+	auto newNode = new PathNode(poses, id);
 	this->nodes.insert({ id, newNode });
 }
 

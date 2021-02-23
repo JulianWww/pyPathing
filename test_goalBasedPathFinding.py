@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 POINTS = 20
 SIZE= 21
 
-POS=(0, 0)
+POS=(0, 3)
 
 arr = np.array([pypathing.generators.rand_terain(SIZE,SIZE,0)], dtype=np.int)
 print(list(arr))

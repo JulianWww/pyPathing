@@ -22,6 +22,7 @@ extensions = [Extension( "pypathing.scr.cy_generators",
                             "pypathing/scr/pathfinding/pathfinders.cpp",
                             "pypathing/scr/pathfinding/hpA_builders.cpp",
                             "pypathing/scr/pathfinding/GoalPathing.cpp",
+                            "pypathing/scr/pathfinding/funcs.cpp"
                             #"pathing/scr/pathfinding/node_Graph.cpp",
                         ],
                         include_dirs=[get_include()])]

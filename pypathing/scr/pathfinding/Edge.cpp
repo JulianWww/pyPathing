@@ -13,11 +13,24 @@ edge::edge(PathNode* a, PathNode* b) {
 	// create an edge betwean 2 nodes that are side by side
 	this->nodes = std::make_pair(a, b);
 	this->length = distance::diagonal(a, b);
+	insert(a, b, this);
 }
 edge::edge(PathNode* a, PathNode* b, float& distance) {
 	this->length = distance;
 	this->nodes = std::make_pair(a, b);
 	insert(a, b, this);
+}
+edge::edge(PathNode* a, PathNode* b, float distance, bool oneDirectional)
+{
+	this->length = distance;
+	this->nodes = std::make_pair(a, b);
+	if (oneDirectional) {
+		a->edges.insert({ b, this });
+		this->oneDirectional = true;
+	}
+	else {
+		insert(a, b, this);
+	}
 }
 edge::edge(PathNode* a, PathNode* b, bool intra) {
 	this->connectsClusters = intra;
@@ -64,4 +77,12 @@ PathNode* edge::getNode(bool b)
 		return this->nodes.first;
 	}
 	return this->nodes.second;
+}
+
+bool edge::isMoveable(PathNode* a)
+{
+	if (this->oneDirectional){
+		return a == this->nodes.second;
+	}
+	return true;
 }

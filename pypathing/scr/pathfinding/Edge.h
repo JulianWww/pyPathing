@@ -14,6 +14,7 @@ class edge {
 	// the length of the path betwean the connected nodes
 public: float length = 1;
 public: short blocks = 0;
+public: bool oneDirectional = false;
 public: float dirCoefficient = 0;
 	  //weather of not it connect clusters
 #if HIGHMEMORY
@@ -33,11 +34,14 @@ public:
 	edge(PathNode* a, PathNode* b);
 	edge(PathNode* a, PathNode* b, bool intra);
 	edge(PathNode* a, PathNode* b, float& distance);
+	edge(PathNode* a, PathNode* b, float distance, bool oneDirectional); // used by cythons make edge function
 	edge() {};
 	~edge();
 	void updateWalkability(int);
 	float getLength(PathNode*, int);
 	PathNode* getNode(bool);
+
+	bool isMoveable(PathNode*);
 };
 
 #endif

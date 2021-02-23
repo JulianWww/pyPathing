@@ -81,7 +81,7 @@ cdef class PY_edge:
         self.reverse = False
 
     def __str__(self) -> str:
-        return f"edge<len: {self.length}, nodes: {self.nodes}, moveSpeed: {self.nodeMoves}, reverse: {self.reverse}>"
+        return f"""edge<len: {self.length}, nodes: {self.nodes}, moveSpeed: {self.nodeMoves}, reverse: {self.reverse}, oneDirectional: {self.oneDirectional}>"""
     def __repr__(self) -> str:
         return self.__str__()
 
@@ -116,6 +116,11 @@ cdef class PY_edge:
             self.c_edge.dirCoefficient = -val
         else:
             self.c_edge.dirCoefficient =  val
+    
+    @property
+    def oneDirectional(self):
+        "weather or not the edge only goas in one direction"
+        return self.c_edge.oneDirectional
 
 #py wrapper class for Cluster
 cdef class PY_Cluster:
@@ -143,7 +148,7 @@ cdef class PY_Cluster:
         if (pos[0].size !=0):
             raise ValueError(f"no negative values or zeros allowed in sizes")
         self.sizes = list(sizes)
-        self.c_Cluster =  new cppInter.Cluster(sizes)
+        self.c_Cluster =  new cppInter.Cluster(np.flip(sizes))
 
     @property
     def size(self):
@@ -161,7 +166,7 @@ cdef class PY_Cluster:
         sizeMultiplyer = 1
         if isinstance(poses, (tuple, list, cnp.ndarray)):
             for postition, dimentionSize in zip(reversed(poses), reversed(self.sizes)):
-                if postition >= dimentionSize: raise ValueError(f"pos{postition} out of grid for dimention {dimentionidx} of size {dimentionSize}")
+                if postition >= dimentionSize: raise ValueError(f"pos {postition} out of grid for dimention {dimentionidx} of size {dimentionSize}")
                 dimentionidx+=1
                 identity += postition*sizeMultiplyer
                 sizeMultiplyer*= dimentionSize
@@ -202,6 +207,10 @@ cdef class PY_Cluster:
             n.c_node = self.c_Cluster.nodes[idx]
             nodes.append(n)
         return nodes
+    
+    def runDijstara(self, PY_node start, PY_node end, bint getVisited=False, int speed=0) -> list:
+        """runn the dijstara algorythem on the cluster"""
+        return self.runAstar(start, end, -1, getVisited, speed)
     
     def runBfs(self, PY_node start, PY_node end, bint getVisited=False) -> list:
         """run A* pathfinding algorythem to find a path from start to end with distanceKey
@@ -271,7 +280,6 @@ cdef class PY_Cluster:
         cdef cppInter.PathNode* leftNode = cEdge.getNode(True)
 
         if (leftNode == a.c_node):
-            print("howdys")
             edge.reverse = True
 
         return edge
@@ -280,12 +288,14 @@ cdef class PY_Cluster:
         for inx, (val, maxv) in enumerate(zip(pos, self.sizes)):
             if val >= maxv:
                 raise IndexError(f"pos {val} is out of bounds for dimention {inx+1} of size {maxv}")
+            if val < 0:
+                raise ValueError(f"cant use negative postions")
         try:
             self.c_Cluster.addNode(pos)
         except IndexError:
             raise IndexError(f"node at postion {pos} already exists")
     
-    def getOrAddNode(self, cnp.ndarray[int, ndim=1] pos):
+    def getAddNode(self, cnp.ndarray[int, ndim=1] pos):
         try:
             self.addNode(pos)
         finally:
@@ -472,6 +482,17 @@ cdef class Py_GoalCluster():
     def update(self):
         "update movement"
         self.c_goal.buildGraph(self.goal.id, self.speed)
+
+
+# funcs
+def makeEdge(PY_node a, PY_node b, float length, bint oneDirectional):
+    if a is None: raise ValueError(f"param a: None is not a valid Node")
+    if b is None: raise ValueError(f"param b: None is not a valid Node")
+
+    cdef PY_edge Edge = PY_edge()
+
+    Edge.c_edge = cppInter.makeEdge(a.c_node, b.c_node, length, oneDirectional)
+    return Edge
 
     
 

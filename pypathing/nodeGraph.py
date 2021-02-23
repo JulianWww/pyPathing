@@ -3,7 +3,7 @@
 import pypathing.scr.cy_nodeGraph as cy_node_graph
 from numpy import ndarray, copy as npcopy, array
 import typing
-from math import sqrt, ceil
+from math import sqrt, ceil, floor
 import tkinter
 
 Cluster = cy_node_graph.PY_Cluster
@@ -20,11 +20,13 @@ node = cy_node_graph.PY_node
         """
 
 
-edge = cy_node_graph.PY_edge
+edgeCls = cy_node_graph.PY_edge
 """py edge implementation
 
         an edge is a path betwean 2 nodes of a certain lenth
         """
+edge = cy_node_graph.makeEdge
+"edge factory function"
 
 nodeGraph = cy_node_graph.Py_nodeGraph
 """py node Graph implementation
@@ -121,9 +123,12 @@ def debugRenderCluster(graph: nodeGraph,
         if len(colors) == 0:
             return
 
-        clus = graph.abstractCluster
-        for element in graph.lowerNodeGraphs:
-            render(element, colors[1:], w+1)
+        if isinstance(graph, nodeGraph):
+            clus = graph.abstractCluster
+            for element in graph.lowerNodeGraphs:
+                render(element, colors[1:], w+1)
+        else:
+            clus = graph
 
         _debugRenderClusterConnections(clus, cv, x, y, width, height, dims, colors, layer, w)
 
@@ -136,7 +141,18 @@ def debugRenderCluster(graph: nodeGraph,
             cv.create_line(x+width*(lastPos[0]+.5)/dims[0], y+height*(lastPos[1]+.5)/dims[1],
                         x+width*(pos[0]+.5)    /dims[0], y+height*(pos[1]+.5)    /dims[1],
                         fill=pathColor, width=pathWidth)
+            cv.create_oval(x+width *(lastPos[0]+.5)/dims[0]+floor(pathWidth/2)-1, 
+                           y+height*(lastPos[1]+.5)/dims[1]+floor(pathWidth/2)-1,
+                           x+width *(lastPos[0]+.5)/dims[0]-floor(pathWidth/2), 
+                           y+height*(lastPos[1]+.5)/dims[1]-floor(pathWidth/2),
+                           fill=pathColor, outline=pathColor)
             lastPos = pos
+        
+        cv.create_oval(x+width *(pos[0]+.5)/dims[0]+floor(pathWidth/2)-1, 
+                       y+height*(pos[1]+.5)/dims[1]+floor(pathWidth/2)-1,
+                       x+width *(pos[0]+.5)/dims[0]-floor(pathWidth/2), 
+                       y+height*(pos[1]+.5)/dims[1]-floor(pathWidth/2),
+                       fill=pathColor, outline=pathColor)
     
 
     master.mainloop()
@@ -151,6 +167,7 @@ def debugRenderClusterConnections(clus, arr, color="red"):
 
     _debugRenderClusterConnections(clus, cv, 0, 0, width, width, arr.shape[1:], [color], 0, 10)
 
+    
 
 
 def _debugRenderClusterConnections(clus, cv, x, y, width, height, dims, colors, layer, w):
