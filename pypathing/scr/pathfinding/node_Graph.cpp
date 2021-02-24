@@ -116,26 +116,6 @@ void node_Graph::buildMulit(std::vector<std::vector<std::vector<int>>> const& ve
 				this->clusters.insert({ buildClusterPos(x_pos, y_pos, z_pos, vec, size), lower->superCluster });
 				lower->superCluster->postion = { (int)x_pos, (int)y_pos, (int)z_pos };
 				this->lowerNodeGraphs.insert({ buildClusterPos(x_pos, y_pos, z_pos, vec, size), lower });
-
-				/*int idx = 0;
-				for (auto iter = directionalMatrix.begin(); iter != directionalMatrix.end(); iter++) {
-					long long x_nextPos = std::get<0>(*iter) + (long long)x_pos;
-					long long y_nextPos = std::get<1>(*iter) + (long long)y_pos;
-					long long z_nextPos = std::get<2>(*iter) + (long long)z_pos;
-					if (x_nextPos >= 0 && y_nextPos >= 0 && z_nextPos >= 0) {
-
-						long long newPos = buildClusterPos(x_nextPos, y_nextPos, z_nextPos, vec, size);
-
-						if (this->clusters.count(newPos) == 1) {
-							int d = distance::manhattan<int>(this->clusters.at(newPos)->postion, lower->superCluster->postion);
-							if (distance::manhattan<int>(this->clusters.at(newPos)->postion, lower->superCluster->postion) == this->size) {
-								buildBridges(lower->superCluster, this->clusters.at(newPos));// , idx, size - 1);
-							}
-						}
-
-					}
-					idx++;*/
-				//}
 			}
 		}
 	}
@@ -184,7 +164,7 @@ void node_Graph::buildClusterBridges(int singler, int key) {
 // build bridges bewean lower level clusters
 void node_Graph::buildClusterBridges(Cluster* a, Cluster* b, int singler, int aId, int bId, node_Graph* aGraph, node_Graph* bGraph, int key) {
 	if (this->lowerNodeGraphs.size() == 0) {
-		subbuildBridges(a, b, singler, aGraph, bGraph, false);
+		subbuildBridges(a, b, singler, aGraph, bGraph, false, key);
 		aGraph->buildSuperNodes();
 		bGraph->buildSuperNodes();
 	}

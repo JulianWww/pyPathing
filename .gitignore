@@ -7,7 +7,6 @@ pypathing/build/
 pypathing/scr/pathfinding/pathing/x64/
 pypathing/scr/pathfinding/pathing/.vs/
 pypathing.egg-info/
-
 cython_debug/
 
 pypathing/scr/cy_generators.cpp
