@@ -91,5 +91,5 @@ cdef extern from "pathfinding/DPAstar.h":
 
 
         cvector[PathNode*] path
-        float connectedNodes
+        float cost
     

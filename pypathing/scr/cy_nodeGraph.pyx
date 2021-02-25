@@ -493,6 +493,12 @@ cdef class PY_DPAstarPath():
 
     def __cinit__(PY_DPAstarPath self, PY_node start, PY_node end, int posKey=0, int speed=0):
         self.c_path = new cppInter.DPAstarPath(start.c_node, end.c_node, posKey, speed)
+
+        self.getPath()
+
+    def __str__(self):
+        return f"DPA* path <path: {self.path}, cost: {self.cost}"
+    __repr__=__str__
     
     cdef getPath(self):
         cdef cppInter.PathNode* node
@@ -510,11 +516,11 @@ cdef class PY_DPAstarPath():
     
     @property
     def cost(self) -> float:
-        return self.c_node.cost
+        return self.c_path.cost
     
     @cost.setter
     def cost(self, float val) -> void:
-        self.c_node.cost = val
+        self.c_path.cost = val
 
 
 # funcs
