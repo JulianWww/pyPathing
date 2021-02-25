@@ -85,3 +85,11 @@ cdef extern from "pathfinding/GoalPathing.h":
 cdef extern from "pathfinding/funcs.h":
     edge* makeEdge(PathNode*, PathNode*, float, bint) except +
 
+cdef extern from "pathfinding/DPAstar.h":
+    cppclass DPAstarPath:
+        DPAstarPath(PathNode*, PathNode*, int, int) except +
+
+
+        cvector[PathNode*] path
+        float connectedNodes
+    

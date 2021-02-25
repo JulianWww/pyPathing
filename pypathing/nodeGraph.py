@@ -37,6 +37,8 @@ goalCluster = cy_node_graph.Py_GoalCluster
 """a cluster extension that uses goal based pathfinding
         """
 
+DPAstar = cy_node_graph.PY_DPAstarPath
+
 def debugRenderDirections(goals: goalCluster, arr: ndarray, clus:Cluster, tk:tkinter.Tk=None, renderArrows=True):
     "debug function to debug the path finding sys it will draw arrows"
     width=500

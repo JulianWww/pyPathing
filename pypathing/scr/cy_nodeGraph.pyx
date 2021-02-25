@@ -283,7 +283,10 @@ cdef class PY_Cluster:
             edge.reverse = True
 
         return edge
-    
+
+cdef class PY_BasicNodeGraph(PY_Cluster):
+    "same as cluster but you can add nodes"
+
     def addNode(self, cnp.ndarray[int, ndim=1] pos):
         for inx, (val, maxv) in enumerate(zip(pos, self.sizes)):
             if val >= maxv:
@@ -483,6 +486,36 @@ cdef class Py_GoalCluster():
         "update movement"
         self.c_goal.buildGraph(self.goal.id, self.speed)
 
+# py wrapper of the DPAstarPath class
+cdef class PY_DPAstarPath():
+    cdef cppInter.DPAstarPath* c_path
+    cdef list _path
+
+    def __cinit__(PY_DPAstarPath self, PY_node start, PY_node end, int posKey=0, int speed=0):
+        self.c_path = new cppInter.DPAstarPath(start.c_node, end.c_node, posKey, speed)
+    
+    cdef getPath(self):
+        cdef cppInter.PathNode* node
+        cdef PY_node Pynode
+        self._path = []
+
+        for node in self.c_path.path:
+            Pynode = PY_node()
+            Pynode.c_node = node
+            self._path.append(Pynode)
+    
+    @property
+    def path(self) -> list:
+        return self._path
+    
+    @property
+    def cost(self) -> float:
+        return self.c_node.cost
+    
+    @cost.setter
+    def cost(self, float val) -> void:
+        self.c_node.cost = val
+
 
 # funcs
 def makeEdge(PY_node a, PY_node b, float length, bint oneDirectional):
@@ -494,6 +527,6 @@ def makeEdge(PY_node a, PY_node b, float length, bint oneDirectional):
     Edge.c_edge = cppInter.makeEdge(a.c_node, b.c_node, length, oneDirectional)
     return Edge
 
-    
+
 
 

@@ -12,7 +12,8 @@ extensions = [Extension( "pypathing.scr.cy_generators",
                         include_dirs=[get_include()]),
 
               Extension( "pypathing.scr.cy_nodeGraph",
-                        [   "pypathing/scr/cy_nodeGraph.pyx",
+                        [   
+                            "pypathing/scr/cy_nodeGraph.pyx",
                             "pypathing/scr/pathfinding/node_Graph.cpp",
                             "pypathing/scr/pathfinding/node.cpp",
                             "pypathing/scr/pathfinding/Edge.cpp",
@@ -22,7 +23,8 @@ extensions = [Extension( "pypathing.scr.cy_generators",
                             "pypathing/scr/pathfinding/pathfinders.cpp",
                             "pypathing/scr/pathfinding/hpA_builders.cpp",
                             "pypathing/scr/pathfinding/GoalPathing.cpp",
-                            "pypathing/scr/pathfinding/funcs.cpp"
+                            "pypathing/scr/pathfinding/funcs.cpp",
+                            "pypathing/scr/pathfinding/DPAstar.cpp",
                             #"pathing/scr/pathfinding/node_Graph.cpp",
                         ],
                         include_dirs=[get_include()])]
