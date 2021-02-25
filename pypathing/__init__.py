@@ -4,3 +4,5 @@ from pypathing.distances import distance, directions
 
 from .nodeGraph import *
 from .hpAstar import *
+
+import pypathing.debugRenders as debug

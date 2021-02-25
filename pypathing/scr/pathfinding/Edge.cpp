@@ -3,6 +3,7 @@
 #include "edge.h"
 #include "Edge.h"
 #include "node.h"
+#include "Cluster.h"
 
 void insert(PathNode* a, PathNode* b, edge* e) {
 	a->edges.insert({ b, e });
@@ -78,6 +79,19 @@ PathNode* edge::getNode(bool b)
 	}
 	return this->nodes.second;
 }
+
+void edge::updateLength(float newLen) {
+	if (this->length < newLen) {
+		this->nodes.first->clus->curentEvent->deletions.push_back(this->nodes.first);
+		this->nodes.second->clus->curentEvent->deletions.push_back(this->nodes.second);
+	}
+	else {
+		this->nodes.first ->clus->curentEvent->inserts.push_back(this->nodes.first);
+		this->nodes.second->clus->curentEvent->inserts.push_back(this->nodes.second);
+	}
+	this->length = newLen;
+}
+
 
 bool edge::isMoveable(PathNode* a)
 {

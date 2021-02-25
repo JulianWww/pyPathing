@@ -2,9 +2,9 @@
 
 import pypathing.scr.cy_nodeGraph as cy_node_graph
 
-__all__ = ["NodeGraph", "node", "edgeCls", "edge", "goalGraph", "DPAstar"]
+__all__ = ["nodeGraph", "node", "edgeCls", "edge", "goalGraph", "DPAstar", "Event"]
 
-NodeGraph = cy_node_graph.PY_BasicNodeGraph
+nodeGraph = cy_node_graph.PY_BasicNodeGraph
 """A Cluster of nodes witch is basicly just a collection of nodes
 
         currently only 3 dimentions are suported
@@ -31,5 +31,8 @@ goalGraph = cy_node_graph.Py_GoalCluster
         """
 
 DPAstar = cy_node_graph.PY_DPAstarPath
+
+
+Event = cy_node_graph.PY_updateEvent
 
 

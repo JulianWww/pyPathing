@@ -1,6 +1,7 @@
 #pragma once
 #include "node.h"
 #include "Edge.h"
+#include "updateEvent.h"
 #include <vector>
 #include <unordered_map>
 #include <tuple>
@@ -27,6 +28,8 @@ public: Cluster* superCluster = NULL;
 public: std::vector<int> clusterShape;
 public: short movementMode;
 
+public: updateEvent* curentEvent;
+
 
 public: Cluster() { return; };
 public: Cluster(std::vector<int> size);
@@ -42,7 +45,7 @@ public: std::vector<PathNode*> getNodes();
 public: std::vector<int>getNodeKeys();
 
 	  //update abstract edges
-public: void updateConnections();
+public: updateEvent* updateConnections();
 public: edge* c_getEdge(PathNode*, PathNode*);
 public: void addNode(std::vector<int>);
 }; 

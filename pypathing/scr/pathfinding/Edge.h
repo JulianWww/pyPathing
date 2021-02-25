@@ -40,6 +40,7 @@ public:
 	void updateWalkability(int);
 	float getLength(PathNode*, int);
 	PathNode* getNode(bool);
+	void updateLength(float);
 
 	bool isMoveable(PathNode*);
 };

@@ -1,11 +1,12 @@
-from .hpAstar import nodeGraph
-from 
+from .hpAstar import hpAstar
 from numpy import ndarray, copy as npcopy, array
 import typing
 from math import sqrt, ceil, floor
 import tkinter
 
-def debugRenderDirections(goals, arr: ndarray, clus, tk:tkinter.Tk=None, renderArrows=True):
+__all__ = ["renderDirections", "render", "renderCluster", "renderClusterConnections"]
+
+def renderDirections(goals, arr: ndarray, clus, tk:tkinter.Tk=None, renderArrows=True):
     "debug function to debug the path finding sys it will draw arrows"
     width=500
     height=500
@@ -43,8 +44,7 @@ def debugRenderDirections(goals, arr: ndarray, clus, tk:tkinter.Tk=None, renderA
     if tk is None: master.mainloop()
     return master, cv
 
-
-def debugRender(arr3d: ndarray, poses: typing.List[node]=[], layers=None):
+def render(arr3d: ndarray, poses: list = [], layers=None):
     import matplotlib.pyplot as plt
     layers = layers if layers!=None else range(0, arr3d.shape[0])
     size = ceil(sqrt(len(layers)))
@@ -61,7 +61,7 @@ def debugRender(arr3d: ndarray, poses: typing.List[node]=[], layers=None):
 
     plt.show()
 
-def debugRenderCluster(graph: nodeGraph, 
+def renderCluster(graph: hpAstar, 
                        arr:ndarray, 
                        layer=0, 
                        width=800, 
@@ -91,7 +91,7 @@ def debugRenderCluster(graph: nodeGraph,
         if len(colors) == 0:
             return
 
-        if isinstance(graph, nodeGraph):
+        if isinstance(graph, hpAstar):
             clus = graph.abstractCluster
             for element in graph.lowerNodeGraphs:
                 render(element, colors[1:], w+1)
@@ -125,7 +125,7 @@ def debugRenderCluster(graph: nodeGraph,
 
     master.mainloop()
 
-def debugRenderClusterConnections(clus, arr, color="red"):
+def renderClusterConnections(clus, arr, color="red"):
     width=500
     height=500
 

@@ -53,6 +53,12 @@ std::vector<int>PathNode::connectedNodes() {
 
 void PathNode::setWalkable(bool newWalkable, short mode) {
 	if (this->walkable != newWalkable) {
+		if (newWalkable) {
+			this->clus->curentEvent->inserts.push_back(this);
+		}
+		else {
+			this->clus->curentEvent->deletions.push_back(this);
+		}
 		this->walkable = newWalkable;
 		// iterate over every edge and update there walkability
 		for (auto edge_iter = this->edges.begin(); edge_iter != this->edges.end(); edge_iter++) {
@@ -77,7 +83,7 @@ void PathNode::setWalkable(bool newWalkable, short mode) {
 				}
 			}
 		}
-		this->clus->updateConnections();
+		//this->clus->updateConnections();
 	}
 }
 void PathNode::setWalkable(bool newWalkable) {

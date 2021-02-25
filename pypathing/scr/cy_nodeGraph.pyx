@@ -92,7 +92,7 @@ cdef class PY_edge:
     
     @length.setter
     def length(self, float val):
-        self.c_edge.length = val
+        self.c_edge.updateLength(val)
 
     @property
     def nodes(self):
@@ -121,6 +121,37 @@ cdef class PY_edge:
     def oneDirectional(self):
         "weather or not the edge only goas in one direction"
         return self.c_edge.oneDirectional
+
+# py wrapper for the updateEvent struct
+cdef class PY_updateEvent:
+    cdef cppInter.updateEvent* c_event
+
+    def __str__(self):
+        return f"updateEvent <inserts: {self.inserts}, deletions: {self.deletions}>"
+    
+    @property
+    def inserts(self) -> list:
+        cdef list nodes = []
+        cdef PY_node currentNode
+        cdef cppInter.PathNode* node
+        cdef cppInter.clist[cppInter.PathNode*] c_nodes = self.c_event.inserts
+        for node in c_nodes:
+            currentNode = PY_node()
+            currentNode.c_node = node
+            nodes.append(currentNode)
+        return nodes
+    
+    @property
+    def deletions(self) -> list:
+        cdef list nodes = []
+        cdef PY_node currentNode
+        cdef cppInter.PathNode* node
+        for node in self.c_event.deletions:
+            currentNode = PY_node()
+            currentNode.c_node = node
+            nodes.append(currentNode)
+        return nodes
+
 
 #py wrapper class for Cluster
 cdef class PY_Cluster:
@@ -272,7 +303,7 @@ cdef class PY_Cluster:
     def pos(self):
         return np.array(self.c_node.postion)
     
-    def getEdge(self, PY_node a, PY_node b):
+    def getEdge(self, PY_node a, PY_node b) -> PY_edge:
         cdef cppInter.edge* cEdge = deref(self.c_Cluster).c_getEdge(a.c_node, b.c_node);
         cdef PY_edge edge = PY_edge()
         edge.c_edge = cEdge
@@ -283,6 +314,11 @@ cdef class PY_Cluster:
             edge.reverse = True
 
         return edge
+    
+    def update(self) -> PY_updateEvent:
+        event = PY_updateEvent()
+        event.c_event = self.c_Cluster.updateConnections()
+        return event
 
 cdef class PY_BasicNodeGraph(PY_Cluster):
     "same as cluster but you can add nodes"

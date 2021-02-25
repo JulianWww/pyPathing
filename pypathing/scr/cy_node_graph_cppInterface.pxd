@@ -3,6 +3,7 @@
 from libcpp.set cimport set as cset
 from libcpp.string cimport string as cstring
 from libcpp.vector cimport vector as cvector
+from libcpp.list cimport list as clist
 from libcpp.pair cimport pair as cpair
 from libcpp.unordered_map cimport unordered_map as cunordered_map
 from libcpp.unordered_set cimport unordered_set as cunordered_set
@@ -33,7 +34,14 @@ cdef extern from "pathfinding/Edge.h":
         bint oneDirectional
         PathNode* getNode(bint)
 
+        void updateLength(float) except +
+
 cdef extern from "pathfinding/Cluster.h":
+    cppclass updateEvent:
+        clist[PathNode*] inserts
+        clist[PathNode*] deletions
+
+
     cppclass Cluster:
         Cluster()
         Cluster(cvector[int])
@@ -52,6 +60,7 @@ cdef extern from "pathfinding/Cluster.h":
         edge* c_getEdge(PathNode*, PathNode*) except +
 
         void addNode(cvector[int] pos) except +
+        updateEvent* updateConnections() except +
 
 cdef extern from "pathfinding/node_Graph.h":
     cppclass node_Graph:

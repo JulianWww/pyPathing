@@ -13,14 +13,17 @@
 Cluster::Cluster(std::vector<int> size)
 {
 	this->clusterShape = size;
+	this->curentEvent = new updateEvent();
 }
 
 Cluster::Cluster(std::vector<std::vector<std::vector<int>>> const& arr, int movementKey, std::vector<int>ofset) {
 	short val = (short)movementKey;
 	this->init(arr, val, ofset);
+	this->curentEvent = new updateEvent();
 }
 Cluster::Cluster(std::vector<std::vector<std::vector<int>>> const& arr, short& movementKey, std::vector<int>ofset) {
 	this->init(arr, movementKey, ofset);
+	this->curentEvent = new updateEvent();
 }
 
 void Cluster::init(std::vector<std::vector<std::vector<int>>> const& arr, short& movementKey, std::vector<int>ofset){
@@ -128,7 +131,7 @@ std::vector<int> Cluster::getNodeKeys() {
 	return nodes;
 }
 
-void Cluster::updateConnections() {
+updateEvent* Cluster::updateConnections() {
 	bool updateHigher = false;
 	for (auto a_node = this->intraClusterNodes.begin(); a_node != this->intraClusterNodes.end(); a_node++) {
 		for (auto b_node = this->intraClusterNodes.begin(); b_node != this->intraClusterNodes.end() && *b_node != *a_node; b_node++) {
@@ -166,6 +169,10 @@ void Cluster::updateConnections() {
 	if (updateHigher && this->superCluster != NULL) {
 		this->superCluster->updateConnections();
 	}
+
+	auto lastUpdateEvent = this->curentEvent;
+	this->curentEvent = new updateEvent();
+	return lastUpdateEvent;
 }
 
 edge* Cluster::c_getEdge(PathNode* a_node, PathNode* b_node)
@@ -186,6 +193,8 @@ void Cluster::addNode(std::vector<int>pos)
 	std::vector<int> poses(pos.rbegin(), pos.rend());
 	auto newNode = new PathNode(poses, id);
 	this->nodes.insert({ id, newNode });
+
+	this->curentEvent->inserts.push_back(newNode);
 }
 
 

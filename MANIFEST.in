@@ -1,28 +1,5 @@
-include pypathing/scr/cy_generators.pyx
-include pypathing/scr/cy_searchers.pyx
-include pypathing/scr/cy_nodeGraph.pyx
-
-include pypathing/scr/cy_node_graph_cppInterface.pxd
-include pypathing/scr/h_node_Grpah.pxd
-
-
-include pypathing/scr/pathfinding/Astar.h
-include pypathing/scr/pathfinding/Cluster.h
-include pypathing/scr/pathfinding/config.h
-include pypathing/scr/pathfinding/distance.h
-include pypathing/scr/pathfinding/distances.h
-include pypathing/scr/pathfinding/Edge.h
-include pypathing/scr/pathfinding/generatiors.h
-include pypathing/scr/pathfinding/GoalPathing.h
-include pypathing/scr/pathfinding/hpA_builders.h
-include pypathing/scr/pathfinding/node.h
-include pypathing/scr/pathfinding/node_Graph.h
-include pypathing/scr/pathfinding/pathfinders.h
-include pypathing/scr/pathfinding/searchers.h
-include pypathing/scr/pathfinding/utils.h
-include pypathing/scr/pathfinding/funcs.h
-
-
-include pypathing/scr/pathfinding/scr/jvector.h
+*.pyx
+*.pxd
+*.h
 
 
