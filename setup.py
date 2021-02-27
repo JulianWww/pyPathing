@@ -64,5 +64,5 @@ setup(
         'Programming Language :: Python :: 3'
     ],
 
-    ext_modules=cythonize(extensions, annotate=False)
+    ext_modules=cythonize(extensions, annotate=True)
 )

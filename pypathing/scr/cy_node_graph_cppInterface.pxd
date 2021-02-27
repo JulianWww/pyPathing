@@ -101,13 +101,12 @@ cdef extern from "pathfinding/path.h":
         cvector[PathNode*] path
         float cost
         float speed
+        int key
 
     cppclass DPAstarPath(Path):
         DPAstarPath(PathNode*, PathNode*, int, int) except +
 
-        cvector[PathNode*] path
-        float cost
-        float speed
+        void update(updateEvent*, PathNode*, int) except +
 
 
 

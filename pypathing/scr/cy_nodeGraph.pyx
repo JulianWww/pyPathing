@@ -37,37 +37,37 @@ cdef class PY_node:
 
     # edge property aces
     @property
-    def position(self):
+    def position(self)-> cnp.ndarray[int]:
         "the name of the node"
         return np.flip(np.array(deref(self.c_node).pos))
 
     @position.setter
-    def position(self, cnp.ndarray pos):
+    def position(self, cnp.ndarray pos) -> void:
         if len(pos) != self.c_node.pos.size():
             raise DimentionMismatched(f"postion must be lenth {deref(self.c_node).pos.size()} not {len(pos)}")
         deref(self.c_node).pos = np.flip(pos)
     # get the edges set
     
     @property
-    def edges(self):
+    def edges(self) -> void:
         return set()
     
     #property
     @property
-    def id(self):
+    def id(self) -> int:
         return deref(self.c_node).id
     
     @property
-    def walkable(self):
+    def walkable(self) -> bint:
         "boolean value weather or not the node is walkable"
         return deref(self.c_node).walkable
     
     @walkable.setter
-    def walkable(self, bint NewWalkablility):
+    def walkable(self, bint NewWalkablility) -> void:
         deref(self.c_node).setWalkable(NewWalkablility)
     
     @property
-    def connectedNodes(self):
+    def connectedNodes(self) -> cnp.ndarray[int]:
         cdef cppInter.cvector[int] connecteds = self.c_node.connectedNodes()
         return np.array(connecteds)
 
@@ -86,16 +86,16 @@ cdef class PY_edge:
         return self.__str__()
 
     @property
-    def length(self):
+    def length(self) -> float:
         "the lenth bewean the connected nodes"
         return self.c_edge.length
     
     @length.setter
-    def length(self, float val):
+    def length(self, float val) -> void:
         self.c_edge.updateLength(val)
 
     @property
-    def nodes(self):
+    def nodes(self) -> tuple:
         def getNode(bint val):
             cdef PY_node Pynode = PY_node()
             Pynode.c_node = self.c_edge.getNode(val)
@@ -111,14 +111,14 @@ cdef class PY_edge:
         return self.c_edge.dirCoefficient
     
     @nodeMoves.setter
-    def nodeMoves(self, float val):
+    def nodeMoves(self, float val) -> void:
         if (self.reverse):
             self.c_edge.dirCoefficient = -val
         else:
             self.c_edge.dirCoefficient =  val
     
     @property
-    def oneDirectional(self):
+    def oneDirectional(self) -> void:
         "weather or not the edge only goas in one direction"
         return self.c_edge.oneDirectional
 
@@ -227,9 +227,8 @@ cdef class PY_Cluster:
         """
         cdef a = start.id
         cdef b = end.id
-        cdef cnp.ndarray nodeIds
 
-        nodeIds = np.array(self.c_Cluster.Astar(a, b, distanceKey, getVisited, speed))
+        cdef cnp.ndarray[int, ndim=1] nodeIds = np.array(self.c_Cluster.Astar(a, b, distanceKey, getVisited, speed))
         if nodeIds.size == 0: raise PathingError(f"no valid path was found")
         cdef list nodes = []
         cdef PY_node n
@@ -248,7 +247,7 @@ cdef class PY_Cluster:
         """
         cdef a = start.id
         cdef b = end.id
-        cdef cnp.ndarray nodeIds
+        cdef cnp.ndarray[int, ndim=1] nodeIds
         try:
             nodeIds = np.array(self.c_Cluster.bfs(a, b, getVisited))
         except:
@@ -268,7 +267,7 @@ cdef class PY_Cluster:
         raise Exception("not functionaly implemented")
         cdef a = start.id
         cdef b = end.id
-        cdef cnp.ndarray nodeIds
+        cdef cnp.ndarray[int, ndim=1] nodeIds
         try:
             nodeIds = np.array(self.c_Cluster.dfs(a, b, getVisited))
         except:
@@ -527,7 +526,12 @@ cdef class PY_Path:
     cdef cppInter.Path* c_path
     cdef list _path
 
+    def __str__(self):
+        return f"Path <path: {self.path}, cost: {self.cost}, movementKey: {self.movementKey}"
+    __repr__=__str__
+
     cdef getPath(self):
+        self._path = []
         cdef cppInter.PathNode* node
         cdef PY_node Pynode
         self._path = []
@@ -548,6 +552,10 @@ cdef class PY_Path:
     @cost.setter
     def cost(self, float val) -> void:
         self.c_path.cost = val
+    
+    @property
+    def movementKey(self) -> int:
+        return self.c_path.key
 
 
 # py wrapper of the DPAstarPath class
@@ -561,8 +569,21 @@ cdef class PY_DPAstarPath(PY_Path):
         self.getPath()
 
     def __str__(self):
-        return f"DPA* path <path: {self.path}, cost: {self.cost}"
+        return f"DPA* path <path: {self.path}, cost: {self.cost}, movementKey: {self.movementKey}"
     __repr__=__str__
+
+    def update(self, PY_updateEvent event, PY_node current=None, int key=-2):
+        if key == -2:
+            key = self.movementKey
+        if current is None:
+            current = self.path[0]
+        
+        if event is None:#raise error??
+            return; 
+
+        self.c_DPAstarPath.update(event.c_event, current.c_node, key)
+
+        self.getPath()
 
 
 # funcs
