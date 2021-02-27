@@ -8,6 +8,7 @@ pypathing/scr/pathfinding/pathing/x64/
 pypathing/scr/pathfinding/pathing/.vs/
 pypathing.egg-info/
 cython_debug/
+source/
 
 pypathing/scr/cy_generators.cpp
 pypathing/scr/cy_nodeGraph.cpp
@@ -23,9 +24,11 @@ test_prim.py
 testNodeGraph.py
 testNodeGraphupdates.py
 edgeTest.py
-
+testCustomClusterBuild.py
+domoOneDirectionalEdges.py
 
 make.bat
+Makefile
 
 *.html
 *.pyd
@@ -37,3 +40,4 @@ make.bat
 *.bat
 
 
+testDPAstar.py
