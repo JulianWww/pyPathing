@@ -1,13 +1,14 @@
 #pragma once
 #include "node.h"
 #include "Edge.h"
-#include "updateEvent.h"
 #include <vector>
 #include <unordered_map>
 #include <tuple>
 #include <unordered_set>
 #include <cstdint>
 
+
+class updateEvent;
 
 
 /*

@@ -37,11 +37,6 @@ cdef extern from "pathfinding/Edge.h":
         void updateLength(float) except +
 
 cdef extern from "pathfinding/Cluster.h":
-    cppclass updateEvent:
-        clist[PathNode*] inserts
-        clist[PathNode*] deletions
-
-
     cppclass Cluster:
         Cluster()
         Cluster(cvector[int])
@@ -61,6 +56,11 @@ cdef extern from "pathfinding/Cluster.h":
 
         void addNode(cvector[int] pos) except +
         updateEvent* updateConnections() except +
+
+cdef extern from "pathfinding/updateEvent.h":
+    cppclass updateEvent:
+        clist[PathNode*] inserts
+        clist[PathNode*] deletions
 
 cdef extern from "pathfinding/node_Graph.h":
     cppclass node_Graph:
@@ -94,11 +94,22 @@ cdef extern from "pathfinding/GoalPathing.h":
 cdef extern from "pathfinding/funcs.h":
     edge* makeEdge(PathNode*, PathNode*, float, bint) except +
 
-cdef extern from "pathfinding/DPAstar.h":
-    cppclass DPAstarPath:
-        DPAstarPath(PathNode*, PathNode*, int, int) except +
 
+
+cdef extern from "pathfinding/path.h":
+    cppclass Path:
+        cvector[PathNode*] path
+        float cost
+        float speed
+
+    cppclass DPAstarPath(Path):
+        DPAstarPath(PathNode*, PathNode*, int, int) except +
 
         cvector[PathNode*] path
         float cost
+        float speed
+
+
+
+        
     

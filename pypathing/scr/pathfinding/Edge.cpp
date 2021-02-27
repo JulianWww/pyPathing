@@ -4,6 +4,7 @@
 #include "Edge.h"
 #include "node.h"
 #include "Cluster.h"
+#include "updateEvent.h"
 
 void insert(PathNode* a, PathNode* b, edge* e) {
 	a->edges.insert({ b, e });
@@ -59,6 +60,9 @@ void edge::updateWalkability(int mode) {
 }
 
 float edge::getLength(PathNode* to, int speed) {
+	if (speed == 0) {
+		return this->length;
+	}
 	float tureSpeed;
 	if (this->nodes.first == to) {
 		tureSpeed = speed + this->dirCoefficient;

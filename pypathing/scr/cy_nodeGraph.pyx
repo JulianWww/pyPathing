@@ -456,7 +456,7 @@ cdef class Py_GoalCluster():
         self._buildLive = buildLive
         self.c_goal = new cppInter.GoalCluster();
         self.c_goal.clus = clus.c_Cluster
-        deref(self.c_goal).buildNodes()
+        self.c_goal.buildNodes()
         self._hasInitiated=False
     
     def __str__(self):
@@ -522,20 +522,11 @@ cdef class Py_GoalCluster():
         "update movement"
         self.c_goal.buildGraph(self.goal.id, self.speed)
 
-# py wrapper of the DPAstarPath class
-cdef class PY_DPAstarPath():
-    cdef cppInter.DPAstarPath* c_path
+# paths py wrappers
+cdef class PY_Path:
+    cdef cppInter.Path* c_path
     cdef list _path
 
-    def __cinit__(PY_DPAstarPath self, PY_node start, PY_node end, int posKey=0, int speed=0):
-        self.c_path = new cppInter.DPAstarPath(start.c_node, end.c_node, posKey, speed)
-
-        self.getPath()
-
-    def __str__(self):
-        return f"DPA* path <path: {self.path}, cost: {self.cost}"
-    __repr__=__str__
-    
     cdef getPath(self):
         cdef cppInter.PathNode* node
         cdef PY_node Pynode
@@ -557,6 +548,21 @@ cdef class PY_DPAstarPath():
     @cost.setter
     def cost(self, float val) -> void:
         self.c_path.cost = val
+
+
+# py wrapper of the DPAstarPath class
+cdef class PY_DPAstarPath(PY_Path):
+    cdef cppInter.DPAstarPath* c_DPAstarPath
+    def __cinit__(PY_DPAstarPath self, PY_node start, PY_node end, int posKey=0, int speed=0):
+        self.c_DPAstarPath = new cppInter.DPAstarPath(start.c_node, end.c_node, posKey, speed)
+        cdef cppInter.Path* p = self.c_DPAstarPath
+        self.c_path = p
+
+        self.getPath()
+
+    def __str__(self):
+        return f"DPA* path <path: {self.path}, cost: {self.cost}"
+    __repr__=__str__
 
 
 # funcs

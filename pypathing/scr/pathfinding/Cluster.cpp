@@ -6,6 +6,7 @@
 #include "node_Graph.h"
 #include <stdexcept>
 #include "scr/jvector.h"
+#include "updateEvent.h"
 
 
 
