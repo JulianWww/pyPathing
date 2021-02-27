@@ -37,37 +37,37 @@ cdef class PY_node:
 
     # edge property aces
     @property
-    def position(self):
+    def position(self)-> cnp.ndarray[int]:
         "the name of the node"
         return np.flip(np.array(deref(self.c_node).pos))
 
     @position.setter
-    def position(self, cnp.ndarray pos):
+    def position(self, cnp.ndarray pos) -> void:
         if len(pos) != self.c_node.pos.size():
             raise DimentionMismatched(f"postion must be lenth {deref(self.c_node).pos.size()} not {len(pos)}")
         deref(self.c_node).pos = np.flip(pos)
     # get the edges set
     
     @property
-    def edges(self):
+    def edges(self) -> void:
         return set()
     
     #property
     @property
-    def id(self):
+    def id(self) -> int:
         return deref(self.c_node).id
     
     @property
-    def walkable(self):
+    def walkable(self) -> bint:
         "boolean value weather or not the node is walkable"
         return deref(self.c_node).walkable
     
     @walkable.setter
-    def walkable(self, bint NewWalkablility):
+    def walkable(self, bint NewWalkablility) -> void:
         deref(self.c_node).setWalkable(NewWalkablility)
     
     @property
-    def connectedNodes(self):
+    def connectedNodes(self) -> cnp.ndarray[int]:
         cdef cppInter.cvector[int] connecteds = self.c_node.connectedNodes()
         return np.array(connecteds)
 
@@ -81,21 +81,21 @@ cdef class PY_edge:
         self.reverse = False
 
     def __str__(self) -> str:
-        return f"edge<len: {self.length}, nodes: {self.nodes}, moveSpeed: {self.nodeMoves}, reverse: {self.reverse}>"
+        return f"""edge<len: {self.length}, nodes: {self.nodes}, moveSpeed: {self.nodeMoves}, reverse: {self.reverse}, oneDirectional: {self.oneDirectional}>"""
     def __repr__(self) -> str:
         return self.__str__()
 
     @property
-    def length(self):
+    def length(self) -> float:
         "the lenth bewean the connected nodes"
         return self.c_edge.length
     
     @length.setter
-    def length(self, float val):
-        self.c_edge.length = val
+    def length(self, float val) -> void:
+        self.c_edge.updateLength(val)
 
     @property
-    def nodes(self):
+    def nodes(self) -> tuple:
         def getNode(bint val):
             cdef PY_node Pynode = PY_node()
             Pynode.c_node = self.c_edge.getNode(val)
@@ -111,11 +111,47 @@ cdef class PY_edge:
         return self.c_edge.dirCoefficient
     
     @nodeMoves.setter
-    def nodeMoves(self, float val):
+    def nodeMoves(self, float val) -> void:
         if (self.reverse):
             self.c_edge.dirCoefficient = -val
         else:
             self.c_edge.dirCoefficient =  val
+    
+    @property
+    def oneDirectional(self) -> void:
+        "weather or not the edge only goas in one direction"
+        return self.c_edge.oneDirectional
+
+# py wrapper for the updateEvent struct
+cdef class PY_updateEvent:
+    cdef cppInter.updateEvent* c_event
+
+    def __str__(self):
+        return f"updateEvent <inserts: {self.inserts}, deletions: {self.deletions}>"
+    
+    @property
+    def inserts(self) -> list:
+        cdef list nodes = []
+        cdef PY_node currentNode
+        cdef cppInter.PathNode* node
+        cdef cppInter.clist[cppInter.PathNode*] c_nodes = self.c_event.inserts
+        for node in c_nodes:
+            currentNode = PY_node()
+            currentNode.c_node = node
+            nodes.append(currentNode)
+        return nodes
+    
+    @property
+    def deletions(self) -> list:
+        cdef list nodes = []
+        cdef PY_node currentNode
+        cdef cppInter.PathNode* node
+        for node in self.c_event.deletions:
+            currentNode = PY_node()
+            currentNode.c_node = node
+            nodes.append(currentNode)
+        return nodes
+
 
 #py wrapper class for Cluster
 cdef class PY_Cluster:
@@ -137,6 +173,13 @@ cdef class PY_Cluster:
         cdef cppInter.Cluster* clus = new cppInter.Cluster(arr,  dir)
         self.c_Cluster = (clus)
         self.sizes = list(arr.shape)
+    
+    def createEmpty(self, cnp.ndarray[int, ndim=1]sizes):
+        pos = np.where(sizes < 1)
+        if (pos[0].size !=0):
+            raise ValueError(f"no negative values or zeros allowed in sizes")
+        self.sizes = list(sizes)
+        self.c_Cluster =  new cppInter.Cluster(np.flip(sizes))
 
     @property
     def size(self):
@@ -154,7 +197,7 @@ cdef class PY_Cluster:
         sizeMultiplyer = 1
         if isinstance(poses, (tuple, list, cnp.ndarray)):
             for postition, dimentionSize in zip(reversed(poses), reversed(self.sizes)):
-                if postition >= dimentionSize: raise ValueError(f"pos{postition} out of grid for dimention {dimentionidx} of size {dimentionSize}")
+                if postition >= dimentionSize: raise ValueError(f"pos {postition} out of grid for dimention {dimentionidx} of size {dimentionSize}")
                 dimentionidx+=1
                 identity += postition*sizeMultiplyer
                 sizeMultiplyer*= dimentionSize
@@ -184,9 +227,8 @@ cdef class PY_Cluster:
         """
         cdef a = start.id
         cdef b = end.id
-        cdef cnp.ndarray nodeIds
 
-        nodeIds = np.array(self.c_Cluster.Astar(a, b, distanceKey, getVisited, speed))
+        cdef cnp.ndarray[int, ndim=1] nodeIds = np.array(self.c_Cluster.Astar(a, b, distanceKey, getVisited, speed))
         if nodeIds.size == 0: raise PathingError(f"no valid path was found")
         cdef list nodes = []
         cdef PY_node n
@@ -196,12 +238,16 @@ cdef class PY_Cluster:
             nodes.append(n)
         return nodes
     
+    def runDijstara(self, PY_node start, PY_node end, bint getVisited=False, int speed=0) -> list:
+        """runn the dijstara algorythem on the cluster"""
+        return self.runAstar(start, end, -1, getVisited, speed)
+    
     def runBfs(self, PY_node start, PY_node end, bint getVisited=False) -> list:
         """run A* pathfinding algorythem to find a path from start to end with distanceKey
         """
         cdef a = start.id
         cdef b = end.id
-        cdef cnp.ndarray nodeIds
+        cdef cnp.ndarray[int, ndim=1] nodeIds
         try:
             nodeIds = np.array(self.c_Cluster.bfs(a, b, getVisited))
         except:
@@ -221,7 +267,7 @@ cdef class PY_Cluster:
         raise Exception("not functionaly implemented")
         cdef a = start.id
         cdef b = end.id
-        cdef cnp.ndarray nodeIds
+        cdef cnp.ndarray[int, ndim=1] nodeIds
         try:
             nodeIds = np.array(self.c_Cluster.dfs(a, b, getVisited))
         except:
@@ -256,7 +302,7 @@ cdef class PY_Cluster:
     def pos(self):
         return np.array(self.c_node.postion)
     
-    def getEdge(self, PY_node a, PY_node b):
+    def getEdge(self, PY_node a, PY_node b) -> PY_edge:
         cdef cppInter.edge* cEdge = deref(self.c_Cluster).c_getEdge(a.c_node, b.c_node);
         cdef PY_edge edge = PY_edge()
         edge.c_edge = cEdge
@@ -264,10 +310,34 @@ cdef class PY_Cluster:
         cdef cppInter.PathNode* leftNode = cEdge.getNode(True)
 
         if (leftNode == a.c_node):
-            print("howdys")
             edge.reverse = True
 
         return edge
+    
+    def update(self) -> PY_updateEvent:
+        event = PY_updateEvent()
+        event.c_event = self.c_Cluster.updateConnections()
+        return event
+
+cdef class PY_BasicNodeGraph(PY_Cluster):
+    "same as cluster but you can add nodes"
+
+    def addNode(self, cnp.ndarray[int, ndim=1] pos):
+        for inx, (val, maxv) in enumerate(zip(pos, self.sizes)):
+            if val >= maxv:
+                raise IndexError(f"pos {val} is out of bounds for dimention {inx+1} of size {maxv}")
+            if val < 0:
+                raise ValueError(f"cant use negative postions")
+        try:
+            self.c_Cluster.addNode(pos)
+        except IndexError:
+            raise IndexError(f"node at postion {pos} already exists")
+    
+    def getAddNode(self, cnp.ndarray[int, ndim=1] pos):
+        try:
+            self.addNode(pos)
+        finally:
+            return self.getnode(tuple(pos))
 
 #python wrapper for the c++ node Graph class
 cdef class Py_nodeGraph():
@@ -378,14 +448,21 @@ cdef class Py_GoalCluster():
     cdef PY_node goal
     cdef bint _hasInitiated
     cdef bint _buildLive
+    cdef unsigned int _speed
 
-    def __cinit__(self, PY_Cluster clus, bint buildLive = False):
-        self._buildLive = not buildLive
+    def __cinit__(self, PY_Cluster clus, bint buildLive = False, speed=0):
+        self._speed = speed
+        self._buildLive = buildLive
         self.c_goal = new cppInter.GoalCluster();
         self.c_goal.clus = clus.c_Cluster
-        deref(self.c_goal).buildNodes()
+        self.c_goal.buildNodes()
         self._hasInitiated=False
     
+    def __str__(self):
+        return f"Goal Pathfinding Graph <goal: {self.goal}, speed: {self.speed}, live build: {self.buildLive}>"
+    __rept__ = __str__
+
+
     @property
     def goal(self):
         """the goal to move to will do all internal builds automaticly
@@ -396,12 +473,12 @@ cdef class Py_GoalCluster():
     
     @goal.setter
     def goal(self, PY_node node):
+        "what the ultimate goal of the pathing is"
+        self.goal = node
         if self._buildLive:
-            print("SET GOAL")
             self.c_goal.setGoal(node.id)
         else:
-            self.c_goal.buildGraph(node.id)
-        self.goal = node
+            self.update()
         self._hasInitiated = True
     
     @property
@@ -422,7 +499,7 @@ cdef class Py_GoalCluster():
         """get the next node to move to to get to the goal"""
         cdef cppInter.PathNode* nextNode
         if self._buildLive:
-            nextNode = self.c_goal.liveGetNextNode(node.id, distanceKey)
+            nextNode = self.c_goal.liveGetNextNode(node.id, distanceKey, self.speed)
         else:
             nextNode = self.c_goal.getNextPos(node.id)
         if nextNode == NULL:
@@ -431,10 +508,94 @@ cdef class Py_GoalCluster():
         n.c_node = nextNode
         return n
 
-
-
-
-
+    @property
+    def speed(self):
+        "sped of the things moving you have to update manualy"
+        return self._speed
     
+    @speed.setter
+    def speed(self, unsigned int newSpeed):
+        self._speed = newSpeed
+    
+    def update(self):
+        "update movement"
+        self.c_goal.buildGraph(self.goal.id, self.speed)
+
+# paths py wrappers
+cdef class PY_Path:
+    cdef cppInter.Path* c_path
+    cdef list _path
+
+    def __str__(self):
+        return f"Path <path: {self.path}, cost: {self.cost}, movementKey: {self.movementKey}"
+    __repr__=__str__
+
+    cdef getPath(self):
+        self._path = []
+        cdef cppInter.PathNode* node
+        cdef PY_node Pynode
+        self._path = []
+
+        for node in self.c_path.path:
+            Pynode = PY_node()
+            Pynode.c_node = node
+            self._path.append(Pynode)
+    
+    @property
+    def path(self) -> list:
+        return self._path
+    
+    @property
+    def cost(self) -> float:
+        return self.c_path.cost
+    
+    @cost.setter
+    def cost(self, float val) -> void:
+        self.c_path.cost = val
+    
+    @property
+    def movementKey(self) -> int:
+        return self.c_path.key
+
+
+# py wrapper of the DPAstarPath class
+cdef class PY_DPAstarPath(PY_Path):
+    cdef cppInter.DPAstarPath* c_DPAstarPath
+    def __cinit__(PY_DPAstarPath self, PY_node start, PY_node end, int posKey=0, int speed=0):
+        self.c_DPAstarPath = new cppInter.DPAstarPath(start.c_node, end.c_node, posKey, speed)
+        cdef cppInter.Path* p = self.c_DPAstarPath
+        self.c_path = p
+
+        self.getPath()
+
+    def __str__(self):
+        return f"DPA* path <path: {self.path}, cost: {self.cost}, movementKey: {self.movementKey}"
+    __repr__=__str__
+
+    def update(self, PY_updateEvent event, PY_node current=None, int key=-2):
+        if key == -2:
+            key = self.movementKey
+        if current is None:
+            current = self.path[0]
+        
+        if event is None:#raise error??
+            return; 
+
+        self.c_DPAstarPath.update(event.c_event, current.c_node, key)
+
+        self.getPath()
+
+
+# funcs
+def makeEdge(PY_node a, PY_node b, float length, bint oneDirectional):
+    if a is None: raise ValueError(f"param a: None is not a valid Node")
+    if b is None: raise ValueError(f"param b: None is not a valid Node")
+
+    cdef PY_edge Edge = PY_edge()
+
+    Edge.c_edge = cppInter.makeEdge(a.c_node, b.c_node, length, oneDirectional)
+    return Edge
+
+
 
 

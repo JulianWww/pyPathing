@@ -8,6 +8,8 @@
 #include <cstdint>
 
 
+class updateEvent;
+
 
 /*
 a collection of intaconected nodes
@@ -27,8 +29,11 @@ public: Cluster* superCluster = NULL;
 public: std::vector<int> clusterShape;
 public: short movementMode;
 
+public: updateEvent* curentEvent;
+
 
 public: Cluster() { return; };
+public: Cluster(std::vector<int> size);
 public: Cluster(std::vector<std::vector<std::vector<int>>> const& arr, int movementKey, std::vector<int>ofset = { 0,0,0 });
 public: Cluster(std::vector<std::vector<std::vector<int>>> const& arr, short& movementKey, std::vector<int>ofset = { 0,0,0 });
 private: void init(std::vector<std::vector<std::vector<int>>> const& arr, short& movementKey, std::vector<int>ofset);
@@ -41,6 +46,7 @@ public: std::vector<PathNode*> getNodes();
 public: std::vector<int>getNodeKeys();
 
 	  //update abstract edges
-public: void updateConnections();
+public: updateEvent* updateConnections();
 public: edge* c_getEdge(PathNode*, PathNode*);
+public: void addNode(std::vector<int>);
 }; 
