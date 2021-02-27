@@ -3,6 +3,7 @@
 from libcpp.set cimport set as cset
 from libcpp.string cimport string as cstring
 from libcpp.vector cimport vector as cvector
+from libcpp.list cimport list as clist
 from libcpp.pair cimport pair as cpair
 from libcpp.unordered_map cimport unordered_map as cunordered_map
 from libcpp.unordered_set cimport unordered_set as cunordered_set
@@ -17,20 +18,28 @@ cdef extern from "pathfinding/node.h":
         PathNode()
         int id
         bint walkable
+        bint oneDirectional
         void setWalkable(bint)
         cvector[int]connectedNodes()
 
 cdef extern from "pathfinding/Edge.h":
     cppclass edge:
         edge()
+        edge(PathNode*, PathNode*, float, bint)
+        edge(PathNode*, PathNode*)
         #edge(PathNode*, PathNode*)
         float length
         float dirCoefficient
+
+        bint oneDirectional
         PathNode* getNode(bint)
+
+        void updateLength(float) except +
 
 cdef extern from "pathfinding/Cluster.h":
     cppclass Cluster:
         Cluster()
+        Cluster(cvector[int])
         Cluster(cvector[cvector[cvector[int]]], short&)
         cunordered_map[int, PathNode*] nodes 
 
@@ -44,6 +53,14 @@ cdef extern from "pathfinding/Cluster.h":
         cvector[int]clusterShape 
 
         edge* c_getEdge(PathNode*, PathNode*) except +
+
+        void addNode(cvector[int] pos) except +
+        updateEvent* updateConnections() except +
+
+cdef extern from "pathfinding/updateEvent.h":
+    cppclass updateEvent:
+        clist[PathNode*] inserts
+        clist[PathNode*] deletions
 
 cdef extern from "pathfinding/node_Graph.h":
     cppclass node_Graph:
@@ -68,10 +85,30 @@ cdef extern from "pathfinding/GoalPathing.h":
         Cluster* clus
         GoalCluster()
         void buildNodes()
-        void buildGraph(int)
+        void buildGraph(int, int) except +
         PathNode* getNextPos(int)
 
         void setGoal(int)
-        PathNode* liveGetNextNode(int, int)
+        PathNode* liveGetNextNode(int, int, unsigned int) except +
+
+cdef extern from "pathfinding/funcs.h":
+    edge* makeEdge(PathNode*, PathNode*, float, bint) except +
 
 
+
+cdef extern from "pathfinding/path.h":
+    cppclass Path:
+        cvector[PathNode*] path
+        float cost
+        float speed
+        int key
+
+    cppclass DPAstarPath(Path):
+        DPAstarPath(PathNode*, PathNode*, int, int) except +
+
+        void update(updateEvent*, PathNode*, int) except +
+
+
+
+        
+    

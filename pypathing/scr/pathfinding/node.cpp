@@ -2,6 +2,7 @@
 #include "Edge.h"
 #include "scr/jvector.h"
 #include "Cluster.h"
+#include "updateEvent.h"
 
  PathNode::PathNode(std::list<std::pair<PathNode*, short>> connectedNodes, std::vector<int> postion, short& movementMode, std::vector<int> ofset){
 	 this->movementMode = movementMode;
@@ -30,6 +31,11 @@ PathNode::PathNode(PathNode* n) {
 }
 PathNode::PathNode() {
 }
+PathNode::PathNode(std::vector<int>pos, int id)
+{
+	this->pos = pos;
+	this->id = id;
+}
 PathNode::~PathNode() {
 	while (this->edges.size()) {
 		 delete((*this->edges.begin()).second);
@@ -48,6 +54,12 @@ std::vector<int>PathNode::connectedNodes() {
 
 void PathNode::setWalkable(bool newWalkable, short mode) {
 	if (this->walkable != newWalkable) {
+		if (newWalkable) {
+			this->clus->curentEvent->inserts.push_back(this);
+		}
+		else {
+			this->clus->curentEvent->deletions.push_back(this);
+		}
 		this->walkable = newWalkable;
 		// iterate over every edge and update there walkability
 		for (auto edge_iter = this->edges.begin(); edge_iter != this->edges.end(); edge_iter++) {
@@ -72,7 +84,7 @@ void PathNode::setWalkable(bool newWalkable, short mode) {
 				}
 			}
 		}
-		this->clus->updateConnections();
+		//this->clus->updateConnections();
 	}
 }
 void PathNode::setWalkable(bool newWalkable) {

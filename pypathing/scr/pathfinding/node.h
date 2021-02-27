@@ -5,10 +5,10 @@
 #include <vector>
 #include <string>
 
-//#define buildPos(x,y,z, arr)(x + y * arr[0][0].size() + z*arr[0][0].size()*arr[0].size()+1)
+//#define buildPos(x,y,z, arr)(x + y * arr{0]{0].size() + z*arr{0]{0].size()*arr{0].size()+1)
 class Cluster;
 #ifndef node
-#define node
+#define node (Node)
 
 class edge;
 class Cluster;
@@ -39,6 +39,7 @@ public: void setWalkable(bool);
 public:
 	PathNode(std::list<std::pair<PathNode*, short>> connectedNodes, std::vector<int> postion, short&, std::vector<int>ofset = { 0,0,0 });
 	PathNode();
+	PathNode(std::vector<int>, int);
 	PathNode(PathNode*);
 	~PathNode();
 
