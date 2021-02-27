@@ -1,5 +1,6 @@
 archive/
 build/
+source/
 demoMazes/
 pypathing/__pycache__/
 testPlots/
@@ -38,3 +39,7 @@ make.bat
 *.bat
 
 
+testDPAstar.py
+testCustomClusterBuild.py
+Makefile
+domoOneDirectionalEdges.py
