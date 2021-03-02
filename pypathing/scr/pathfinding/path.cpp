@@ -31,6 +31,14 @@ void DPAstarPath::update(updateEvent* update, PathNode* current, int distanceKey
 	this->updateInserts  (update, current, distanceKey);
 }
 
+void DPAstarPath::cheapUpdate(updateEvent* update, PathNode* current, int distanceKey)
+{
+	if (current == nullptr) {
+		current = this->path.front();
+	}
+	this->updateDeletions(update, current, distanceKey);
+}
+
 void DPAstarPath::updateDeletions(updateEvent* update, PathNode* current, int distanceKey) {
 	auto turningNodes = update->getEntryAndExitsDels(this);
 	if (std::get<0>(turningNodes) == nullptr) {

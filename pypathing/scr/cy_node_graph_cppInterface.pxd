@@ -40,7 +40,7 @@ cdef extern from "pathfinding/Cluster.h":
     cppclass Cluster:
         Cluster()
         Cluster(cvector[int])
-        Cluster(cvector[cvector[cvector[int]]], short&)
+        Cluster(cvector[cvector[cvector[int]]], short&) except+
         cunordered_map[int, PathNode*] nodes 
 
         cvector[int]Astar(int,int,int, bint, int)  
@@ -59,13 +59,13 @@ cdef extern from "pathfinding/Cluster.h":
 
 cdef extern from "pathfinding/updateEvent.h":
     cppclass updateEvent:
-        clist[PathNode*] inserts
-        clist[PathNode*] deletions
+        cunordered_set[PathNode*] inserts
+        cunordered_set[PathNode*] deletions
 
 cdef extern from "pathfinding/node_Graph.h":
     cppclass node_Graph:
         node_Graph()
-        node_Graph(cvector[cvector[cvector[int]]], cvector[int], short, int, int)
+        node_Graph(cvector[cvector[cvector[int]]], cvector[int], short, int, int)except+
         cvector[PathNode*]Astar(cvector[int], cvector[int], int)
 
         cvector[node_Graph*]getLowerKeys()
@@ -83,13 +83,19 @@ cdef extern from "pathfinding/node_Graph.h":
 cdef extern from "pathfinding/GoalPathing.h":
     cppclass GoalCluster:
         Cluster* clus
-        GoalCluster()
-        void buildNodes()
+        GoalCluster(bint) except +
+        void buildNodes() except +
         void buildGraph(int, int) except +
-        PathNode* getNextPos(int)
+        PathNode* getNextPos(int) except +
 
         void setGoal(int)
         PathNode* liveGetNextNode(int, int, unsigned int) except +
+
+        void update(updateEvent*, int, int) except +
+        void updateDels(updateEvent*, int, int) except +
+
+        bint liveBuild
+        void setLiveBuild(bint)
 
 cdef extern from "pathfinding/funcs.h":
     edge* makeEdge(PathNode*, PathNode*, float, bint) except +
@@ -107,6 +113,7 @@ cdef extern from "pathfinding/path.h":
         DPAstarPath(PathNode*, PathNode*, int, int) except +
 
         void update(updateEvent*, PathNode*, int) except +
+        void cheapUpdate(updateEvent*, PathNode*, int) except +
 
 
 

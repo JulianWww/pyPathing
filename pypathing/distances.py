@@ -37,7 +37,7 @@ class __directions:
     
     @property
     def fullDiagonal(self):
-        return 4
+        return -1
     
     @property
     def oneObstacleBlock(self):

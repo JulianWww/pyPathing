@@ -1,6 +1,7 @@
 #include "distance.h"
 #include <cmath>
 #include "node.h"
+#include <stdexcept>
 
 
 
@@ -57,16 +58,19 @@ float distance::manhattan(PathNode* a, PathNode* b) {
 
 
 std::vector<std::tuple<int, int, int>> movements::movements(int key) {
+	if (key == -1) {
+		return movements::fullDiagonal();
+	}
 	if (key == 0) {
 		return movements::noDiagonal();
-	}
-	if (key == 4) {
-		return movements::fullDiagonal();
 	}
 	if (key == 1) {
 		return movements::oneMovementDiagonal();
 	}
 	if (key == 2) {
+		return movements::towMovementDiagonal();
+	}
+	if (key == 3) {
 		return movements::towMovementDiagonal();
 	}
 	return {};
@@ -90,19 +94,13 @@ std::pair<bool, short> movements::furtherMovement(int key, std::vector<std::vect
 	if (key == 0) {
 		return movements::noDiagonal(arr, pos, direction);
 	}
-	if (key == 4) {
+	if (key == -1) {
 		return movements::fullDiagonal(arr, pos, direction);
 	}
-	if (key == 1) {
-		return movements::oneMovementDiagonal(arr, pos, direction, 1);
+	if (key > 0) {
+		return movements::oneMovementDiagonal(arr, pos, direction, key);
 	}
-	if (key == 2) {
-		return movements::oneMovementDiagonal(arr, pos, direction, 2);
-	}
-	if (key == 3) {
-		return movements::oneMovementDiagonal(arr, pos, direction, 3);
-	}
-	return { false, 10 };
+	throw std::domain_error("illegal direction key, direction key must be larger than -1 not");
 }
 std::pair<bool, short> movements::noDiagonal(std::vector<std::vector<std::vector<int>>> arr, std::tuple<int, int, int>pos, std::tuple<int, int, int> direction) {
 	return { true, 0 };

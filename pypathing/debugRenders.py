@@ -7,7 +7,6 @@ import tkinter
 __all__ = ["renderDirections", "render", "renderCluster", "renderClusterConnections"]
 
 def renderDirections(goals, arr: ndarray, clus, tk:tkinter.Tk=None, renderArrows=True):
-    "debug function to debug the path finding sys it will draw arrows"
     width=500
     height=500
     level = 0

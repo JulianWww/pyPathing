@@ -21,6 +21,29 @@ cdef class SubClustersDontFitError(ClusterBuildError):
     "throw when subcluster sizes dont fit"
 
 
+cdef class eventHandler:
+    cdef list to_update
+
+    def __cinit__(self):
+        self.to_update = []
+
+    def add(self, other):
+        self.to_update.append(other)
+    
+    def remove(self, other):
+        self.to_update.remove(other)
+
+cdef class updateEventHandler(eventHandler):
+    def add(self, other):
+        if not hasattr(other, "update"): raise TypeError(f"{other} has no update method")
+        eventHandler.add(self, other)
+
+
+    cdef update(self, PY_updateEvent event):
+        for val in self.to_update:
+            val.update(event)
+
+
 
 #py wraper class for node
 cdef class PY_node:
@@ -134,7 +157,8 @@ cdef class PY_updateEvent:
         cdef list nodes = []
         cdef PY_node currentNode
         cdef cppInter.PathNode* node
-        cdef cppInter.clist[cppInter.PathNode*] c_nodes = self.c_event.inserts
+        cdef cppInter.cunordered_set[cppInter.PathNode*] c_nodes = self.c_event.inserts
+
         for node in c_nodes:
             currentNode = PY_node()
             currentNode.c_node = node
@@ -146,7 +170,9 @@ cdef class PY_updateEvent:
         cdef list nodes = []
         cdef PY_node currentNode
         cdef cppInter.PathNode* node
-        for node in self.c_event.deletions:
+        cdef cppInter.cunordered_set[cppInter.PathNode*] c_nodes = self.c_event.deletions
+
+        for node in c_nodes:
             currentNode = PY_node()
             currentNode.c_node = node
             nodes.append(currentNode)
@@ -157,6 +183,7 @@ cdef class PY_updateEvent:
 cdef class PY_Cluster:
     cdef cppInter.Cluster* c_Cluster
     cdef list sizes
+    cdef updateEventHandler updateHandler
 
     def __cinit__(self):
         """if len(args)>0:
@@ -170,20 +197,19 @@ cdef class PY_Cluster:
 
     def build(self, arr, int dir=0):
         "build node graph from 3d np array"
+        if not np.ndarray is type(arr): raise TypeError(f"arr must be ndarray not {type(arr).__name__}")
         cdef cppInter.Cluster* clus = new cppInter.Cluster(arr,  dir)
         self.c_Cluster = (clus)
         self.sizes = list(arr.shape)
     
     def createEmpty(self, cnp.ndarray[int, ndim=1]sizes):
+        "make empty nodeGraph"
         pos = np.where(sizes < 1)
         if (pos[0].size !=0):
             raise ValueError(f"no negative values or zeros allowed in sizes")
         self.sizes = list(sizes)
         self.c_Cluster =  new cppInter.Cluster(np.flip(sizes))
 
-    @property
-    def size(self):
-        return self.sizes
     
     #atribute acces for the node tuple
     def getnode(self, poses) -> PY_node:
@@ -213,6 +239,7 @@ cdef class PY_Cluster:
         cdef PY_node n = PY_node()
         n.c_node = self.c_Cluster.nodes[identity]
         return n
+    getNode = getnode
     
     def getNodes(self, ids) -> list:
         "get nodes form id"
@@ -222,7 +249,7 @@ cdef class PY_Cluster:
         return res
 
 
-    def runAstar(self, PY_node start, PY_node end, int distanceKey=0, bint getVisited=False, int speed=0) -> list:
+    def runAstar(self, PY_node start, PY_node end, int distanceKey=0, bint getVisited=False, int speed=0) -> Path:
         """run A* pathfinding algorythem to find a path from start to end with distanceKey
         """
         cdef a = start.id
@@ -236,7 +263,8 @@ cdef class PY_Cluster:
             n = PY_node()
             n.c_node = self.c_Cluster.nodes[idx]
             nodes.append(n)
-        return nodes
+
+        return Path(nodes)
     
     def runDijstara(self, PY_node start, PY_node end, bint getVisited=False, int speed=0) -> list:
         """runn the dijstara algorythem on the cluster"""
@@ -287,6 +315,21 @@ cdef class PY_Cluster:
     __repr__=__str__
 
     @property
+    def updateHandler(self)->updateEventHandler:
+        return self.updateHandler
+    @updateHandler.setter
+    def updateHandler(self, updateEventHandler handler):
+        self.updateHandler = handler
+    @updateHandler.deleter
+    def updateHandler(self):
+        self.updateHandler = None
+        
+    
+    @property
+    def size(self):
+        return self.sizes
+
+    @property
     def nodes(self):
         res = {}
         cdef cppInter.cvector[int] keys = self.c_Cluster.getNodeKeys()
@@ -303,7 +346,7 @@ cdef class PY_Cluster:
         return np.array(self.c_node.postion)
     
     def getEdge(self, PY_node a, PY_node b) -> PY_edge:
-        cdef cppInter.edge* cEdge = deref(self.c_Cluster).c_getEdge(a.c_node, b.c_node);
+        cdef cppInter.edge* cEdge = self.c_Cluster.c_getEdge(a.c_node, b.c_node);
         cdef PY_edge edge = PY_edge()
         edge.c_edge = cEdge
 
@@ -317,6 +360,9 @@ cdef class PY_Cluster:
     def update(self) -> PY_updateEvent:
         event = PY_updateEvent()
         event.c_event = self.c_Cluster.updateConnections()
+
+        if self.updateHandler != None:
+            self.updateHandler.update(event);
         return event
 
 cdef class PY_BasicNodeGraph(PY_Cluster):
@@ -325,7 +371,7 @@ cdef class PY_BasicNodeGraph(PY_Cluster):
     def addNode(self, cnp.ndarray[int, ndim=1] pos):
         for inx, (val, maxv) in enumerate(zip(pos, self.sizes)):
             if val >= maxv:
-                raise IndexError(f"pos {val} is out of bounds for dimention {inx+1} of size {maxv}")
+                raise ValueError(f"pos {val} is out of bounds for dimention {inx+1} of size {maxv}")
             if val < 0:
                 raise ValueError(f"cant use negative postions")
         try:
@@ -350,7 +396,6 @@ cdef class Py_nodeGraph():
         
         cdef int last = sizes[0]
         for lowerDim in sizes[1:]:
-            print(lowerDim)
             if last % lowerDim != 0:
                 raise SubClustersDontFitError(f"""could not build SubClusters: subClusters dont fit neatyl in Supercluster, supercluster size ({last}) must be multiple of subcluster size ({lowerDim})""")
             last = lowerDim
@@ -447,13 +492,11 @@ cdef class Py_GoalCluster():
     cdef cppInter.GoalCluster* c_goal
     cdef PY_node goal
     cdef bint _hasInitiated
-    cdef bint _buildLive
     cdef unsigned int _speed
 
     def __cinit__(self, PY_Cluster clus, bint buildLive = False, speed=0):
         self._speed = speed
-        self._buildLive = buildLive
-        self.c_goal = new cppInter.GoalCluster();
+        self.c_goal = new cppInter.GoalCluster(buildLive);
         self.c_goal.clus = clus.c_Cluster
         self.c_goal.buildNodes()
         self._hasInitiated=False
@@ -475,10 +518,10 @@ cdef class Py_GoalCluster():
     def goal(self, PY_node node):
         "what the ultimate goal of the pathing is"
         self.goal = node
-        if self._buildLive:
+        if self.c_goal.liveBuild:
             self.c_goal.setGoal(node.id)
         else:
-            self.update()
+            self._update()
         self._hasInitiated = True
     
     @property
@@ -487,18 +530,21 @@ cdef class Py_GoalCluster():
             live building is a diferent way of building the vector field. instead of building a new field when a new goal is se
             this method will update all the required nodesvctors to point to the new goal if they dont point correctly yet otherwise
             the precalculateds will be used"""
-        return self._buildLive
+        return self.c_goal.liveBuild
     
     @buildLive.setter
     def buildLive(self, bint live):
-        self._buildLive = live
+        self.c_goal.setLiveBuild(live)
         if live == False:
             self.goal = self.goal
     
     def getNext(self, PY_node node, int distanceKey=0):
         """get the next node to move to to get to the goal"""
+        if not node.walkable:
+            raise NodeFindingError(f"node {node} is not walkable");
+
         cdef cppInter.PathNode* nextNode
-        if self._buildLive:
+        if self.buildLive:
             nextNode = self.c_goal.liveGetNextNode(node.id, distanceKey, self.speed)
         else:
             nextNode = self.c_goal.getNextPos(node.id)
@@ -517,30 +563,29 @@ cdef class Py_GoalCluster():
     def speed(self, unsigned int newSpeed):
         self._speed = newSpeed
     
-    def update(self):
+    cdef _update(self):
         "update movement"
         self.c_goal.buildGraph(self.goal.id, self.speed)
+    
+    def update(self, PY_updateEvent event, int distanceKey=0, int speed=0):
+        "update node Graph"
+        self.c_goal.update(event.c_event, distanceKey, speed)
+    
+    def cheapUpdate(self, PY_updateEvent event, int distanceKey=0, int speed=0):
+        "only update node graph at needed postions"
+        self.c_goal.updateDels(event.c_event, distanceKey, speed)
 
-# paths py wrappers
-cdef class PY_Path:
-    cdef cppInter.Path* c_path
+#basic path
+cdef class Path:
     cdef list _path
+
+    def __init__(self, path):
+        self._path = path
 
     def __str__(self):
         return f"Path <path: {self.path}, cost: {self.cost}, movementKey: {self.movementKey}"
     __repr__=__str__
 
-    cdef getPath(self):
-        self._path = []
-        cdef cppInter.PathNode* node
-        cdef PY_node Pynode
-        self._path = []
-
-        for node in self.c_path.path:
-            Pynode = PY_node()
-            Pynode.c_node = node
-            self._path.append(Pynode)
-    
     @property
     def path(self) -> list:
         return self._path
@@ -558,6 +603,24 @@ cdef class PY_Path:
         return self.c_path.key
 
 
+# paths py wrappers
+cdef class PY_Path(Path):
+    cdef cppInter.Path* c_path
+    
+    def __init__(self):
+        pass
+
+    cdef getPath(self):
+        self._path = []
+        cdef cppInter.PathNode* node
+        cdef PY_node Pynode
+        self._path = []
+
+        for node in self.c_path.path:
+            Pynode = PY_node()
+            Pynode.c_node = node
+            self._path.append(Pynode)
+
 # py wrapper of the DPAstarPath class
 cdef class PY_DPAstarPath(PY_Path):
     cdef cppInter.DPAstarPath* c_DPAstarPath
@@ -572,7 +635,7 @@ cdef class PY_DPAstarPath(PY_Path):
         return f"DPA* path <path: {self.path}, cost: {self.cost}, movementKey: {self.movementKey}"
     __repr__=__str__
 
-    def update(self, PY_updateEvent event, PY_node current=None, int key=-2):
+    def update(self, PY_updateEvent event, PY_node current=None, int key=-2, bint cheap=0) -> void:
         if key == -2:
             key = self.movementKey
         if current is None:
@@ -580,10 +643,15 @@ cdef class PY_DPAstarPath(PY_Path):
         
         if event is None:#raise error??
             return; 
-
-        self.c_DPAstarPath.update(event.c_event, current.c_node, key)
+        if cheap:
+            self.c_DPAstarPath.cheapUpdate(event.c_event, current.c_node, key)
+        else:
+            self.c_DPAstarPath.update(event.c_event, current.c_node, key)
 
         self.getPath()
+    
+    def cheapUpdate(self, PY_updateEvent event, PY_node current=None, int key=-2) -> void:
+        return self.update(event, current, key, True)
 
 
 # funcs

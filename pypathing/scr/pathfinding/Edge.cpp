@@ -54,7 +54,7 @@ void edge::updateWalkability(int mode) {
 	if (mode == 0) {
 		this->walkable = (this->nodes.first->walkable && this->nodes.second->walkable);
 	}
-	else {
+	else if(mode>0) {
 		this->walkable = this->blocks < mode;
 	}
 }
@@ -86,12 +86,12 @@ PathNode* edge::getNode(bool b)
 
 void edge::updateLength(float newLen) {
 	if (this->length < newLen) {
-		this->nodes.first->clus->curentEvent->deletions.push_back(this->nodes.first);
-		this->nodes.second->clus->curentEvent->deletions.push_back(this->nodes.second);
+		this->nodes.first->clus->curentEvent->deletions.insert(this->nodes.first);
+		this->nodes.second->clus->curentEvent->deletions.insert(this->nodes.second);
 	}
 	else {
-		this->nodes.first ->clus->curentEvent->inserts.push_back(this->nodes.first);
-		this->nodes.second->clus->curentEvent->inserts.push_back(this->nodes.second);
+		this->nodes.first ->clus->curentEvent->inserts.insert(this->nodes.first);
+		this->nodes.second->clus->curentEvent->inserts.insert(this->nodes.second);
 	}
 	this->length = newLen;
 }

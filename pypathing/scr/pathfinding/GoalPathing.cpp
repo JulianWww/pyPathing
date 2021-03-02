@@ -3,12 +3,18 @@
 #include <unordered_set>
 #include <queue>
 #include "distance.h"
+#include "updateEvent.h"
 
 
 GoalCluster::GoalCluster(Cluster* clus) {
 	this->clus = clus;
 	this->buildNodes();
 }
+GoalCluster::GoalCluster(bool liveBuild)
+{
+	this->liveBuild = liveBuild;
+}
+
 GoalCluster::~GoalCluster() {
 	for (auto n = this->nodes.begin(); n != this->nodes.end(); n++) {
 		GoalNode* NODE = ((*n).second);
@@ -42,26 +48,33 @@ void GoalCluster::build(PathNode* start, unsigned int speed) {
 			for (auto currentEdge = (*Node)->edges.begin(); currentEdge != (*Node)->edges.end(); currentEdge++) {
 				PathNode* newNode = currentEdge->first;
 
-				float edge_len;
-				if (speed == 0) {
-					edge_len = currentEdge->second->length;
-				}
-				else {
-					edge_len = currentEdge->second->getLength(newNode, speed);
-				}
+				if (newNode->walkable && currentEdge->first->walkable) {
+					float edge_len;
+					if (speed == 0) {
+						edge_len = currentEdge->second->length;
+					}
+					else {
+						edge_len = currentEdge->second->getLength(newNode, speed);
+					}
 
-				if ((visitedNodes.count(newNode) == 0 || newNode->distance > (*Node)->distance + edge_len) && edge_len!=INFINITY) {
-					visitedNodes.insert(newNode);
+					if ((visitedNodes.count(newNode) == 0 || newNode->distance > (*Node)->distance + edge_len) && edge_len != INFINITY) {
+						visitedNodes.insert(newNode);
+						auto newGoalnode = this->nodes.at(newNode->id);
+						newGoalnode->goal = this->goal;
+						newGoalnode->goalThisWay = this->nodes.at((*Node)->id);
+						newNode->distance = (*Node)->distance + edge_len;
+
+						if (currentNodes.count(newNode->distance) == 0) {
+							currentNodes.insert({ newNode->distance, {} });
+							priorities.push(newNode->distance);
+						}
+						currentNodes.at(newNode->distance).insert(newNode);
+					}
+				}
+				else if (currentEdge->first->walkable) {
 					auto newGoalnode = this->nodes.at(newNode->id);
 					newGoalnode->goal = this->goal;
-					newGoalnode->goalThisWay = this->nodes.at((*Node)->id);
-					newNode->distance = (*Node)->distance + edge_len;
-
-					if (currentNodes.count(newNode->distance) == 0) {
-						currentNodes.insert({ newNode->distance, {} });
-						priorities.push(newNode->distance);
-					}
-					currentNodes.at(newNode->distance).insert(newNode);
+					newGoalnode->goalThisWay = NULL;
 				}
 			}
 		}
@@ -101,30 +114,32 @@ void GoalCluster::liveBuildNextNode(PathNode* targetNode, int distanceKey, unsig
 			for (auto currentEdge = (*Node)->edges.begin(); currentEdge != (*Node)->edges.end(); currentEdge++) {
 				PathNode* newNode = currentEdge->first;
 
-				float edge_len;
-				if (speed == 0) {
-					edge_len = currentEdge->second->length;
-				}
-				else {
-					edge_len = currentEdge->second->getLength(newNode, speed);
-				}
-
-				if ((this->visitedNodes.count(newNode) == 0 || newNode->distance > (*Node)->distance + edge_len) && edge_len != INFINITY) {
-					this->visitedNodes.insert(newNode);
-					auto newGoalnode = this->nodes.at(newNode->id);
-					newGoalnode->goal = this->goal;
-					newGoalnode->goalThisWay = this->nodes.at((*Node)->id);
-					newNode->distance = (*Node)->distance + edge_len;
-
-					float distance = newNode->distance + distance::distance(newNode, targetNode, distanceKey);
-
-					if (currentNodes.count(newNode->distance) == 0) {
-						currentNodes.insert({ newNode->distance, {} });
-						this->nodePriorities.push(newNode->distance);
+				if (newNode->walkable && currentEdge->first->walkable){
+					float edge_len;
+					if (speed == 0) {
+						edge_len = currentEdge->second->length;
 					}
-					this->currentNodes.at(newNode->distance).insert(newNode);
-					if (newNode == targetNode) {
-						return;
+					else {
+						edge_len = currentEdge->second->getLength(newNode, speed);
+					}
+
+					if ((this->visitedNodes.count(newNode) == 0 || newNode->distance > (*Node)->distance + edge_len) && edge_len != INFINITY) {
+						this->visitedNodes.insert(newNode);
+						auto newGoalnode = this->nodes.at(newNode->id);
+						newGoalnode->goal = this->goal;
+						newGoalnode->goalThisWay = this->nodes.at((*Node)->id);
+						newNode->distance = (*Node)->distance + edge_len;
+
+						float distance = newNode->distance + distance::distance(newNode, targetNode, distanceKey);
+
+						if (currentNodes.count(newNode->distance) == 0) {
+							currentNodes.insert({ newNode->distance, {} });
+							this->nodePriorities.push(newNode->distance);
+						}
+						this->currentNodes.at(newNode->distance).insert(newNode);
+						if (newNode == targetNode) {
+							return;
+						}
 					}
 				}
 			}
@@ -132,6 +147,76 @@ void GoalCluster::liveBuildNextNode(PathNode* targetNode, int distanceKey, unsig
 		this->currentNodes.erase(val);
 		this->nodePriorities.pop();
 	}
+}
+
+void GoalCluster::update(updateEvent* update, int distanceKey, int speed)
+{
+	if (!this->liveBuild) {
+		this->build(this->goal, speed);
+	}
+	else {
+		std::unordered_set<PathNode*> toUpdate(update->inserts.begin(), update->inserts.end());
+		for (auto const& Node : update->deletions) {
+			toUpdate.insert(Node);
+		}
+		this->updateNodes(update, this->getAjacents(toUpdate), distanceKey, speed);
+	}
+}
+
+void GoalCluster::updateDels(updateEvent* update, int distanceKey, int speed)
+{
+	if (!this->liveBuild) {
+		this->build(this->goal, speed);
+	}
+	else {
+		std::unordered_set<PathNode*> toUpdate(update->deletions.begin(), update->deletions.end());
+		toUpdate = this->getAjacents(toUpdate);
+		for (auto const& mNode : update->inserts) {
+			toUpdate.insert(mNode);
+		}
+		this->updateNodes(update, toUpdate, distanceKey, speed);
+	}
+}
+
+void GoalCluster::updateNodes(updateEvent* update, std::unordered_set<PathNode*> nodes, int distanceKey, int speed)
+{
+	this->currentNodes.clear();
+	while (nodePriorities.size() != 0) {
+		nodePriorities.pop();
+	}
+	this->visitedNodes.clear();
+
+	this->currentNodes.insert({ 0, {this->goal} });
+	this->nodePriorities.push(0);
+
+	for (auto const& toUpdate : nodes) {
+		if (std::find(this->visitedNodes.begin(), this->visitedNodes.end(), toUpdate)!=this->visitedNodes.end()){
+			this->liveBuildNextNode(toUpdate, distanceKey, speed);
+		}
+	}
+	/*if (!this->liveBuild) {
+		this->currentNodes.clear();
+		while (nodePriorities.size()!=0) {
+			nodePriorities.pop();
+		}
+		this->visitedNodes.clear();
+	}*/
+}
+
+std::unordered_set<PathNode*> GoalCluster::getAjacents(std::unordered_set<PathNode*> nodes)
+{
+	auto res = std::unordered_set<PathNode*>(nodes);
+	for (auto const& Node : nodes) {
+		for (auto const& currentEdge : Node->edges) {
+			res.insert(currentEdge.first);
+		}
+	}
+	return res;
+}
+
+void GoalCluster::setLiveBuild(bool val)
+{
+	this->liveBuild = val;
 }
 
 PathNode* GoalCluster::liveGetNextNode(int a, int distanceKey, unsigned int speed) {

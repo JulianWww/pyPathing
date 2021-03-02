@@ -195,7 +195,7 @@ void Cluster::addNode(std::vector<int>pos)
 	auto newNode = new PathNode(poses, id);
 	this->nodes.insert({ id, newNode });
 
-	this->curentEvent->inserts.push_back(newNode);
+	this->curentEvent->inserts.insert(newNode);
 }
 
 

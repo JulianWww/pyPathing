@@ -33,6 +33,7 @@ Makefile
 
 *.html
 *.pyd
+*.p
 *.sln
 *.vcxproj
 *.vcxproj.filters
@@ -43,3 +44,4 @@ Makefile
 
 testDPAstar.py
 
+pypathing/setup.py
