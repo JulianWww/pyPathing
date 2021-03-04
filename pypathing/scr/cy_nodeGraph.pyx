@@ -26,12 +26,21 @@ cdef class eventHandler:
 
     def __cinit__(self):
         self.to_update = []
-
+        
     def add(self, other):
         self.to_update.append(other)
     
     def remove(self, other):
         self.to_update.remove(other)
+    
+    @property
+    def toUpdate(self):
+        """a list of everything that schould be updated"""
+        return self.to_update
+    
+    @toUpdate.setter
+    def toUpdate(self, list to_update):
+        self.to_update = to_update
 
 cdef class updateEventHandler(eventHandler):
     def add(self, other):
@@ -55,25 +64,13 @@ cdef class PY_node:
     def __str__(self):
         #edges: {deref(self.c_node).edges.size()}, 
         return f"node<name: {self.position}, id: {self.id}, walkable: {self.walkable}>"
-    def __repr__(self):
-        return self.__str__()
+    __repr__ = __str__
 
     # edge property aces
     @property
     def position(self)-> cnp.ndarray[int]:
         "the name of the node"
         return np.flip(np.array(deref(self.c_node).pos))
-
-    @position.setter
-    def position(self, cnp.ndarray pos) -> void:
-        if len(pos) != self.c_node.pos.size():
-            raise DimentionMismatched(f"postion must be lenth {deref(self.c_node).pos.size()} not {len(pos)}")
-        deref(self.c_node).pos = np.flip(pos)
-    # get the edges set
-    
-    @property
-    def edges(self) -> void:
-        return set()
     
     #property
     @property
@@ -90,9 +87,15 @@ cdef class PY_node:
         deref(self.c_node).setWalkable(NewWalkablility)
     
     @property
-    def connectedNodes(self) -> cnp.ndarray[int]:
-        cdef cppInter.cvector[int] connecteds = self.c_node.connectedNodes()
-        return np.array(connecteds)
+    def connectedNodes(self) -> list:
+        cdef cppInter.cvector[cppInter.PathNode*] connecteds = self.c_node.connectedNodes()
+        cdef list res = []
+        cdef cppInter.PathNode* current 
+        for current in connecteds:
+            node = PY_node()
+            node.c_node = current
+            res.append(node)
+        return res
 
 
 ## py wrapper for the edge
@@ -141,7 +144,7 @@ cdef class PY_edge:
             self.c_edge.dirCoefficient =  val
     
     @property
-    def oneDirectional(self) -> void:
+    def oneDirectional(self) -> bint:
         "weather or not the edge only goas in one direction"
         return self.c_edge.oneDirectional
 
@@ -252,16 +255,17 @@ cdef class PY_Cluster:
     def runAstar(self, PY_node start, PY_node end, int distanceKey=0, bint getVisited=False, int speed=0) -> Path:
         """run A* pathfinding algorythem to find a path from start to end with distanceKey
         """
-        cdef a = start.id
-        cdef b = end.id
 
-        cdef cnp.ndarray[int, ndim=1] nodeIds = np.array(self.c_Cluster.Astar(a, b, distanceKey, getVisited, speed))
-        if nodeIds.size == 0: raise PathingError(f"no valid path was found")
+        cdef cppInter.cvector[cppInter.PathNode*] nodesC = self.c_Cluster.Astar(start.c_node, end.c_node, 
+                                                                               distanceKey, getVisited, speed)
+        cdef cppInter.PathNode* current
+
+        if nodesC.size() == 0: raise PathingError(f"no valid path was found")
         cdef list nodes = []
         cdef PY_node n
-        for idx in nodeIds:
+        for current in nodesC:
             n = PY_node()
-            n.c_node = self.c_Cluster.nodes[idx]
+            n.c_node = current
             nodes.append(n)
 
         return Path(nodes)
@@ -273,42 +277,39 @@ cdef class PY_Cluster:
     def runBfs(self, PY_node start, PY_node end, bint getVisited=False) -> list:
         """run A* pathfinding algorythem to find a path from start to end with distanceKey
         """
-        cdef a = start.id
-        cdef b = end.id
-        cdef cnp.ndarray[int, ndim=1] nodeIds
+        cdef cppInter.cvector[cppInter.PathNode*] Nodes
+        cdef cppInter.PathNode* current
         try:
-            nodeIds = np.array(self.c_Cluster.bfs(a, b, getVisited))
+            Nodes = self.c_Cluster.bfs(start.c_node, end.c_node, getVisited)
         except:
             raise PathingError("no path was found")
-        if nodeIds.size == 0: raise PathingError(f"no valid path was found")
+        if Nodes.size() == 0: raise PathingError(f"no valid path was found")
         cdef list nodes = np.array([])
         cdef PY_node n
-        for idx in nodeIds:
+        for current in Nodes:
             n = PY_node()
-            n.c_node = self.c_Cluster.nodes[idx]
+            n.c_node = current
             nodes.append(n)
-        return nodes
+        return Path(nodes)
     
     def runDfs(self, PY_node start, PY_node end, bint getVisited=False) -> list:
         """run A* pathfinding algorythem to find a path from start to end with distanceKey
         """
         raise Exception("not functionaly implemented")
-        cdef a = start.id
-        cdef b = end.id
-        cdef cnp.ndarray[int, ndim=1] nodeIds
+        cdef cppInter.cvector[cppInter.PathNode*] Nodes
+        cdef cppInter.PathNode* current
         try:
-            nodeIds = np.array(self.c_Cluster.dfs(a, b, getVisited))
+            Nodes = self.c_Cluster.dfs(start.c_node, end.c_node, getVisited)
         except:
             raise PathingError("no path was found")
-        
-        if nodeIds.size == 0: raise PathingError(f"no valid path was found")
+        if Nodes.size() == 0: raise PathingError(f"no valid path was found")
         cdef list nodes = np.array([])
         cdef PY_node n
-        for idx in nodeIds:
+        for current in Nodes:
             n = PY_node()
-            n.c_node = self.c_Cluster.nodes[idx]
+            n.c_node = current
             nodes.append(n)
-        return nodes
+        return Path(nodes)
     
     def __str__(self):
         return f"Cluster<nodes: {len(self.nodes)}, size = {self.size}>"
@@ -385,7 +386,7 @@ cdef class PY_BasicNodeGraph(PY_Cluster):
         finally:
             return self.getnode(tuple(pos))
 
-#python wrapper for the c++ node Graph class
+#python wrapper for the c++ node Graph class to doc
 cdef class Py_nodeGraph():
     """
     an abstaction handler for Clusters
@@ -494,7 +495,7 @@ cdef class Py_GoalCluster():
     cdef bint _hasInitiated
     cdef unsigned int _speed
 
-    def __cinit__(self, PY_Cluster clus, bint buildLive = False, speed=0):
+    def __cinit__(self, PY_BasicNodeGraph clus, bint buildLive = False, unsigned int speed=0):
         self._speed = speed
         self.c_goal = new cppInter.GoalCluster(buildLive);
         self.c_goal.clus = clus.c_Cluster
@@ -589,19 +590,6 @@ cdef class Path:
     @property
     def path(self) -> list:
         return self._path
-    
-    @property
-    def cost(self) -> float:
-        return self.c_path.cost
-    
-    @cost.setter
-    def cost(self, float val) -> void:
-        self.c_path.cost = val
-    
-    @property
-    def movementKey(self) -> int:
-        return self.c_path.key
-
 
 # paths py wrappers
 cdef class PY_Path(Path):
@@ -620,6 +608,18 @@ cdef class PY_Path(Path):
             Pynode = PY_node()
             Pynode.c_node = node
             self._path.append(Pynode)
+    
+    @property
+    def cost(self) -> float:
+        return self.c_path.cost
+    
+    @cost.setter
+    def cost(self, float val) -> void:
+        self.c_path.cost = val
+    
+    @property
+    def movementKey(self) -> int:
+        return self.c_path.key
 
 # py wrapper of the DPAstarPath class
 cdef class PY_DPAstarPath(PY_Path):

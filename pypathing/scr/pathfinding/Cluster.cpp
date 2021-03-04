@@ -77,40 +77,28 @@ void Cluster::init(std::vector<std::vector<std::vector<int>>> const& arr, short&
 	this->clusterShape = { (int)arr[0][0].size(), (int)arr[0].size(), (int)arr.size() };
 }
 
-std::vector<int> Cluster::Astar(int start, int end, int poskey, bool getVisited, int directional) {
+std::vector<PathNode*> Cluster::Astar(PathNode* start, PathNode* end, int poskey, bool getVisited, int directional) {
 	// perform A* for nodes by id
 	std::list<PathNode*> nodes;
 	if (directional == 0) {
-		nodes = serchers::Astar_c_node(this->nodes.at(start), this->nodes.at(end), poskey, getVisited);
+		nodes = serchers::Astar_c_node(start, end, poskey, getVisited);
 	}
 	else {
-		nodes = serchers::Astar_c_node_wspeed(this->nodes.at(start), this->nodes.at(end), poskey, getVisited, directional);
+		nodes = serchers::Astar_c_node_wspeed(start, end, poskey, getVisited, directional);
 	}
-	std::vector<int> out;
-	for (auto node_iter = nodes.begin(); node_iter != nodes.end(); node_iter++) {
-		out.push_back((int)(*node_iter)->id);
-	}
-	return out;
+	return std::vector<PathNode*>(nodes.begin(), nodes.end());
 }
 
-std::vector<int> Cluster::bfs(int start, int end, bool getVisited) {
+std::vector<PathNode*> Cluster::bfs(PathNode* start, PathNode* end, bool getVisited) {
 	// perform bfs for nodes by id
-	auto nodes = serchers::bfs_c_node(this->nodes.at(start), this->nodes.at(end), getVisited);
-	std::vector<int> out;
-	for (auto node_iter = nodes.begin(); node_iter != nodes.end(); node_iter++) {
-		out.push_back((int)(*node_iter)->id);
-	}
-	return out;
+	auto nodes = serchers::bfs_c_node(start, end, getVisited);
+	return std::vector<PathNode*>(nodes.begin(), nodes.end());
 }
 
-std::vector<int> Cluster::dfs(int start, int end, bool getVisited) {
+std::vector<PathNode*> Cluster::dfs(PathNode* start, PathNode* end, bool getVisited) {
 	// perform bfs for nodes by id
-	auto nodes = serchers::dfs_c_node(this->nodes.at(start), this->nodes.at(end), getVisited);
-	std::vector<int> out;
-	for (auto node_iter = nodes.begin(); node_iter != nodes.end(); node_iter++) {
-		out.push_back((int)(*node_iter)->id);
-	}
-	return out;
+	auto nodes = serchers::dfs_c_node(start, end, getVisited);
+	return std::vector<PathNode*>(nodes.begin(), nodes.end());
 }
 
 std::vector<PathNode*> Cluster::getNodes() {

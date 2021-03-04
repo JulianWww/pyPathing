@@ -39,9 +39,9 @@ public: Cluster(std::vector<std::vector<std::vector<int>>> const& arr, short& mo
 private: void init(std::vector<std::vector<std::vector<int>>> const& arr, short& movementKey, std::vector<int>ofset);
 	  
 	  // perform A* for nodes by id
-public:	std::vector<int> Astar(int start, int end, int poskey = 0, bool getVisited = false, int speed=0);
-public:	std::vector<int> bfs(int start, int end, bool getVisited = false);
-public:	std::vector<int> dfs(int start, int end, bool getVisited = false);
+public:	std::vector<PathNode*> Astar(PathNode* start, PathNode* end, int poskey = 0, bool getVisited = false, int speed=0);
+public:	std::vector<PathNode*> bfs(PathNode* start, PathNode* end, bool getVisited = false);
+public:	std::vector<PathNode*> dfs(PathNode* start, PathNode* end, bool getVisited = false);
 public: std::vector<PathNode*> getNodes();
 public: std::vector<int>getNodeKeys();
 

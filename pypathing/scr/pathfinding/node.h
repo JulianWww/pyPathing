@@ -43,7 +43,7 @@ public:
 	PathNode(PathNode*);
 	~PathNode();
 
-	std::vector<int>connectedNodes();
+	std::vector<PathNode*>connectedNodes();
 };
 
 class GoalNode{

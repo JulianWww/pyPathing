@@ -20,7 +20,7 @@ cdef extern from "pathfinding/node.h":
         bint walkable
         bint oneDirectional
         void setWalkable(bint)
-        cvector[int]connectedNodes()
+        cvector[PathNode*]connectedNodes()
 
 cdef extern from "pathfinding/Edge.h":
     cppclass edge:
@@ -43,9 +43,9 @@ cdef extern from "pathfinding/Cluster.h":
         Cluster(cvector[cvector[cvector[int]]], short&) except+
         cunordered_map[int, PathNode*] nodes 
 
-        cvector[int]Astar(int,int,int, bint, int)  
-        cvector[int]bfs(int,int, bint)  
-        cvector[int]dfs(int,int, bint)
+        cvector[PathNode*]Astar(PathNode*,PathNode*,int, bint, int)  
+        cvector[PathNode*]bfs(PathNode*, PathNode*, bint)  
+        cvector[PathNode*]dfs(PathNode*, PathNode*, bint)
 
         cvector[int]getNodeKeys()
         cvector[PathNode*]getNodes() 

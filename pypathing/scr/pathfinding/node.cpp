@@ -41,12 +41,11 @@ PathNode::~PathNode() {
 		 delete((*this->edges.begin()).second);
 	}
 }
-std::vector<int>PathNode::connectedNodes() {
-	 std::vector<int> res = {};
+std::vector<PathNode*>PathNode::connectedNodes() {
+	 std::vector<PathNode*> res = {};
 	 for (auto e = this->edges.begin(); e != this->edges.end(); e++) {
 		 if (e->second->walkable) {
-			 auto a = e->first->id;
-			 res.push_back((int)a);
+			 res.push_back(e->first);
 		 }
 	 }
 	 return res;

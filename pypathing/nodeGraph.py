@@ -37,6 +37,7 @@ updateEvent = cy_node_graph.PY_updateEvent
 Handler = cy_node_graph.eventHandler
 UpdateHandler = cy_node_graph.updateEventHandler
 Path = cy_node_graph.Path
+PathWrapper = cy_node_graph.PY_Path
 
 
 

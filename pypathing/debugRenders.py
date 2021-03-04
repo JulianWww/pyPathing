@@ -140,10 +140,7 @@ def renderClusterConnections(clus, arr, color="red"):
 def _debugRenderClusterConnections(clus, cv, x, y, width, height, dims, colors, layer, w):
     nodes = clus.nodes
     for node in clus.nodes.values():
-            for otherNodeid in node.connectedNodes:
-                if otherNodeid == -1:
-                    continue
-                otherNode = nodes[otherNodeid]
+            for otherNode in node.connectedNodes:
                 apos = node.position[1:]
                 bpos = otherNode.position[1:]
                 cv.create_line(x+width*(apos[0]+0.5)/dims[0], y+height*(apos[1]+0.5)/dims[1],
