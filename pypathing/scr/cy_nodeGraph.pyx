@@ -12,6 +12,9 @@ cdef class PathingError(Exception):
 cdef class DimentionMismatched(PathingError):
     "error raised when dimentions dont fit"
 
+cdef class DimValOutOfRange(DimentionMismatched):
+    "raised when value is to big for dimention"
+
 cdef class NodeFindingError(PathingError):
     "thrown when the node dose not exist"
 
@@ -226,7 +229,7 @@ cdef class PY_Cluster:
         sizeMultiplyer = 1
         if isinstance(poses, (tuple, list, cnp.ndarray)):
             for postition, dimentionSize in zip(reversed(poses), reversed(self.sizes)):
-                if postition >= dimentionSize: raise ValueError(f"pos {postition} out of grid for dimention {dimentionidx} of size {dimentionSize}")
+                if postition >= dimentionSize or postition < 0: raise DimentionMismatched(f"pos {postition} out of grid for dimention {dimentionidx} of size {dimentionSize}")
                 dimentionidx+=1
                 identity += postition*sizeMultiplyer
                 sizeMultiplyer*= dimentionSize
@@ -404,21 +407,9 @@ cdef class Py_nodeGraph():
         cdef cppInter.node_Graph* graph = new cppInter.node_Graph(arr, sizes, movement, singler, buildKey)
         self.cppHandler = graph
     
-
-    def serch(self, cnp.ndarray[int, ndim=1] start, cnp.ndarray[int, ndim=1] end, int lenght):
-        cdef cppInter.cvector[cppInter.PathNode*] nodes = self.cppHandler.Astar(start, end, lenght)
-        cdef list Pynodes=[]
-        cdef cppInter.PathNode* currentNode
-        for currentNode in nodes:
-            n = PY_node()
-            n.c_node = currentNode
-            Pynodes.append(n)
-        return Pynodes
-    
     def __str__(self):
         return f"abstract node Graph"
     __repr__=__str__
-
     @property
     def size(self)->list[int]:
         return self.cppHandler.size
@@ -472,8 +463,10 @@ cdef class Py_nodeGraph():
             inc(itr)
 
         if cleanup: self.cleanUp()
-        return res
-    
+        return Path(res)
+    def serch(self, PY_node start, PY_node end, int length, bint cleanUp=True):
+        return self.Astar(start.position, end.position, length, cleanUp)
+
     def cleanUp(self):
         deref(self.cppHandler).cleanUp()
         return
