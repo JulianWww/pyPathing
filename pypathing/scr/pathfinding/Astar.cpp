@@ -6,11 +6,22 @@
 #include "Edge.h"
 #include "node.h"
 #include "distance.h"
+#include "scr/nodeQueue.h"
+#include "Cluster.h"
 
 
 
 #ifndef ASTAR_SEARCH_ALGORYTHEM_LINK
 #define ASTAR_SEARCH_ALGORYTHEM_LINK
+
+std::list<PathNode*>getPath(PathNode* node) {
+	std::list<PathNode*> res;
+	while (node->distance > 0) {
+		res.push_front(node);
+	}
+	return res;
+}
+
 std::list<PathNode*> serchers::Astar_c_node(PathNode* start, PathNode* end, int distanceKey, bool getVisited) {
 		// a queue used to define next move
 		std::priority_queue<float, std::vector<float>, std::greater<float>> distanceQueue;
@@ -146,6 +157,61 @@ std::list<PathNode*> serchers::Astar_c_node_wspeed(PathNode* start, PathNode* en
 		}
 	}
 	return {};
-};
+}
+
+
+void ThetaStarUpdateNode(PathNode* node, PathNode* nextNode, edge* e, VisGraph* graph, int speed, jce::NodeQueue<PathNode> open, int distanceKey, PathNode* goal) {
+	PathNode* parent;
+	if (graph->line_of_sight(node, nextNode)) {
+		parent = node->movedFrom;
+	}
+	else {
+		parent = node;
+	}
+
+	if (nextNode->distance > node->distance + e->getLength(nextNode, speed)) {
+		nextNode->distance = node->distance + e->getLength(nextNode, speed);
+		nextNode->movedFrom = parent;
+
+		nextNode->setKey(nextNode->distance + distance::distance(nextNode, goal, distanceKey), node);
+
+		open.remove(nextNode);
+		open.push(nextNode);
+	}
+}
+
+std::list<PathNode*> serchers::ThedaStar(PathNode* start, PathNode* end, VisGraph* graph, int distanceKey, bool getVisited, int speed)
+{
+	start->distance = 0;
+
+	jce::NodeQueue<PathNode> open;
+	start->setKey(0);
+	open.push(start);
+	std::list<PathNode*> closed;
+
+	while (open.size() > 0) {
+		PathNode* current = open.topAndPop();
+		if (current == end) {
+			return getPath(current);
+		}
+		if (std::find(closed.begin(), closed.end(), current) != closed.end()) {
+			closed.push_back(current);
+
+			for (auto const& edgeIter : current->edges) {
+				if (edgeIter.first->walkable && edgeIter.second->walkable){
+					if (std::find(closed.begin(), closed.end(), edgeIter.first) != closed.end()) {
+						if (open.contains(edgeIter.first)) {
+							edgeIter.first->distance = std::numeric_limits<float>::infinity();
+							edgeIter.first->movedFrom = nullptr;
+						}
+						ThetaStarUpdateNode(current, edgeIter.first, edgeIter.second, graph, speed, open, distanceKey, end);
+					}
+				}
+			}
+		}
+	}
+	return {};
+}
+;
 
 #endif

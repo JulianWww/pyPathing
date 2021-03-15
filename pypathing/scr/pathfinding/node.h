@@ -4,21 +4,36 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <iostream>
 
 //#define buildPos(x,y,z, arr)(x + y * arr{0]{0].size() + z*arr{0]{0].size()*arr{0].size()+1)
+#ifndef NODE
+#define NODE
 class Cluster;
-#ifndef node
-#define node (Node)
 
 class edge;
 class Cluster;
+namespace obstacle { class Baise; };
+
+class Key {
+public: float val=NULL;
+public: int tieBreaker = 0;
+public: Key() {};
+public: Key(float v) : val(v) {};
+public: Key(float v, int t) : val(v), tieBreaker(t) {};
+public: bool operator>(Key& k);
+public: bool operator<(Key& k);
+public: bool operator==(Key& k);
+};
 
 // the node path
 class PathNode {
 	// the edges connected to this node
 public: std::unordered_map<PathNode*, edge*> edges = {};
+public: std::list<PathNode*> furtherNodes;
 	  // the postion of the postion
 public: std::vector<int> pos;
+public: Key key;
 
 	  //internal distance for all algorythems
 public: float distance = 0;
@@ -34,6 +49,12 @@ public: bool walkable = true;
 	  // set wether or not this node is walkable
 public: void setWalkable(bool, short);
 public: void setWalkable(bool);
+
+public: bool operator>(PathNode& other);
+public: bool operator<(PathNode& other);
+public: bool operator==(PathNode& other);
+public: void setKey(float val, int t = 0);
+public: void setKey(float val, PathNode*);
 
 
 public:
@@ -51,5 +72,19 @@ public: PathNode* Nodeptr;
 public: GoalNode* goalThisWay;
 public: PathNode* goal;
 };
+
+class VisNode {
+	PathNode* node;
+	std::list<obstacle::Baise*> obstacles;
+	
+public: VisNode(PathNode* n);
+public: void update(obstacle::Baise* o);
+};
+
+
+inline std::ostream& operator<< (std::ostream& out, const PathNode& next) {
+	out << " PathNode ";
+	return out;
+}
 
 #endif

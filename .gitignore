@@ -45,3 +45,4 @@ Makefile
 testDPAstar.py
 
 pypathing/setup.py
+test_obstacles.py

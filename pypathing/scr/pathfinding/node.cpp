@@ -3,11 +3,25 @@
 #include "scr/jvector.h"
 #include "Cluster.h"
 #include "updateEvent.h"
+#include "obstacle.h"
 
- PathNode::PathNode(std::list<std::pair<PathNode*, short>> connectedNodes, std::vector<int> postion, short& movementMode, std::vector<int> ofset){
+void PathNode::setKey(float val, int t)
+{
+	this->key.val = val;
+	this->key.tieBreaker = t;
+}
+
+void PathNode::setKey(float val, PathNode* parent)
+{
+	this->movedFrom = parent;
+	this->key.val = val;
+	this->key.tieBreaker = parent->key.tieBreaker+1;
+}
+
+PathNode::PathNode(std::list<std::pair<PathNode*, short>> connectedNodes, std::vector<int> postion, short& movementMode, std::vector<int> ofset){
 	 this->movementMode = movementMode;
 	// constructor
-	pos = jce::vector::add(postion, ofset);
+	pos = jce::add(postion, ofset);
 	for (auto node_iter = connectedNodes.begin(); node_iter != connectedNodes.end(); node_iter++) {
 		// convert the pointers pointer to pointer to the other node connected to this one
 		PathNode* otherNode = node_iter->first;
@@ -90,7 +104,55 @@ void PathNode::setWalkable(bool newWalkable) {
 	this->setWalkable(newWalkable, this->movementMode);
 }
 
+bool PathNode::operator>(PathNode& other)
+{
+	return this->key > other.key;
+}
 
+bool PathNode::operator<(PathNode& other)
+{
+	return this->key < other.key;
+}
 
+bool PathNode::operator==(PathNode& other)
+{
+	return this->key == other.key;
+}
 
+bool Key::operator>(Key& k)
+{
+	if (this->val == k.val) {
+		return this->tieBreaker > k.tieBreaker;
+	}
+	return this->val > k.val;
+}
 
+bool Key::operator<(Key& k)
+{
+	if (this->val == k.val) {
+		return this->tieBreaker < k.tieBreaker;
+	}
+	return this->val < k.val;
+}
+
+bool Key::operator==(Key& k)
+{
+	return (this->val == k.val && this->tieBreaker == k.tieBreaker);
+}
+
+VisNode::VisNode(PathNode* n) : node(n)
+{
+}
+
+void VisNode::update(obstacle::Baise* o)
+{
+	if (o->isIn(this->node)) {
+		if (std::find(this->obstacles.begin(), this->obstacles.end(), o) == this->obstacles.end()) {
+			this->obstacles.push_back(o);
+		}
+	}
+	else {
+		this->obstacles.remove(o);
+	}
+	this->node->setWalkable(this->obstacles.size() == 0);
+}

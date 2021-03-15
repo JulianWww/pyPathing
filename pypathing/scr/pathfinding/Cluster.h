@@ -9,7 +9,7 @@
 
 
 class updateEvent;
-
+namespace obstacle { class Baise; };
 
 /*
 a collection of intaconected nodes
@@ -50,3 +50,20 @@ public: updateEvent* updateConnections();
 public: edge* c_getEdge(PathNode*, PathNode*);
 public: void addNode(std::vector<int>);
 }; 
+
+class VisGraph {
+public: std::list<obstacle::Baise*> obstacles;
+public: std::list<VisNode*> blockNodes;
+
+public: bool line_of_sight(PathNode* start, PathNode* end);
+public: void updateObstacle(obstacle::Baise* o);
+protected: void subUpdateObstacle(obstacle::Baise* o);
+};
+
+class Environment : public Cluster, VisGraph {
+public: Environment();
+public: Environment(std::vector<int> size);
+public: Environment(std::vector<std::vector<std::vector<int>>> const& arr, int movementKey, std::vector<int>ofset = { 0,0,0 });
+public: Environment(std::vector<std::vector<std::vector<int>>> const& arr, short& movementKey, std::vector<int>ofset = { 0,0,0 });
+public: std::vector<PathNode*> ThetaStar(PathNode* start, PathNode* end, int posKey = 0, bool getVisited=false, int speed = 0);
+};

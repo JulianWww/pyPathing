@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include "scr/jvector.h"
 #include "updateEvent.h"
+#include "obstacle.h"
 
 
 
@@ -187,9 +188,52 @@ void Cluster::addNode(std::vector<int>pos)
 }
 
 
+bool VisGraph::line_of_sight(PathNode* start, PathNode* end)
+{
+	obstacle::ray r;
+	r.set(start->pos, end->pos);
+	for (auto const& val : this->obstacles) {
+		bool intersects = val->intersects(r);
+		if (intersects) {
+			return false;
+		}
+	}
+	return true;
+}
 
+void VisGraph::updateObstacle(obstacle::Baise* o)
+{
+	if (std::find(this->obstacles.begin(), this->obstacles.end(), o) == this->obstacles.end()) {
+		this->obstacles.push_back(o);
+	}
+	this->updateObstacle(o);
+}
 
+void VisGraph::subUpdateObstacle(obstacle::Baise* o)
+{
+	for (auto const& n : this->blockNodes) {
+		n->update(o);
+	}
+}
 
+Environment::Environment(): Cluster()
+{
+}
 
+Environment::Environment(std::vector<int> size) : Cluster(size)
+{
+}
 
+Environment::Environment(std::vector<std::vector<std::vector<int>>> const& arr, int movementKey, std::vector<int> ofset): Cluster(arr, movementKey, ofset)
+{
+}
 
+Environment::Environment(std::vector<std::vector<std::vector<int>>> const& arr, short& movementKey, std::vector<int> ofset): Cluster(arr, movementKey, ofset)
+{
+}
+
+std::vector<PathNode*> Environment::ThetaStar(PathNode* start, PathNode* end, int posKey, bool visited, int speed)
+{
+	auto path = serchers::ThedaStar(start, end, this, posKey, visited, speed);
+	return std::vector<PathNode*>(path.begin(), path.end());
+}

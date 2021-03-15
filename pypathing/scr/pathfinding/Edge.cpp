@@ -29,6 +29,7 @@ edge::edge(PathNode* a, PathNode* b, float distance, bool oneDirectional)
 	if (oneDirectional) {
 		a->edges.insert({ b, this });
 		this->oneDirectional = true;
+		b->furtherNodes.push_back(a);
 	}
 	else {
 		insert(a, b, this);

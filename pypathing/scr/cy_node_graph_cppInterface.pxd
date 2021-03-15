@@ -7,6 +7,7 @@ from libcpp.list cimport list as clist
 from libcpp.pair cimport pair as cpair
 from libcpp.unordered_map cimport unordered_map as cunordered_map
 from libcpp.unordered_set cimport unordered_set as cunordered_set
+from libcpp cimport cast as ccast
 
 cimport numpy as cnp
 import numpy as np
@@ -21,6 +22,10 @@ cdef extern from "pathfinding/node.h":
         bint oneDirectional
         void setWalkable(bint)
         cvector[PathNode*]connectedNodes()
+    
+    cppclass VisNode:
+        PathNode* node
+        clist[Baise*] obstacles
 
 cdef extern from "pathfinding/Edge.h":
     cppclass edge:
@@ -32,9 +37,19 @@ cdef extern from "pathfinding/Edge.h":
         float dirCoefficient
 
         bint oneDirectional
+        bint walkable
         PathNode* getNode(bint)
 
         void updateLength(float) except +
+
+cdef extern from "pathfinding/obstacle.h" namespace "obstacle":
+    cppclass Baise:
+        cvector[float] getOrigin()
+
+    cppclass sphere(Baise):
+        float r
+
+        sphere(float, cvector[float])
 
 cdef extern from "pathfinding/Cluster.h":
     cppclass Cluster:
@@ -56,6 +71,37 @@ cdef extern from "pathfinding/Cluster.h":
 
         void addNode(cvector[int] pos) except +
         updateEvent* updateConnections() except +
+    
+    cppclass VisGraph:
+        clist[VisNode*]blockNodes
+        clist[Baise*] obstacles
+
+        bint line_of_sight(PathNode*, PathNode*)
+        void updateObstacle(Baise*)
+    
+    cppclass Environment(Cluster, VisGraph):
+
+        clist[VisNode*]blockNodes
+        clist[Baise*] obstacles
+
+        bint line_of_sight(PathNode*, PathNode*)
+        bint updateObstacle(Baise*, Path)
+    
+        cvector[PathNode*]Astar(PathNode*,PathNode*,int, bint, int)  
+        cvector[PathNode*]bfs(PathNode*, PathNode*, bint)  
+        cvector[PathNode*]dfs(PathNode*, PathNode*, bint)
+
+        cvector[int]getNodeKeys()
+        cvector[PathNode*]getNodes() 
+        cvector[int]postion  
+        cvector[int]clusterShape 
+
+        edge* c_getEdge(PathNode*, PathNode*) except +
+
+        void addNode(cvector[int] pos) except +
+        updateEvent* updateConnections() except +
+
+        cvector[PathNode*]ThetaStar(PathNode*, PathNode*, int, bint, int)
 
 cdef extern from "pathfinding/updateEvent.h":
     cppclass updateEvent:
@@ -108,14 +154,22 @@ cdef extern from "pathfinding/path.h":
         float cost
         float speed
         int key
+        bint valid
+    
+    cppclass AstarPath(Path):
+        AstarPath(PathNode*, PathNode*, int, int) except +
 
-    cppclass DPAstarPath(Path):
+    cppclass DPAstarPath(AstarPath):
         DPAstarPath(PathNode*, PathNode*, int, int) except +
-
         void update(updateEvent*, PathNode*, int) except +
         void cheapUpdate(updateEvent*, PathNode*, int) except +
 
+    cppclass LPAstarPath(AstarPath):
+        LPAstarPath(PathNode*, PathNode*, int, int) except +
+        bint update(updateEvent*, PathNode*, int) except +
 
 
-        
+
+cdef extern from * nogil:
+    sphere* dynamic_cast_sphere_ptr "dynamic_cast<obstacle::sphere*>" (Baise*) except NULL
     

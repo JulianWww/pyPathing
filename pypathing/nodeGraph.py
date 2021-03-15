@@ -2,7 +2,7 @@
 
 import pypathing.scr.cy_nodeGraph as cy_node_graph
 
-__all__ = ["nodeGraph", "node", "edgeCls", "edge", "goalGraph", "runDPAstar", "Path", "updateEvent", "Handler", "UpdateHandler"]
+__all__ = ["nodeGraph", "node", "edgeCls", "edge", "goalGraph", "runDPAstar", "runLPAstar", "Path", "updateEvent", "Handler", "UpdateHandler"]
 
 nodeGraph = cy_node_graph.PY_BasicNodeGraph
 """A Cluster of nodes witch is basicly just a collection of nodes
@@ -30,6 +30,7 @@ goalGraph = cy_node_graph.Py_GoalCluster
         """
 
 runDPAstar = cy_node_graph.PY_DPAstarPath
+runLPAstar = cy_node_graph.PY_LPAstarPath
 
 
 updateEvent = cy_node_graph.PY_updateEvent
@@ -38,6 +39,7 @@ Handler = cy_node_graph.eventHandler
 UpdateHandler = cy_node_graph.updateEventHandler
 Path = cy_node_graph.Path
 PathWrapper = cy_node_graph.PY_Path
+
 
 
 

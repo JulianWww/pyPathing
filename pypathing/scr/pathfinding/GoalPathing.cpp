@@ -17,8 +17,8 @@ GoalCluster::GoalCluster(bool liveBuild)
 
 GoalCluster::~GoalCluster() {
 	for (auto n = this->nodes.begin(); n != this->nodes.end(); n++) {
-		GoalNode* NODE = ((*n).second);
-		delete NODE;
+		GoalNode* node = ((*n).second);
+		delete node;
 	}
 	this->nodes.clear();
 }

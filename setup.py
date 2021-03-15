@@ -5,7 +5,10 @@ from os import system
 
 
 extensions = [Extension( "pypathing.scr.cy_generators", 
-                        ["pypathing/scr/cy_generators.pyx"]),
+                        [
+                            "pypathing/scr/cy_generators.pyx",
+                            "pypathing/scr/pathfinding/generatiors.cpp"
+                        ]),
                         
               Extension( "pypathing.scr.cy_searchers",
                         ["pypathing/scr/cy_searchers.pyx"],
@@ -26,6 +29,7 @@ extensions = [Extension( "pypathing.scr.cy_generators",
                             "pypathing/scr/pathfinding/GoalPathing.cpp",
                             "pypathing/scr/pathfinding/funcs.cpp",
                             "pypathing/scr/pathfinding/updateEvent.cpp",
+                            "pypathing/scr/pathfinding/obstacle.cpp",
                         ],
                         include_dirs=[get_include()])]
 

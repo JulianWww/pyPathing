@@ -23,6 +23,26 @@ cdef class ClusterBuildError(PathingError):
 cdef class SubClustersDontFitError(ClusterBuildError):
     "throw when subcluster sizes dont fit"
 
+#cy_obstacle
+cdef class BaseObstacle:
+    cdef cppInter.Baise* ptr
+    @property
+    def origin(self):
+        return np.array(self.ptr.getOrigin())
+    
+cdef class Sphere(BaseObstacle):
+    cdef cppInter.sphere* subptr
+    def __cinit__(self, float r, cnp.ndarray[float,ndim=1] pos):
+        self.subptr = new cppInter.sphere(r, pos)
+        self.ptr = self.subptr
+    
+    cdef _set(self, cppInter.sphere* s):
+        self.ptr = s
+        self.subptr = s
+    
+    @property
+    def r(self):
+        return self.subptr.r
 
 cdef class eventHandler:
     cdef list to_update
@@ -50,10 +70,12 @@ cdef class updateEventHandler(eventHandler):
         if not hasattr(other, "update"): raise TypeError(f"{other} has no update method")
         eventHandler.add(self, other)
 
-
     cdef update(self, PY_updateEvent event):
         for val in self.to_update:
-            val.update(event)
+            try:
+                val.update(event)
+            except Exception as e:
+                print(e, )
 
 
 
@@ -150,6 +172,14 @@ cdef class PY_edge:
     def oneDirectional(self) -> bint:
         "weather or not the edge only goas in one direction"
         return self.c_edge.oneDirectional
+    
+    @property
+    def walkable(self):
+        return self.c_edge.walkable
+    
+    @walkable.setter
+    def walkable(self, bint value):
+        self.c_edge.walkable = value
 
 # py wrapper for the updateEvent struct
 cdef class PY_updateEvent:
@@ -273,11 +303,11 @@ cdef class PY_Cluster:
 
         return Path(nodes)
     
-    def runDijstara(self, PY_node start, PY_node end, bint getVisited=False, int speed=0) -> list:
+    def runDijstara(self, PY_node start, PY_node end, bint getVisited=False, int speed=0) -> Path:
         """runn the dijstara algorythem on the cluster"""
         return self.runAstar(start, end, -1, getVisited, speed)
     
-    def runBfs(self, PY_node start, PY_node end, bint getVisited=False) -> list:
+    def runBfs(self, PY_node start, PY_node end, bint getVisited=False) -> Path:
         """run A* pathfinding algorythem to find a path from start to end with distanceKey
         """
         cdef cppInter.cvector[cppInter.PathNode*] Nodes
@@ -295,7 +325,7 @@ cdef class PY_Cluster:
             nodes.append(n)
         return Path(nodes)
     
-    def runDfs(self, PY_node start, PY_node end, bint getVisited=False) -> list:
+    def runDfs(self, PY_node start, PY_node end, bint getVisited=False) -> Path:
         """run A* pathfinding algorythem to find a path from start to end with distanceKey
         """
         raise Exception("not functionaly implemented")
@@ -388,6 +418,36 @@ cdef class PY_BasicNodeGraph(PY_Cluster):
             self.addNode(pos)
         finally:
             return self.getnode(tuple(pos))
+
+#visual nodeGraph py wrapper.
+cdef class VisCluster(object):
+    cdef cppInter.VisGraph* c_visClus
+
+    def update_obstacle(self, BaseObstacle other):
+        "updates a certain obstacle"
+        self.c_visClus.updateObstacle(other.ptr)
+    add_opstacle = update_obstacle
+
+    @property
+    def opstacles(self):
+        res = []
+        cdef cppInter.Baise* current
+
+        cdef cppInter.sphere* sphere_test
+        cdef Sphere sphere
+
+        for current in self.c_visClus.obstacles:
+
+            sphere_test = cppInter.dynamic_cast_sphere_ptr(current)
+            if sphere_test != NULL:
+                sphere = Sphere()
+                sphere._set(sphere_test)
+                res.append(sphere)
+
+
+            
+
+
 
 #python wrapper for the c++ node Graph class to doc
 cdef class Py_nodeGraph():
@@ -591,11 +651,14 @@ cdef class PY_Path(Path):
     def __init__(self):
         pass
 
-    cdef getPath(self):
+    cpdef getPath(self):
         self._path = []
+
+        if not self.valid:
+            raise PathingError(f"no valid path found");
+
         cdef cppInter.PathNode* node
         cdef PY_node Pynode
-        self._path = []
 
         for node in self.c_path.path:
             Pynode = PY_node()
@@ -613,10 +676,25 @@ cdef class PY_Path(Path):
     @property
     def movementKey(self) -> int:
         return self.c_path.key
+    
+    @property
+    def valid(self) -> bint:
+        return self.c_path.valid
+    
+    @property
+    def path(self) -> list:
+        if not self.valid:
+            raise PathingError("latest update run found no valid path.")
+
+        return self._path
+
 
 # py wrapper of the DPAstarPath class
 cdef class PY_DPAstarPath(PY_Path):
     cdef cppInter.DPAstarPath* c_DPAstarPath
+    def __init__(self, *args, **kwargs):
+        pass
+        
     def __cinit__(PY_DPAstarPath self, PY_node start, PY_node end, int posKey=0, int speed=0):
         self.c_DPAstarPath = new cppInter.DPAstarPath(start.c_node, end.c_node, posKey, speed)
         cdef cppInter.Path* p = self.c_DPAstarPath
@@ -626,12 +704,14 @@ cdef class PY_DPAstarPath(PY_Path):
 
     def __str__(self):
         return f"DPA* path <path: {self.path}, cost: {self.cost}, movementKey: {self.movementKey}"
-    __repr__=__str__
+    def __repr__(self):
+        return "DPA* path"
 
     def update(self, PY_updateEvent event, PY_node current=None, int key=-2, bint cheap=0) -> void:
         if key == -2:
             key = self.movementKey
-        if current is None:
+
+        if current is None and self.valid:
             current = self.path[0]
         
         if event is None:#raise error??
@@ -646,7 +726,39 @@ cdef class PY_DPAstarPath(PY_Path):
     def cheapUpdate(self, PY_updateEvent event, PY_node current=None, int key=-2) -> void:
         return self.update(event, current, key, True)
 
+#py wrapper for the c++ LPAstarPath class.
+cdef class PY_LPAstarPath(PY_Path):
+    cdef cppInter.LPAstarPath* c_LPAstarPath
 
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def __cinit__ (PY_LPAstarPath self, PY_node start, PY_node end, int posKey=0, int speed=0):
+        self.c_LPAstarPath = new cppInter.LPAstarPath(start.c_node, end.c_node, posKey, speed)
+
+        cdef cppInter.Path* p = self.c_LPAstarPath
+        self.c_path = p
+
+        self.getPath()
+    
+    def __str__(self):
+        return f"LPA* path <path: {self.path}, cost: {self.cost}, movementKey: {self.movementKey}"
+    
+    def update(self, PY_updateEvent event, PY_node current=None, int key=-2, bint cheap=0) -> void:
+        if key == -2:
+            key = self.movementKey
+
+        if current is None and self.valid:
+            current = self.path[0]
+        
+        if event is None:#raise error??
+            return; 
+        self.c_LPAstarPath.update(event.c_event, current.c_node, key)
+
+        self.getPath()
+    
+    def cheapUpdate(self, PY_updateEvent event, PY_node current=None, int key=-2) -> void:
+        return self.update(event, current, key, True)
 # funcs
 def makeEdge(PY_node a, PY_node b, float length, bint oneDirectional):
     if a is None: raise ValueError(f"param a: None is not a valid Node")

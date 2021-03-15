@@ -124,4 +124,19 @@ namespace jce{
             return oss.str();
         }
     }
+
+    template <typename T>
+    std::vector<T> add(std::vector<T>a, std::vector<T>b) {
+        if (a.size() != b.size()) {
+            throw "size mismatched";
+        }
+        std::vector<T> res(a.size());
+        auto a_iter = a.begin();
+        auto res_iter = res.begin();
+        for (auto b_iter = b.begin(); b_iter != b.end();) {
+            *res_iter = *a_iter + *b_iter;
+            res_iter++; a_iter++; b_iter++;
+        }
+        return res;
+    }
 }
