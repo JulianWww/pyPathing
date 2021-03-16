@@ -58,7 +58,7 @@ namespace jce {
 		T out = 0;
 		auto outIter = this->begin();
 		for (auto otherIter = other.begin(); otherIter != other.end(); otherIter++, outIter++) {
-			*outIter += (*outIter) * (*otherIter);
+			out += (*outIter) * (*otherIter);
 		}
 		return out;
 	}

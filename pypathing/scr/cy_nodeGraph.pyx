@@ -28,13 +28,29 @@ cdef class BaseObstacle:
     cdef cppInter.Baise* ptr
     @property
     def origin(self):
-        return np.array(self.ptr.getOrigin())
+        return np.flip(np.array(self.ptr.getOrigin()))
     
 cdef class Sphere(BaseObstacle):
     cdef cppInter.sphere* subptr
-    def __cinit__(self, float r, cnp.ndarray[float,ndim=1] pos):
-        self.subptr = new cppInter.sphere(r, pos)
+    def __cinit__(self, r, cnp.ndarray pos):
+        self.___cinit__(float(r), pos.astype(np.float))
+    def ___cinit__(self, float r, cnp.ndarray[double,ndim=1] pos):
+        self.subptr = new cppInter.sphere(r, np.flip(pos))
         self.ptr = self.subptr
+    
+    def applyToArr(self, cnp.ndarray arr):
+        "apply invalids to array"
+
+        def subapplyToArr(arr, *pos):
+            for idx, val in enumerate(arr[pos]):
+                if isinstance(val, cnp.ndarray):
+                    arr = subapplyToArr(arr, *(pos), idx)
+                
+                else:
+                    if np.linalg.norm(np.array((*pos, idx)) - self.origin) <= self.r:
+                        arr[(*pos, idx)] = 0
+            return arr
+        return subapplyToArr(arr)
     
     cdef _set(self, cppInter.sphere* s):
         self.ptr = s
@@ -43,6 +59,10 @@ cdef class Sphere(BaseObstacle):
     @property
     def r(self):
         return self.subptr.r
+
+    def __str__(self):
+        return f"Sphere <origin: {self.origin}, r: self.r>"
+    __repr__ = __str__
 
 cdef class eventHandler:
     cdef list to_update
@@ -142,8 +162,8 @@ cdef class PY_edge:
         return self.c_edge.length
     
     @length.setter
-    def length(self, float val) -> void:
-        self.c_edge.updateLength(val)
+    def length(self, val) -> void:
+        self.c_edge.updateLength(float(val))
 
     @property
     def nodes(self) -> tuple:
@@ -162,11 +182,11 @@ cdef class PY_edge:
         return self.c_edge.dirCoefficient
     
     @nodeMoves.setter
-    def nodeMoves(self, float val) -> void:
+    def nodeMoves(self, val) -> void:
         if (self.reverse):
-            self.c_edge.dirCoefficient = -val
+            self.c_edge.dirCoefficient = -float(val)
         else:
-            self.c_edge.dirCoefficient =  val
+            self.c_edge.dirCoefficient =  float(val)
     
     @property
     def oneDirectional(self) -> bint:
@@ -221,15 +241,11 @@ cdef class PY_Cluster:
     cdef list sizes
     cdef updateEventHandler updateHandler
 
+    cdef _ClusterSetter(self, cppInter.Cluster* c):
+        self.c_Cluster = c
+
     def __cinit__(self):
-        """if len(args)>0:
-            if isinstance(args[0], np.ndarray):
-                if len(args[0].shape) == 3:
-                    self.build(*args)
-                    self.sizes = list(args[0].shape)
-                    return"""
-                
-        #self.c_Cluster = *cppInter.Cluster()
+        pass
 
     def build(self, arr, int dir=0):
         "build node graph from 3d np array"
@@ -238,7 +254,7 @@ cdef class PY_Cluster:
         self.c_Cluster = (clus)
         self.sizes = list(arr.shape)
     
-    def createEmpty(self, cnp.ndarray[int, ndim=1]sizes):
+    def _createEmpty(self, cnp.ndarray[int, ndim=1]sizes):
         "make empty nodeGraph"
         pos = np.where(sizes < 1)
         if (pos[0].size !=0):
@@ -279,7 +295,7 @@ cdef class PY_Cluster:
     
     def getNodes(self, ids) -> list:
         "get nodes form id"
-        cdef list res = np.array([])
+        cdef list res = []
         for ident in ids:
             res.append(self.getnode(ident))
         return res
@@ -291,17 +307,9 @@ cdef class PY_Cluster:
 
         cdef cppInter.cvector[cppInter.PathNode*] nodesC = self.c_Cluster.Astar(start.c_node, end.c_node, 
                                                                                distanceKey, getVisited, speed)
-        cdef cppInter.PathNode* current
-
-        if nodesC.size() == 0: raise PathingError(f"no valid path was found")
-        cdef list nodes = []
-        cdef PY_node n
-        for current in nodesC:
-            n = PY_node()
-            n.c_node = current
-            nodes.append(n)
-
-        return Path(nodes)
+        p = StaticPath()
+        p.create(nodesC)
+        return p
     
     def runDijstara(self, PY_node start, PY_node end, bint getVisited=False, int speed=0) -> Path:
         """runn the dijstara algorythem on the cluster"""
@@ -316,14 +324,9 @@ cdef class PY_Cluster:
             Nodes = self.c_Cluster.bfs(start.c_node, end.c_node, getVisited)
         except:
             raise PathingError("no path was found")
-        if Nodes.size() == 0: raise PathingError(f"no valid path was found")
-        cdef list nodes = np.array([])
-        cdef PY_node n
-        for current in Nodes:
-            n = PY_node()
-            n.c_node = current
-            nodes.append(n)
-        return Path(nodes)
+        p = StaticPath()
+        p.create(Nodes)
+        return p
     
     def runDfs(self, PY_node start, PY_node end, bint getVisited=False) -> Path:
         """run A* pathfinding algorythem to find a path from start to end with distanceKey
@@ -336,15 +339,12 @@ cdef class PY_Cluster:
         except:
             raise PathingError("no path was found")
         if Nodes.size() == 0: raise PathingError(f"no valid path was found")
-        cdef list nodes = np.array([])
-        cdef PY_node n
-        for current in Nodes:
-            n = PY_node()
-            n.c_node = current
-            nodes.append(n)
-        return Path(nodes)
+        p = StaticPath()
+        p.create(Nodes)
+        return p
     
     def __str__(self):
+        print(len(self.nodes))
         return f"Cluster<nodes: {len(self.nodes)}, size = {self.size}>"
     __repr__=__str__
 
@@ -420,13 +420,76 @@ cdef class PY_BasicNodeGraph(PY_Cluster):
             return self.getnode(tuple(pos))
 
 #visual nodeGraph py wrapper.
-cdef class VisCluster(object):
-    cdef cppInter.VisGraph* c_visClus
+cdef class Environment(PY_BasicNodeGraph):
+    cdef cppInter.Environment* env
+    cdef bint initzialized
+
+    def __cinit__(self):
+        self.initzialized = False
+
+    def build(self, arr, int _dir=0):
+        if not np.ndarray is type(arr): raise TypeError(f"arr must be ndarray not {type(arr).__name__}")
+        if self.initzialized:
+            raise RuntimeError("Environment already initialized")
+        self.initzialized = True
+        self.env = new cppInter.Environment(arr, _dir)
+        self.sizes = list(arr.shape)
+        self._make()
+
+    def makeEmpty(self, cnp.ndarray sizes):
+        if self.initzialized:
+            raise RuntimeError("Environment already initialized")
+        self.initzialized = True
+        self.env = new cppInter.Environment(np.flip(sizes))
+        self.sizes = list(sizes)
+        self._make()
+        
+    cdef _make(self):
+        cdef cppInter.Environment* env = self.env
+        self._ClusterSetter(env)
+    
+    cdef updatePath(self, StaticPath p):
+        p.env = self
+    
+    def runThetaStar(self, PY_node start, PY_node end, int distanceKey=0, bint getVisited=False, int speed=0) -> Path:
+        """run Theta* pathfinding algorythem to find a path from start to end with distanceKey
+        """
+        cdef cppInter.cvector[cppInter.PathNode*] nodesC = self.env.ThetaStar(start.c_node, end.c_node, 
+                                                                                 distanceKey, getVisited, speed)
+
+        p = StaticPath()
+        p.create(nodesC, self)
+        return p
+    
+    def runAstar(self, *args, **kwargs):
+        "see nodeGraph.runAstar"
+        p = PY_Cluster.runAstar(self, *args, **kwargs)
+        self.updatePath(p)
+        return p
+
+    def runDijstara(self, *args, **kwargs):
+        "see nodeGraph.runDijstara"
+        p = PY_Cluster.runDijstara(self, *args, **kwargs)
+        self.updatePath(p)
+        return p
+
+    def runBfs(self, *args, **kwargs):
+        "see nodeGraph.runBfs"
+        p = PY_Cluster.runBfs(self, *args, **kwargs)
+        self.updatePath(p)
+        return p
+    
+    def runDfs(self, *args, **kwargs):
+        "see nodeGraph.runDfs"
+        p = PY_Cluster.runDfs(self, *args, **kwargs)
+        self.updatePath(p)
+        return p
+    
 
     def update_obstacle(self, BaseObstacle other):
         "updates a certain obstacle"
-        self.c_visClus.updateObstacle(other.ptr)
-    add_opstacle = update_obstacle
+        self.env.updateObstacle(other.ptr)
+    add_obstacle = update_obstacle
 
     @property
     def opstacles(self):
@@ -436,13 +499,15 @@ cdef class VisCluster(object):
         cdef cppInter.sphere* sphere_test
         cdef Sphere sphere
 
-        for current in self.c_visClus.obstacles:
+        for current in self.env.obstacles:
 
             sphere_test = cppInter.dynamic_cast_sphere_ptr(current)
             if sphere_test != NULL:
                 sphere = Sphere()
                 sphere._set(sphere_test)
                 res.append(sphere)
+        return res
+
 
 
             
@@ -631,18 +696,45 @@ cdef class Py_GoalCluster():
 
 #basic path
 cdef class Path:
-    cdef list _path
-
-    def __init__(self, path):
-        self._path = path
+    cdef list _path        
 
     def __str__(self):
-        return f"Path <path: {self.path}, cost: {self.cost}, movementKey: {self.movementKey}"
+        return f"Path <path: {self.getPathStr()}>"
     __repr__=__str__
 
     @property
     def path(self) -> list:
         return self._path
+    
+    cdef getPathStr(self):
+        cdef str res = "["
+        for node in self.path:
+            res += str(node) + " ,"
+        res = res[:-2]
+        res += "]"
+        return res
+
+cdef class StaticPath(Path):
+    cdef cppInter.cvector[cppInter.PathNode*] c_path_vec
+    cdef Environment env
+
+    cdef create(self, cppInter.cvector[cppInter.PathNode*] path, Environment env=None):
+        self.env = env
+        self._path = []
+        self.c_path_vec = path
+        cdef cppInter.PathNode* current
+
+        if path.size() == 0: raise PathingError(f"no valid path was found")
+        cdef PY_node n
+        for current in path:
+            n = PY_node()
+            n.c_node = current
+            self._path.append(n)
+    
+    def __str__(self):
+        return f"Static <path: {self.getPathStr()}>"
+    __repr__=__str__
+
 
 # paths py wrappers
 cdef class PY_Path(Path):

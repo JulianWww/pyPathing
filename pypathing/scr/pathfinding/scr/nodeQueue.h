@@ -8,21 +8,28 @@
 namespace jce {
 	template<typename T>
 	struct pointerGreater {
-		bool operator()(const T* lhs, const T* rhs) const
+		bool operator()(T* lhs, T* rhs) const
 		{
-			T a = *lhs;
-			T b = *rhs;
-			bool out = !(a > b);
-			if (a == b) {
+			bool out = !((*lhs) > (*rhs));
+			if ((*lhs) == (*rhs)) {
 				return false;
 			}
 			return out;
 		}
 	};
 
+	template<typename T>
+	struct pointerSmaler {
+		bool operator()(T* lhs, T* rhs) const
+		{
+			bool out = ((*lhs) > (*rhs));
+			return out;
+		}
+	};
+
 
 	template<typename T>
-	class NodeQueue : public std::priority_queue<T*, std::vector<T*>, pointerGreater<T>>
+	class NodeQueue : public std::priority_queue<T*, std::vector<T*>, pointerSmaler<T>>
 	{
 	public:
 

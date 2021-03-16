@@ -54,13 +54,15 @@ public: void addNode(std::vector<int>);
 class VisGraph {
 public: std::list<obstacle::Baise*> obstacles;
 public: std::list<VisNode*> blockNodes;
+public: VisGraph(Cluster* clus);
+public: ~VisGraph();
 
 public: bool line_of_sight(PathNode* start, PathNode* end);
 public: void updateObstacle(obstacle::Baise* o);
 protected: void subUpdateObstacle(obstacle::Baise* o);
 };
 
-class Environment : public Cluster, VisGraph {
+class Environment : public Cluster, public VisGraph {
 public: Environment();
 public: Environment(std::vector<int> size);
 public: Environment(std::vector<std::vector<std::vector<int>>> const& arr, int movementKey, std::vector<int>ofset = { 0,0,0 });

@@ -5,4 +5,6 @@ from pypathing.distances import distance, directions
 from .nodeGraph import *
 from .hpAstar import *
 
+from . import obstacles
+
 import pypathing.debugRenders as debug

@@ -31,6 +31,12 @@ extensions = [Extension( "pypathing.scr.cy_generators",
                             "pypathing/scr/pathfinding/updateEvent.cpp",
                             "pypathing/scr/pathfinding/obstacle.cpp",
                         ],
+                        include_dirs=[get_include()]),
+              
+              Extension( "pypathing.scr.cy_smoothing",
+                        [   
+                            "pypathing/scr/cy_smoothing.pyx",
+                        ],
                         include_dirs=[get_include()])]
 
 

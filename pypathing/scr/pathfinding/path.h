@@ -8,6 +8,8 @@
 
 class PathNode;
 class updateEvent;
+class VisGraph;
+class Environment;
 
 
 class Path {

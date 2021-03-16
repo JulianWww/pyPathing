@@ -78,6 +78,7 @@ class VisNode {
 	std::list<obstacle::Baise*> obstacles;
 	
 public: VisNode(PathNode* n);
+public: ~VisNode();
 public: void update(obstacle::Baise* o);
 };
 

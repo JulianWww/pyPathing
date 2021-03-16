@@ -188,6 +188,21 @@ void Cluster::addNode(std::vector<int>pos)
 }
 
 
+VisGraph::VisGraph(Cluster* clus)
+{
+	for (auto const& n : clus->nodes) {
+		VisNode* vis = new VisNode(n.second);
+		this->blockNodes.push_back(vis);
+	}
+}
+
+VisGraph::~VisGraph()
+{
+	for (auto const& val : this->blockNodes){
+		delete val;
+	}
+}
+
 bool VisGraph::line_of_sight(PathNode* start, PathNode* end)
 {
 	obstacle::ray r;
@@ -206,7 +221,7 @@ void VisGraph::updateObstacle(obstacle::Baise* o)
 	if (std::find(this->obstacles.begin(), this->obstacles.end(), o) == this->obstacles.end()) {
 		this->obstacles.push_back(o);
 	}
-	this->updateObstacle(o);
+	this->subUpdateObstacle(o);
 }
 
 void VisGraph::subUpdateObstacle(obstacle::Baise* o)
@@ -216,19 +231,19 @@ void VisGraph::subUpdateObstacle(obstacle::Baise* o)
 	}
 }
 
-Environment::Environment(): Cluster()
+Environment::Environment(): Cluster(), VisGraph(this)
 {
 }
 
-Environment::Environment(std::vector<int> size) : Cluster(size)
+Environment::Environment(std::vector<int> size) : Cluster(size), VisGraph(this)
 {
 }
 
-Environment::Environment(std::vector<std::vector<std::vector<int>>> const& arr, int movementKey, std::vector<int> ofset): Cluster(arr, movementKey, ofset)
+Environment::Environment(std::vector<std::vector<std::vector<int>>> const& arr, int movementKey, std::vector<int> ofset): Cluster(arr, movementKey, ofset), VisGraph(this)
 {
 }
 
-Environment::Environment(std::vector<std::vector<std::vector<int>>> const& arr, short& movementKey, std::vector<int> ofset): Cluster(arr, movementKey, ofset)
+Environment::Environment(std::vector<std::vector<std::vector<int>>> const& arr, short& movementKey, std::vector<int> ofset): Cluster(arr, movementKey, ofset), VisGraph(this)
 {
 }
 

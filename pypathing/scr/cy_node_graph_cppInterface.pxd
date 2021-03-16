@@ -71,37 +71,22 @@ cdef extern from "pathfinding/Cluster.h":
 
         void addNode(cvector[int] pos) except +
         updateEvent* updateConnections() except +
+
     
-    cppclass VisGraph:
+    cppclass Environment(Cluster):
+
+        Environment()
+        Environment(cvector[int])
+        Environment(cvector[cvector[cvector[int]]], short&) except+
+
+        cvector[PathNode*]ThetaStar(PathNode*, PathNode*, int, bint, int) except +
+
+        #actual c++ VisGraph class
         clist[VisNode*]blockNodes
         clist[Baise*] obstacles
 
         bint line_of_sight(PathNode*, PathNode*)
         void updateObstacle(Baise*)
-    
-    cppclass Environment(Cluster, VisGraph):
-
-        clist[VisNode*]blockNodes
-        clist[Baise*] obstacles
-
-        bint line_of_sight(PathNode*, PathNode*)
-        bint updateObstacle(Baise*, Path)
-    
-        cvector[PathNode*]Astar(PathNode*,PathNode*,int, bint, int)  
-        cvector[PathNode*]bfs(PathNode*, PathNode*, bint)  
-        cvector[PathNode*]dfs(PathNode*, PathNode*, bint)
-
-        cvector[int]getNodeKeys()
-        cvector[PathNode*]getNodes() 
-        cvector[int]postion  
-        cvector[int]clusterShape 
-
-        edge* c_getEdge(PathNode*, PathNode*) except +
-
-        void addNode(cvector[int] pos) except +
-        updateEvent* updateConnections() except +
-
-        cvector[PathNode*]ThetaStar(PathNode*, PathNode*, int, bint, int)
 
 cdef extern from "pathfinding/updateEvent.h":
     cppclass updateEvent:

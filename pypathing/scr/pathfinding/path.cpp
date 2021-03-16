@@ -4,6 +4,7 @@
 #include "Edge.h"
 #include "updateEvent.h"
 #include "distance.h"
+#include "Cluster.h"
 #include <list>
 #include <cmath>
 
@@ -570,3 +571,5 @@ LPAstar::Key LPAstar::CalculateKey(LPAstarNode* vertex, PathNode* goal, int dist
 	LPAstar::Key res(std::min(vertex->g, vertex->rhs + hweight * distance::distance(vertex->Node, goal, distanceKey)), std::min(vertex->g, vertex->rhs));
 	return res;
 }
+
+

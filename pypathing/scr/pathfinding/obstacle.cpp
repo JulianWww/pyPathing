@@ -17,7 +17,7 @@ obstacle::ray::ray(std::vector<int>&start, std::vector<int>&end) {
 void obstacle::ray::set(std::vector<int>& start, std::vector<int>& end)
 {
 	this->startPos = jce::jvector<float>(jce::convert<float>(start));
-	auto endPos = jce::jvector<float>(jce::convert<float>(start));
+	auto endPos = jce::jvector<float>(jce::convert<float>(end));
 	this->heading = endPos - this->startPos;
 	this->length = this->heading.abs();
 	this->heading = this->heading / this->length;
@@ -33,7 +33,7 @@ bool obstacle::sphere::intersects(ray const& r)
 	auto u = r.heading;
 	auto o = r.startPos;
 
-	auto deltaO = this->origin - o;
+	auto deltaO = o - this->origin;
 
 	float a = (-2 * u.dot(deltaO));
 	float b = sqrt(2 * pow(u.dot(deltaO), 2) - 4 * u.abs() * (deltaO.abs() - this->r*this->r));
@@ -52,7 +52,7 @@ bool obstacle::sphere::isIn(PathNode* n)
 {
 	auto pos = jce::convert<float>(n->pos);
 	float d = (this->origin - pos).abs();
-	return (d < this->r);
+	return (d <= this->r);
 }
 
 std::vector<float> obstacle::Baise::getOrigin()

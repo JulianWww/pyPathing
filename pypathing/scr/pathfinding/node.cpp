@@ -122,7 +122,7 @@ bool PathNode::operator==(PathNode& other)
 bool Key::operator>(Key& k)
 {
 	if (this->val == k.val) {
-		return this->tieBreaker > k.tieBreaker;
+		return this->tieBreaker < k.tieBreaker;
 	}
 	return this->val > k.val;
 }
@@ -130,7 +130,7 @@ bool Key::operator>(Key& k)
 bool Key::operator<(Key& k)
 {
 	if (this->val == k.val) {
-		return this->tieBreaker < k.tieBreaker;
+		return this->tieBreaker > k.tieBreaker;
 	}
 	return this->val < k.val;
 }
@@ -141,6 +141,10 @@ bool Key::operator==(Key& k)
 }
 
 VisNode::VisNode(PathNode* n) : node(n)
+{
+}
+
+VisNode::~VisNode()
 {
 }
 
@@ -155,4 +159,5 @@ void VisNode::update(obstacle::Baise* o)
 		this->obstacles.remove(o);
 	}
 	this->node->setWalkable(this->obstacles.size() == 0);
+	return;
 }
