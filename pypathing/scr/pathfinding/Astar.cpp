@@ -46,16 +46,18 @@ std::list<PathNode*> serchers::Astar_c_node(PathNode* start, PathNode* end, int 
 				PathNode* newNode = edge_iter->first;
 
 				if (visited.count(newNode) == 0 && newNode->walkable && edge_iter->second->walkable) {
-					// get the estimated distance  bewean 2 nodes
-					float NodeDistanceEstimate = distance::distance(newNode, end, distanceKey) + currentNode->distance + edge_iter->second->length;
 
-					// priorityse node Distance
-					distanceQueue.push(NodeDistanceEstimate);
 					// upade lenth
 					newNode->distance = currentNode->distance + edge_iter->second->length;
 					// create initiater
 					newNode->movedFrom = currentNode;
 					// add to map
+
+					// get the estimated distance  bewean 2 nodes
+					float NodeDistanceEstimate = distance::distance(newNode, end, distanceKey) + newNode->distance;
+					// priorityse node Distance
+					distanceQueue.push(NodeDistanceEstimate);
+
 					if (nodeMap.count(NodeDistanceEstimate) == 0) {
 						nodeMap.insert({ NodeDistanceEstimate, std::queue<PathNode*>() });
 					}

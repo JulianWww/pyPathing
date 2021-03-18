@@ -46,3 +46,6 @@ testDPAstar.py
 
 pypathing/setup.py
 test_obstacles.py
+LICENSE
+*.pyc
+pypathing/scr/cy_smoothing.cpp

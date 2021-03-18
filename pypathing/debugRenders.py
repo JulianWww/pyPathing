@@ -102,9 +102,18 @@ def renderCluster(graph: hpAstar,
     if renderNodes: render(graph, colors, 1)
 
     if len(path)>0:
-        lastPos = path[0].position[1:]
+        if isinstance(path[0], ndarray):
+            lastPos = path[0][1:]
+        else:
+
+            lastPos = path[0].position[1:]
+
         for node in path:
-            pos = node.position[1:]
+            if isinstance(path[0], ndarray):
+                pos = node[1:]
+            else:
+                pos = node.position[1:]
+
             cv.create_line(x+width*(lastPos[0]+.5)/dims[0], y+height*(lastPos[1]+.5)/dims[1],
                         x+width*(pos[0]+.5)    /dims[0], y+height*(pos[1]+.5)    /dims[1],
                         fill=pathColor, width=pathWidth)

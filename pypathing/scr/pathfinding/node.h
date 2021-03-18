@@ -9,8 +9,6 @@
 //#define buildPos(x,y,z, arr)(x + y * arr{0]{0].size() + z*arr{0]{0].size()*arr{0].size()+1)
 #ifndef NODE
 #define NODE
-class Cluster;
-
 class edge;
 class Cluster;
 namespace obstacle { class Baise; };

@@ -33,11 +33,21 @@ extensions = [Extension( "pypathing.scr.cy_generators",
                         ],
                         include_dirs=[get_include()]),
               
-              Extension( "pypathing.scr.cy_smoothing",
+              Extension( "pypathing.scr.smoothing",
                         [   
                             "pypathing/scr/cy_smoothing.pyx",
+                            "pypathing/scr/pathfinding/smoothers.cpp",
                         ],
-                        include_dirs=[get_include()])]
+                        include_dirs=[get_include()],
+                        depends=["pypathing/scr/cy_nodeGraph.pyx"]),
+
+              Extension( "pypathing.scr.smoothing",
+                        [
+                            "pypathing/scr/cy_localAvoidance.pyx",
+                            "pypathing/scr/pathfinding/obstacle.cpp",
+                        ],
+                        include_dirs=[get_include()],
+                        )]
 
 
 #with open("README.rst") as readmeFile:

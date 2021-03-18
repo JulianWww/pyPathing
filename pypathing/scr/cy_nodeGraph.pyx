@@ -695,15 +695,14 @@ cdef class Py_GoalCluster():
         self.c_goal.updateDels(event.c_event, distanceKey, speed)
 
 #basic path
-cdef class Path:
-    cdef list _path        
+cdef class Path:      
 
     def __str__(self):
         return f"Path <path: {self.getPathStr()}>"
     __repr__=__str__
 
     @property
-    def path(self) -> list:
+    def path(self):
         return self._path
     
     cdef getPathStr(self):
@@ -734,6 +733,7 @@ cdef class StaticPath(Path):
     def __str__(self):
         return f"Static <path: {self.getPathStr()}>"
     __repr__=__str__
+
 
 
 # paths py wrappers
@@ -862,5 +862,19 @@ def makeEdge(PY_node a, PY_node b, float length, bint oneDirectional):
     return Edge
 
 
+
+cdef cppInter.cvector[cppInter.cvector[int]] getPoses(cppInter.cvector[cppInter.PathNode*] path):
+    cdef cppInter.cvector[cppInter.cvector[int]] res
+    cdef cppInter.PathNode* p
+    for p in path:
+        res.push_back(p.pos)
+    return res
+
+cdef cppInter.cvector[cppInter.cvector[int]] getPosesFromPath(Path path):
+    cdef cppInter.cvector[cppInter.PathNode*] c_path
+    cdef PY_node node
+    for node in path.path:
+        c_path.push_back(node.c_node)
+    return getPoses(c_path)
 
 

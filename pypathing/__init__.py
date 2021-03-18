@@ -8,3 +8,4 @@ from .hpAstar import *
 from . import obstacles
 
 import pypathing.debugRenders as debug
+from .scr import smoothing
